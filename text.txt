@@ -1,0 +1,180 @@
+الاسم:
+EduAttend
+الوصف:
+نظام ويب بسيط لإدارة حضور الطلاب في المدارس، يتيح للإدارة والمعلمين تسجيل الحضور والغياب والتأخير، مع إمكانية متابعة التقارير اليومية والشهرية.
+
+name project = Hodoor
+name Database = Hodoor
+username = userHodoor
+password = passHodoor
+
+
+
+
+
+
+EduAttend/
+│
+├── index.php
+├── .htaccess
+├── README.md
+│
+├── config/
+│   ├── config.php
+│   ├── database.php
+│   └── constants.php
+│
+├── database/
+│   ├── eduatttend.sql
+│   ├── seed_admin.sql
+│   └── migrations/
+│       ├── 001_create_users_table.sql
+│       ├── 002_create_classrooms_table.sql
+│       ├── 003_create_students_table.sql
+│       ├── 004_create_attendance_table.sql
+│       ├── 005_create_settings_table.sql
+│       └── 006_add_unique_attendance_constraint.sql
+│
+├── classes/
+│   ├── clsDatabase.php
+│   ├── clsHelper.php
+│   ├── clsValidator.php
+│   ├── clsUser.php
+│   ├── clsStudent.php
+│   ├── clsClassroom.php
+│   ├── clsAttendance.php
+│   ├── clsReport.php
+│   └── clsSetting.php
+│
+├── includes/
+│   ├── header.php
+│   ├── footer.php
+│   ├── navbar.php
+│   ├── sidebar.php
+│   ├── alerts.php
+│   ├── auth_check.php
+│   ├── guest_check.php
+│   └── breadcrumbs.php
+│
+├── assets/
+│   ├── css/
+│   │   ├── style.css
+│   │   ├── dashboard.css
+│   │   ├── forms.css
+│   │   └── reports.css
+│   │
+│   ├── js/
+│   │   ├── app.js
+│   │   ├── attendance.js
+│   │   ├── students.js
+│   │   ├── classrooms.js
+│   │   ├── reports.js
+│   │   └── validation.js
+│   │
+│   ├── images/
+│   │   ├── logo.png
+│   │   ├── default-avatar.png
+│   │   └── school-bg.jpg
+│   │
+│   ├── vendors/
+│   │   ├── bootstrap/
+│   │   ├── fontawesome/
+│   │   ├── datatables/
+│   │   ├── sweetalert2/
+│   │   ├── chartjs/
+│   │   ├── flatpickr/
+│   │   └── select2/
+│   │
+│   └── uploads/
+│       ├── students/
+│       └── temp/
+│
+├── modules/
+│   ├── auth/
+│   │   ├── login.php
+│   │   ├── login_action.php
+│   │   ├── logout.php
+│   │   └── forgot_password.php
+│   │
+│   ├── dashboard/
+│   │   └── index.php
+│   │
+│   ├── users/
+│   │   ├── index.php
+│   │   ├── create.php
+│   │   ├── store.php
+│   │   ├── edit.php
+│   │   ├── update.php
+│   │   ├── delete.php
+│   │   └── view.php
+│   │
+│   ├── classrooms/
+│   │   ├── index.php
+│   │   ├── create.php
+│   │   ├── store.php
+│   │   ├── edit.php
+│   │   ├── update.php
+│   │   ├── delete.php
+│   │   └── view.php
+│   │
+│   ├── students/
+│   │   ├── index.php
+│   │   ├── create.php
+│   │   ├── store.php
+│   │   ├── edit.php
+│   │   ├── update.php
+│   │   ├── delete.php
+│   │   ├── view.php
+│   │   ├── search.php
+│   │   └── profile.php
+│   │
+│   ├── attendance/
+│   │   ├── index.php
+│   │   ├── take.php
+│   │   ├── save.php
+│   │   ├── edit.php
+│   │   ├── update.php
+│   │   ├── daily.php
+│   │   └── history.php
+│   │
+│   ├── reports/
+│   │   ├── daily_report.php
+│   │   ├── weekly_report.php
+│   │   ├── monthly_report.php
+│   │   ├── classroom_report.php
+│   │   ├── student_report.php
+│   │   ├── absences_report.php
+│   │   ├── late_report.php
+│   │   ├── print_report.php
+│   │   └── export_report.php
+│   │
+│   └── settings/
+│       ├── index.php
+│       ├── general.php
+│       ├── attendance_status.php
+│       ├── update.php
+│       └── school_info.php
+│
+├── templates/
+│   ├── layout.php
+│   ├── blank.php
+│   ├── auth_layout.php
+│   └── print_layout.php
+│
+├── routes/
+│   ├── web.php
+│   └── api.php
+│
+├── storage/
+│   ├── logs/
+│   │   ├── app.log
+│   │   └── error.log
+│   │
+│   ├── cache/
+│   └── sessions/
+│
+└── docs/
+    ├── project_structure.md
+    ├── database_schema.md
+    ├── modules_overview.md
+    └── installation_guide.md

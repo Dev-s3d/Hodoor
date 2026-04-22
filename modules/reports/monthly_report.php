@@ -1,0 +1,112 @@
+<?php
+require_once '../../includes/app.php';
+$title = 'التقرير الشهري';
+
+$year = clsHelper::get('year', date('Y'));
+$month = clsHelper::get('month', date('m'));
+$classroom_id = clsHelper::get('classroom_id');
+
+$classroomObj = new clsClassroom($conn);
+$classrooms = $classroomObj->getAll();
+
+$report = new clsReport($conn);
+$rows = $report->getMonthlyReport($year, $month, $classroom_id ?: null);
+?>
+
+<?php require_once '../../includes/header.php'; ?>
+<?php require_once '../../includes/sidebar.php'; ?>
+
+    <div class="main-content w-100">
+        <?php require_once '../../includes/navbar.php'; ?>
+
+        <div class="content p-4">
+            <?php require_once '../../includes/alerts.php'; ?>
+
+            <div class="mb-4">
+                <h1 class="mb-1">التقرير الشهري</h1>
+                <p class="text-muted mb-0">عرض حضور شهري حسب الشهر والفصل</p>
+            </div>
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <form method="GET">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">السنة</label>
+                                <input type="number" name="year" class="form-control"
+                                       value="<?= clsHelper::e($year); ?>">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">الشهر</label>
+                                <input type="number" min="1" max="12" name="month" class="form-control"
+                                       value="<?= clsHelper::e($month); ?>">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">الفصل</label>
+                                <select name="classroom_id" class="form-select">
+                                    <option value="">كل الفصول</option>
+                                    <?php foreach ($classrooms as $classroom): ?>
+                                        <option value="<?= $classroom['id']; ?>" <?= $classroom_id == $classroom['id'] ? 'selected' : ''; ?>>
+                                            <?= clsHelper::e($classroom['class_name']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3 d-flex align-items-end gap-2">
+                                <button type="submit" class="btn btn-primary">عرض</button>
+                                <a href="<?= clsPath::reports(); ?>print_report.php?type=monthly&year=<?= urlencode($year); ?>&month=<?= urlencode($month); ?>&classroom_id=<?= urlencode($classroom_id); ?>"
+                                   class="btn btn-outline-secondary">طباعة</a>
+                                <a href="<?= clsPath::reports(); ?>export_report.php?type=monthly&year=<?= urlencode($year); ?>&month=<?= urlencode($month); ?>&classroom_id=<?= urlencode($classroom_id); ?>"
+                                   class="btn btn-outline-success">تصدير CSV</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>التاريخ</th>
+                                <th>الفصل</th>
+                                <th>اسم الطالب</th>
+                                <th>رقم الطالب</th>
+                                <th>الحالة</th>
+                                <th>ملاحظات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if (!empty($rows)): ?>
+                                <?php foreach ($rows as $index => $row): ?>
+                                    <tr>
+                                        <td><?= $index + 1; ?></td>
+                                        <td><?= clsHelper::e($row['attendance_date']); ?></td>
+                                        <td><?= clsHelper::e($row['class_name']); ?></td>
+                                        <td><?= clsHelper::e($row['student_name']); ?></td>
+                                        <td><?= clsHelper::e($row['student_number']); ?></td>
+                                        <td><?= clsHelper::e($row['status']); ?></td>
+                                        <td><?= clsHelper::e($row['notes'] ?: '-'); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">لا توجد بيانات</td>
+                                </tr>
+                            <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<?php require_once '../../includes/footer.php'; ?>

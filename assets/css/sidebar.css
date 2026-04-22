@@ -1,0 +1,23 @@
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+    flex-shrink: 0;
+}
+
+.sidebar .nav-link {
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.offcanvas .nav-link {
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.offcanvas .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}

@@ -1,0 +1,89 @@
+@import './font.css';
+
+body {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    min-height: 100vh;
+}
+
+.login-wrapper {
+    min-height: 100vh;
+}
+
+.login-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.login-side {
+    background: linear-gradient(180deg, #0d6efd, #084298);
+    color: #fff;
+    padding: 40px;
+}
+
+.login-side h2 {
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.login-side p {
+    opacity: .95;
+    line-height: 1.9;
+}
+
+.login-form-side {
+    background: #fff;
+    padding: 40px;
+}
+
+.brand-icon {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, .15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.form-control {
+    height: 48px;
+    border-radius: 12px;
+}
+
+.input-group-text {
+    border-radius: 12px;
+}
+
+.btn-login {
+    height: 48px;
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+.login-title {
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.login-subtitle {
+    color: #6c757d;
+    margin-bottom: 25px;
+}
+
+.small-link {
+    text-decoration: none;
+}
+
+.small-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 991px) {
+    .login-side {
+        display: none;
+    }
+}

@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor']);
 $title = 'تقرير الفصل';
 
 $classroom_id = clsHelper::get('classroom_id');
@@ -10,6 +11,8 @@ $classroomObj = new clsClassroom($conn);
 $classrooms = $classroomObj->getAll();
 
 $report = new clsReport($conn);
+$settingObj = new clsSetting($conn);
+
 $rows = [];
 
 if (!empty($classroom_id) && clsValidator::integer($classroom_id)) {
@@ -35,6 +38,7 @@ if (!empty($classroom_id) && clsValidator::integer($classroom_id)) {
                 <div class="card-body">
                     <form method="GET">
                         <div class="row g-3">
+
                             <div class="col-md-4">
                                 <label class="form-label">الفصل</label>
                                 <select name="classroom_id" class="form-select">
@@ -59,9 +63,10 @@ if (!empty($classroom_id) && clsValidator::integer($classroom_id)) {
                                        value="<?= clsHelper::e($date_to); ?>">
                             </div>
 
-                            <div class="col-md-2 d-flex align-items-end gap-2">
+                            <div class="col-md-2 d-flex align-items-end">
                                 <button type="submit" class="btn btn-primary">عرض</button>
                             </div>
+
                         </div>
                     </form>
                 </div>
@@ -69,6 +74,7 @@ if (!empty($classroom_id) && clsValidator::integer($classroom_id)) {
 
             <div class="card shadow-sm border-0">
                 <div class="card-body">
+
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
@@ -82,6 +88,7 @@ if (!empty($classroom_id) && clsValidator::integer($classroom_id)) {
                                 <th>ملاحظات</th>
                             </tr>
                             </thead>
+
                             <tbody>
                             <?php if (!empty($rows)): ?>
                                 <?php foreach ($rows as $index => $row): ?>
@@ -91,7 +98,11 @@ if (!empty($classroom_id) && clsValidator::integer($classroom_id)) {
                                         <td><?= clsHelper::e($row['class_name']); ?></td>
                                         <td><?= clsHelper::e($row['student_name']); ?></td>
                                         <td><?= clsHelper::e($row['student_number']); ?></td>
-                                        <td><?= clsHelper::e($row['status']); ?></td>
+                                        <td>
+                                            <span class="badge <?= $settingObj->getAttendanceStatusBadgeClass($row['status']); ?>">
+                                                <?= clsHelper::e($settingObj->getAttendanceStatusLabel($row['status'])); ?>
+                                            </span>
+                                        </td>
                                         <td><?= clsHelper::e($row['notes'] ?: '-'); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -101,8 +112,10 @@ if (!empty($classroom_id) && clsValidator::integer($classroom_id)) {
                                 </tr>
                             <?php endif; ?>
                             </tbody>
+
                         </table>
                     </div>
+
                 </div>
             </div>
 

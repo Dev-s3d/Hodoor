@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor']);
 
 // منع الوصول المباشر
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

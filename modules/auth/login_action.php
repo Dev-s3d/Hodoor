@@ -12,15 +12,21 @@ $remember = isset($_POST['remember']);
 
 if (empty($login) || empty($password)) {
     clsHelper::setMessage('error', 'جميع الحقول مطلوبة');
-    $_SESSION['old_login'] = $login;
+    $_SESSION['old']['login'] = $login;
     clsHelper::redirect(clsPath::login());
 }
 
 $user = new clsUser($conn);
 
 if (!$user->login($login, $password)) {
-    clsHelper::setMessage('error', 'بيانات الدخول غير صحيحة أو الحساب غير مفعل');
-    $_SESSION['old_login'] = $login;
+    clsHelper::setMessage('error', 'بيانات الدخول غير صحيحة');
+    $_SESSION['old']['login'] = $login;
+    clsHelper::redirect(clsPath::login());
+}
+
+if (!$user->isActive()) {
+    clsHelper::setMessage('warning', 'الحساب غير مفعل');
+    $_SESSION['old']['login'] = $login;
     clsHelper::redirect(clsPath::login());
 }
 
@@ -28,6 +34,13 @@ $user->createSession();
 
 if ($remember) {
     setcookie('remember_user', $user->username, time() + (86400 * 30), '/');
+} else {
+    setcookie('remember_user', '', time() - 3600, '/');
+    unset($_COOKIE['remember_user']);
+}
+
+if (clsHelper::isTeacher()) {
+    clsHelper::redirect(clsPath::attendance() . 'index.php');
 }
 
 clsHelper::setMessage('success', 'مرحبًا بك في نظام Hodoor');

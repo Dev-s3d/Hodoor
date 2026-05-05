@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor', 'teacher']);
 $title = 'التقرير اليومي';
 
 $attendance_date = clsHelper::get('attendance_date', date('Y-m-d'));
@@ -9,6 +10,8 @@ $classroomObj = new clsClassroom($conn);
 $classrooms = $classroomObj->getAll();
 
 $report = new clsReport($conn);
+$settingObj = new clsSetting($conn);
+
 $rows = $report->getDailyReport($attendance_date, $classroom_id ?: null);
 ?>
 
@@ -84,7 +87,11 @@ $rows = $report->getDailyReport($attendance_date, $classroom_id ?: null);
                                         <td><?= clsHelper::e($row['class_name']); ?></td>
                                         <td><?= clsHelper::e($row['student_name']); ?></td>
                                         <td><?= clsHelper::e($row['student_number']); ?></td>
-                                        <td><?= clsHelper::e($row['status']); ?></td>
+                                        <td>
+                                            <span class="badge <?= $settingObj->getAttendanceStatusBadgeClass($row['status']); ?>">
+                                                <?= clsHelper::e($settingObj->getAttendanceStatusLabel($row['status'])); ?>
+                                            </span>
+                                        </td>
                                         <td><?= clsHelper::e($row['notes'] ?: '-'); ?></td>
                                     </tr>
                                 <?php endforeach; ?>

@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor']);
 $title = 'التقرير الشهري';
 
 $year = clsHelper::get('year', date('Y'));
@@ -10,6 +11,8 @@ $classroomObj = new clsClassroom($conn);
 $classrooms = $classroomObj->getAll();
 
 $report = new clsReport($conn);
+$settingObj = new clsSetting($conn);
+
 $rows = $report->getMonthlyReport($year, $month, $classroom_id ?: null);
 ?>
 
@@ -31,6 +34,7 @@ $rows = $report->getMonthlyReport($year, $month, $classroom_id ?: null);
                 <div class="card-body">
                     <form method="GET">
                         <div class="row g-3">
+
                             <div class="col-md-3">
                                 <label class="form-label">السنة</label>
                                 <input type="number" name="year" class="form-control"
@@ -57,11 +61,18 @@ $rows = $report->getMonthlyReport($year, $month, $classroom_id ?: null);
 
                             <div class="col-md-3 d-flex align-items-end gap-2">
                                 <button type="submit" class="btn btn-primary">عرض</button>
+
                                 <a href="<?= clsPath::reports(); ?>print_report.php?type=monthly&year=<?= urlencode($year); ?>&month=<?= urlencode($month); ?>&classroom_id=<?= urlencode($classroom_id); ?>"
-                                   class="btn btn-outline-secondary">طباعة</a>
+                                   class="btn btn-outline-secondary">
+                                    طباعة
+                                </a>
+
                                 <a href="<?= clsPath::reports(); ?>export_report.php?type=monthly&year=<?= urlencode($year); ?>&month=<?= urlencode($month); ?>&classroom_id=<?= urlencode($classroom_id); ?>"
-                                   class="btn btn-outline-success">تصدير CSV</a>
+                                   class="btn btn-outline-success">
+                                    تصدير CSV
+                                </a>
                             </div>
+
                         </div>
                     </form>
                 </div>
@@ -69,6 +80,7 @@ $rows = $report->getMonthlyReport($year, $month, $classroom_id ?: null);
 
             <div class="card shadow-sm border-0">
                 <div class="card-body">
+
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
@@ -82,6 +94,7 @@ $rows = $report->getMonthlyReport($year, $month, $classroom_id ?: null);
                                 <th>ملاحظات</th>
                             </tr>
                             </thead>
+
                             <tbody>
                             <?php if (!empty($rows)): ?>
                                 <?php foreach ($rows as $index => $row): ?>
@@ -91,7 +104,11 @@ $rows = $report->getMonthlyReport($year, $month, $classroom_id ?: null);
                                         <td><?= clsHelper::e($row['class_name']); ?></td>
                                         <td><?= clsHelper::e($row['student_name']); ?></td>
                                         <td><?= clsHelper::e($row['student_number']); ?></td>
-                                        <td><?= clsHelper::e($row['status']); ?></td>
+                                        <td>
+                                            <span class="badge <?= $settingObj->getAttendanceStatusBadgeClass($row['status']); ?>">
+                                                <?= clsHelper::e($settingObj->getAttendanceStatusLabel($row['status'])); ?>
+                                            </span>
+                                        </td>
                                         <td><?= clsHelper::e($row['notes'] ?: '-'); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -101,8 +118,10 @@ $rows = $report->getMonthlyReport($year, $month, $classroom_id ?: null);
                                 </tr>
                             <?php endif; ?>
                             </tbody>
+
                         </table>
                     </div>
+
                 </div>
             </div>
 

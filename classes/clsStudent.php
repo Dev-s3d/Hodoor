@@ -196,4 +196,28 @@ class clsStudent
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /*
+|--------------------------------------------------------------------------
+| getPaginated
+|--------------------------------------------------------------------------
+| جلب الطلاب على دفعات بدل جلب الكل
+*/
+    public function getPaginated($limit, $offset)
+    {
+        $query = "SELECT students.*, classrooms.class_name
+              FROM students
+              LEFT JOIN classrooms ON classrooms.id = students.classroom_id
+              ORDER BY students.id DESC
+              LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

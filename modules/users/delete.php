@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin']);
 $title = 'حذف المستخدم';
 
 $id = clsHelper::get('id');

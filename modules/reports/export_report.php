@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor']);
 
 $type = clsHelper::get('type', 'daily');
 $attendance_date = clsHelper::get('attendance_date');
@@ -66,13 +67,13 @@ fputcsv($output, ['#', 'التاريخ', 'الفصل', 'اسم الطالب', '�
 if (!empty($rows)) {
     foreach ($rows as $index => $row) {
         fputcsv($output, [
-                $index + 1,
-                $row['attendance_date'] ?? '',
-                $row['class_name'] ?? '',
-                $row['student_name'] ?? '',
-                $row['student_number'] ?? '',
-                $row['status'] ?? '',
-                $row['notes'] ?? ''
+            $index + 1,
+            $row['attendance_date'] ?? '',
+            $row['class_name'] ?? '',
+            $row['student_name'] ?? '',
+            $row['student_number'] ?? '',
+            $row['status'] ?? '',
+            $row['notes'] ?? ''
         ]);
     }
 }

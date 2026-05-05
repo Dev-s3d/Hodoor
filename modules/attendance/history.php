@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor', 'teacher']);
 $title = 'سجل الحضور';
 
 $attendance_date = clsHelper::get('attendance_date');
@@ -10,6 +11,8 @@ $classroomObj = new clsClassroom($conn);
 $classrooms = $classroomObj->getAll();
 
 $attendanceObj = new clsAttendance($conn);
+$settingObj = new clsSetting($conn);
+$statuses = $settingObj->getAttendanceStatuses();
 
 $filters = [
         'attendance_date' => $attendance_date,
@@ -61,12 +64,11 @@ $records = $attendanceObj->getHistory($filters);
                                 <label class="form-label">الحالة</label>
                                 <select name="status" class="form-select">
                                     <option value="">كل الحالات</option>
-                                    <option value="present" <?= $status === 'present' ? 'selected' : ''; ?>>حاضر
-                                    </option>
-                                    <option value="absent" <?= $status === 'absent' ? 'selected' : ''; ?>>غائب</option>
-                                    <option value="late" <?= $status === 'late' ? 'selected' : ''; ?>>متأخر</option>
-                                    <option value="excused" <?= $status === 'excused' ? 'selected' : ''; ?>>مستأذن
-                                    </option>
+                                    <?php foreach ($statuses as $statusKey => $statusData): ?>
+                                        <option value="<?= clsHelper::e($statusKey); ?>" <?= $status === $statusKey ? 'selected' : ''; ?>>
+                                            <?= clsHelper::e($statusData['label']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
 
@@ -103,6 +105,7 @@ $records = $attendanceObj->getHistory($filters);
                                 <th>العمليات</th>
                             </tr>
                             </thead>
+
                             <tbody>
                             <?php if (!empty($records)): ?>
                                 <?php foreach ($records as $index => $record): ?>
@@ -113,15 +116,9 @@ $records = $attendanceObj->getHistory($filters);
                                         <td><?= clsHelper::e($record['student_name']); ?></td>
                                         <td><?= clsHelper::e($record['student_number']); ?></td>
                                         <td>
-                                            <?php if ($record['status'] === 'present'): ?>
-                                                <span class="badge bg-success">حاضر</span>
-                                            <?php elseif ($record['status'] === 'absent'): ?>
-                                                <span class="badge bg-danger">غائب</span>
-                                            <?php elseif ($record['status'] === 'late'): ?>
-                                                <span class="badge bg-warning text-dark">متأخر</span>
-                                            <?php else: ?>
-                                                <span class="badge bg-info text-dark">مستأذن</span>
-                                            <?php endif; ?>
+                                            <span class="badge <?= $settingObj->getAttendanceStatusBadgeClass($record['status']); ?>">
+                                                <?= clsHelper::e($settingObj->getAttendanceStatusLabel($record['status'])); ?>
+                                            </span>
                                         </td>
                                         <td><?= clsHelper::e($record['notes'] ?: '-'); ?></td>
                                         <td>
@@ -138,6 +135,7 @@ $records = $attendanceObj->getHistory($filters);
                                 </tr>
                             <?php endif; ?>
                             </tbody>
+
                         </table>
                     </div>
 

@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor']);
 $title = 'لوحة التحكم';
 
 $userObj = new clsUser($conn);
@@ -7,37 +8,21 @@ $classroomObj = new clsClassroom($conn);
 $studentObj = new clsStudent($conn);
 $attendanceObj = new clsAttendance($conn);
 $reportObj = new clsReport($conn);
+$settingObj = new clsSetting($conn);
 
-$today = date('Y-m-d');
+$today = date('d-m-Y');
 
-/*
-|--------------------------------------------------------------------------
-| إحصائيات عامة
-|--------------------------------------------------------------------------
-*/
 $totalUsers = $userObj->countAll();
 $totalClassrooms = $classroomObj->countAll();
 $totalStudents = $studentObj->countAll();
 
-/*
-|--------------------------------------------------------------------------
-| إحصائيات حضور اليوم
-|--------------------------------------------------------------------------
-*/
 $totalTodayAttendance = $attendanceObj->countAllByDate($today);
 $totalPresent = $attendanceObj->countByStatus($today, 'present');
 $totalAbsent = $attendanceObj->countByStatus($today, 'absent');
 $totalLate = $attendanceObj->countByStatus($today, 'late');
 $totalExcused = $attendanceObj->countByStatus($today, 'excused');
 
-/*
-|--------------------------------------------------------------------------
-| أحدث سجلات حضور اليوم
-|--------------------------------------------------------------------------
-*/
 $todayRows = $reportObj->getDailyReport($today);
-
-/* نأخذ أول 8 سجلات فقط */
 $latestAttendance = array_slice($todayRows, 0, 8);
 ?>
 
@@ -52,12 +37,13 @@ $latestAttendance = array_slice($todayRows, 0, 8);
 
             <?php require_once '../../includes/alerts.php'; ?>
 
-            <!-- عنوان الصفحة -->
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
                 <div>
-                    <h1 class="mb-1">مرحبًا <?= clsHelper::e($_SESSION['full_name']); ?></h1>
+                    <h1 class="mb-1">مرحبًابك <?= clsHelper::e($_SESSION['full_name']); ?></h1>
                     <p class="text-muted mb-0">
-                        هذه نظرة عامة على نظام <strong>Hodoor</strong> ليوم <?= clsHelper::e($today); ?>
+                        هذه نظرة عامة على نظام
+                        <strong>Hodoor</strong> ليوم
+                        <span class="bg-danger-subtle text-danger p-2 rounded-1"><?= clsHelper::e($today); ?></span>
                     </p>
                 </div>
 
@@ -74,11 +60,10 @@ $latestAttendance = array_slice($todayRows, 0, 8);
                 </div>
             </div>
 
-            <!-- الإحصائيات العامة -->
             <div class="row g-3 mb-4">
 
                 <div class="col-12 col-sm-6 col-xl-4">
-                    <div class="card dashboard-card shadow-sm border-0 h-100">
+                    <div class="card dashboard-card shadow-sm border-0 h-100 flip-in-hor-bottom">
                         <div class="card-body">
                             <div class="small text-muted mb-2">إجمالي المستخدمين</div>
                             <div class="d-flex justify-content-between align-items-center">
@@ -92,12 +77,12 @@ $latestAttendance = array_slice($todayRows, 0, 8);
                 </div>
 
                 <div class="col-12 col-sm-6 col-xl-4">
-                    <div class="card dashboard-card shadow-sm border-0 h-100">
+                    <div class="card dashboard-card shadow-sm border-0 h-100 flip-in-hor-bottom">
                         <div class="card-body">
                             <div class="small text-muted mb-2">إجمالي الفصول</div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <h3 class="mb-0"><?= $totalClassrooms; ?></h3>
-                                <div class="dashboard-icon bg-success-subtle text-success">
+                                <div class="dashboard-icon bg-success-subtle text-success ">
                                     <i class="fa fa-school"></i>
                                 </div>
                             </div>
@@ -106,7 +91,7 @@ $latestAttendance = array_slice($todayRows, 0, 8);
                 </div>
 
                 <div class="col-12 col-sm-6 col-xl-4">
-                    <div class="card dashboard-card shadow-sm border-0 h-100">
+                    <div class="card dashboard-card shadow-sm border-0 h-100 flip-in-hor-bottom">
                         <div class="card-body">
                             <div class="small text-muted mb-2">إجمالي الطلاب</div>
                             <div class="d-flex justify-content-between align-items-center">
@@ -121,7 +106,6 @@ $latestAttendance = array_slice($todayRows, 0, 8);
 
             </div>
 
-            <!-- إحصائيات حضور اليوم -->
             <div class="mb-3">
                 <h4 class="mb-1">ملخص حضور اليوم</h4>
                 <p class="text-muted mb-0">إحصائيات الحضور الخاصة بتاريخ <?= clsHelper::e($today); ?></p>
@@ -129,7 +113,7 @@ $latestAttendance = array_slice($todayRows, 0, 8);
 
             <div class="row g-3 mb-4">
 
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2 flip-in-hor-bottom">
                     <div class="card shadow-sm border-0 h-100">
                         <div class="card-body">
                             <div class="small text-muted mb-2">الإجمالي</div>
@@ -138,37 +122,37 @@ $latestAttendance = array_slice($todayRows, 0, 8);
                     </div>
                 </div>
 
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2 flip-in-hor-bottom">
                     <div class="card shadow-sm border-0 h-100">
                         <div class="card-body">
-                            <div class="small text-muted mb-2">حاضر</div>
+                            <div class="small text-muted mb-2"><?= clsHelper::e($settingObj->getAttendanceStatusLabel('present')); ?></div>
                             <h4 class="mb-0 text-success"><?= $totalPresent; ?></h4>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2 flip-in-hor-bottom">
                     <div class="card shadow-sm border-0 h-100">
                         <div class="card-body">
-                            <div class="small text-muted mb-2">غائب</div>
+                            <div class="small text-muted mb-2"><?= clsHelper::e($settingObj->getAttendanceStatusLabel('absent')); ?></div>
                             <h4 class="mb-0 text-danger"><?= $totalAbsent; ?></h4>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2 flip-in-hor-bottom">
                     <div class="card shadow-sm border-0 h-100">
                         <div class="card-body">
-                            <div class="small text-muted mb-2">متأخر</div>
+                            <div class="small text-muted mb-2"><?= clsHelper::e($settingObj->getAttendanceStatusLabel('late')); ?></div>
                             <h4 class="mb-0 text-warning"><?= $totalLate; ?></h4>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2 flip-in-hor-bottom">
                     <div class="card shadow-sm border-0 h-100">
                         <div class="card-body">
-                            <div class="small text-muted mb-2">مستأذن</div>
+                            <div class="small text-muted mb-2"><?= clsHelper::e($settingObj->getAttendanceStatusLabel('excused')); ?></div>
                             <h4 class="mb-0 text-info"><?= $totalExcused; ?></h4>
                         </div>
                     </div>
@@ -178,13 +162,10 @@ $latestAttendance = array_slice($todayRows, 0, 8);
 
             <div class="row g-4">
 
-                <!-- أحدث سجلات الحضور -->
                 <div class="col-12 col-xl-8">
                     <div class="card shadow-sm border-0 h-100">
                         <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="mb-0">أحدث سجلات الحضور اليوم</h5>
-                            </div>
+                            <h5 class="mb-0">أحدث سجلات الحضور اليوم</h5>
 
                             <a href="<?= clsPath::attendance(); ?>daily.php?attendance_date=<?= urlencode($today); ?>"
                                class="btn btn-sm btn-outline-secondary">
@@ -204,6 +185,7 @@ $latestAttendance = array_slice($todayRows, 0, 8);
                                         <th>الحالة</th>
                                     </tr>
                                     </thead>
+
                                     <tbody>
                                     <?php if (!empty($latestAttendance)): ?>
                                         <?php foreach ($latestAttendance as $index => $row): ?>
@@ -213,15 +195,9 @@ $latestAttendance = array_slice($todayRows, 0, 8);
                                                 <td><?= clsHelper::e($row['student_name']); ?></td>
                                                 <td><?= clsHelper::e($row['student_number']); ?></td>
                                                 <td>
-                                                    <?php if ($row['status'] === 'present'): ?>
-                                                        <span class="badge bg-success">حاضر</span>
-                                                    <?php elseif ($row['status'] === 'absent'): ?>
-                                                        <span class="badge bg-danger">غائب</span>
-                                                    <?php elseif ($row['status'] === 'late'): ?>
-                                                        <span class="badge bg-warning text-dark">متأخر</span>
-                                                    <?php else: ?>
-                                                        <span class="badge bg-info text-dark">مستأذن</span>
-                                                    <?php endif; ?>
+                                                    <span class="badge <?= $settingObj->getAttendanceStatusBadgeClass($row['status']); ?>">
+                                                        <?= clsHelper::e($settingObj->getAttendanceStatusLabel($row['status'])); ?>
+                                                    </span>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -233,13 +209,13 @@ $latestAttendance = array_slice($todayRows, 0, 8);
                                         </tr>
                                     <?php endif; ?>
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- اختصارات سريعة -->
                 <div class="col-12 col-xl-4">
                     <div class="card shadow-sm border-0 mb-4">
                         <div class="card-header bg-white border-0">

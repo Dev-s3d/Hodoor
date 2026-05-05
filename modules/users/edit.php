@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin']);
 $title = 'تعديل المستخدم';
 
 $id = clsHelper::get('id');
@@ -34,7 +35,7 @@ if (!$id || !$user->loadById($id)) {
                     الرجوع
                 </a>
             </div>
-            
+
             <div class="card shadow-sm border-0">
                 <div class="card-body">
 

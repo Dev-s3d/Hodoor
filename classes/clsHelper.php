@@ -156,4 +156,59 @@ class clsHelper
         // تحويل النص إلى timestamp ثم إخراج التاريخ فقط
         return date('Y-m-d', strtotime($datetime));
     }
+
+    /*
+|--------------------------------------------------------------------------
+| permissions And role
+|--------------------------------------------------------------------------
+*/
+
+    public static function role()
+    {
+        return $_SESSION['role'] ?? null;
+    }
+
+    public static function isAdmin()
+    {
+        return self::role() === 'admin';
+    }
+
+    public static function isSupervisor()
+    {
+        return self::role() === 'supervisor';
+    }
+
+    public static function isTeacher()
+    {
+        return self::role() === 'teacher';
+    }
+
+    public static function hasRole($roles)
+    {
+        if (!is_array($roles)) {
+            $roles = [$roles];
+        }
+
+        return in_array(self::role(), $roles);
+    }
+
+    public static function requireRole($roles)
+    {
+        if (!self::hasRole($roles)) {
+            self::setMessage('error', 'غير مصرح لك بالدخول إلى هذه الصفحة');
+            self::redirect(clsPath::attendance() . 'index.php');
+        }
+    }
+
+    public static function isActiveUrl($url)
+    {
+        $currentUrl = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+        return strtok($currentUrl, '?') === strtok($url, '?');
+    }
+
+    public static function activeClass($url)
+    {
+        return self::isActiveUrl($url) ? 'active' : '';
+    }
 }

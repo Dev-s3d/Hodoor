@@ -19,7 +19,8 @@ if (isset($_SESSION['user_id'])) {
     <link href="<?= clsPath::bootstrapCss(); ?>" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?= clsPath::fontawesome(); ?>">
-    <link rel="stylesheet" href="../../assets/css/login.css">
+    <!-- Style -->
+    <link rel="stylesheet" href="<?= clsPath::assets(); ?>/css/login.css">
 </head>
 
 <body>
@@ -43,9 +44,14 @@ if (isset($_SESSION['user_id'])) {
                             </p>
 
                             <ul class="list-unstyled mt-4 mb-0">
-                                <li class="mb-3"><i class="fa-solid fa-check me-2"></i> تسجيل الحضور اليومي بسهولة</li>
-                                <li class="mb-3"><i class="fa-solid fa-check me-2"></i> تقارير مفصلة للطلاب</li>
-                                <li class="mb-3"><i class="fa-solid fa-check me-2"></i> إدارة الصفوف والطلاب</li>
+                                <li class="mb-3"><i class="fa-solid fa-check text-success me-2"></i> تسجيل الحضور اليومي
+                                    بسهولة
+                                </li>
+                                <li class="mb-3"><i class="fa-solid fa-check text-success me-2"></i> تقارير مفصلة للطلاب
+                                </li>
+                                <li class="mb-3"><i class="fa-solid fa-check text-success me-2"></i> إدارة الصفوف
+                                    والطلاب
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -66,12 +72,18 @@ if (isset($_SESSION['user_id'])) {
                                 <!-- اسم المستخدم -->
                                 <div class="mb-3">
                                     <label class="form-label">اسم المستخدم أو البريد الإلكتروني</label>
+
+                                    <?php
+                                    $rememberLogin = $_COOKIE['remember_user'] ?? '';
+                                    $loginValue = clsHelper::old('login', $rememberLogin);
+                                    ?>
+
                                     <input
                                             type="text"
                                             name="login"
                                             class="form-control"
                                             placeholder="أدخل البيانات"
-                                            value="<?= clsHelper::old('login'); ?>"
+                                            value="<?= $rememberLogin; ?>"
                                             required
                                     >
                                 </div>

@@ -9,9 +9,10 @@ $_SESSION = [];
 session_destroy();
 
 // حذف كوكي "تذكرني"
-if (isset($_COOKIE['remember_user'])) {
-    setcookie('remember_user', '', time() - 3600, '/');
-}
+//if (isset($_COOKIE['remember_user'])) {
+//    setcookie('remember_user', '', time() - 3600, '/');
+//    unset($_COOKIE['remember_user']);
+//}
 
 // إنشاء Session جديدة (حماية إضافية)
 session_start();

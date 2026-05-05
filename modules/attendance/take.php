@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor', 'teacher']);
 $title = 'تسجيل الحضور';
 
 $classroom_id = clsHelper::get('classroom_id');
@@ -16,6 +17,7 @@ if (!clsValidator::date($attendance_date)) {
 }
 
 $classroom = new clsClassroom($conn);
+
 if (!$classroom->loadById($classroom_id)) {
     clsHelper::setMessage('error', 'الفصل غير موجود');
     clsHelper::redirect(clsPath::attendance() . 'index.php');
@@ -25,6 +27,14 @@ $studentObj = new clsStudent($conn);
 $students = $studentObj->getAllByClassroomId($classroom_id);
 
 $attendanceObj = new clsAttendance($conn);
+
+$settingObj = new clsSetting($conn);
+$activeStatuses = $settingObj->getActiveAttendanceStatuses();
+
+if (empty($activeStatuses)) {
+    clsHelper::setMessage('error', 'لا توجد حالات حضور مفعلة. يرجى تفعيل حالة واحدة على الأقل من الإعدادات.');
+    clsHelper::redirect(clsPath::attendance() . 'index.php');
+}
 ?>
 
 <?php require_once '../../includes/header.php'; ?>
@@ -74,33 +84,35 @@ $attendanceObj = new clsAttendance($conn);
                                     <?php foreach ($students as $index => $student): ?>
                                         <?php
                                         $existing = $attendanceObj->getStudentAttendanceOnDate($student['id'], $attendance_date);
-                                        $currentStatus = $existing['status'] ?? 'present';
+                                        $currentStatus = $existing['status'] ?? array_key_first($activeStatuses);
                                         $currentNotes = $existing['notes'] ?? '';
+
+                                        if (!isset($activeStatuses[$currentStatus])) {
+                                            $currentStatus = array_key_first($activeStatuses);
+                                        }
                                         ?>
+
                                         <tr>
                                             <td><?= $index + 1; ?></td>
+
                                             <td>
                                                 <?= clsHelper::e($student['student_name']); ?>
                                                 <input type="hidden" name="student_ids[]"
-                                                       value="<?= $student['id']; ?>">
+                                                       value="<?= clsHelper::e($student['id']); ?>">
                                             </td>
+
                                             <td><?= clsHelper::e($student['student_number']); ?></td>
+
                                             <td style="min-width: 180px;">
                                                 <select name="statuses[<?= $student['id']; ?>]" class="form-select">
-                                                    <option value="present" <?= $currentStatus === 'present' ? 'selected' : ''; ?>>
-                                                        حاضر
-                                                    </option>
-                                                    <option value="absent" <?= $currentStatus === 'absent' ? 'selected' : ''; ?>>
-                                                        غائب
-                                                    </option>
-                                                    <option value="late" <?= $currentStatus === 'late' ? 'selected' : ''; ?>>
-                                                        متأخر
-                                                    </option>
-                                                    <option value="excused" <?= $currentStatus === 'excused' ? 'selected' : ''; ?>>
-                                                        مستأذن
-                                                    </option>
+                                                    <?php foreach ($activeStatuses as $statusKey => $statusData): ?>
+                                                        <option value="<?= clsHelper::e($statusKey); ?>" <?= $currentStatus === $statusKey ? 'selected' : ''; ?>>
+                                                            <?= clsHelper::e($statusData['label']); ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
                                                 </select>
                                             </td>
+
                                             <td>
                                                 <input
                                                         type="text"
@@ -121,7 +133,7 @@ $attendanceObj = new clsAttendance($conn);
                                     حفظ الحضور
                                 </button>
 
-                                <a href="<?= clsPath::attendance(); ?>daily.php?attendance_date=<?= $attendance_date; ?>&classroom_id=<?= $classroom_id; ?>"
+                                <a href="<?= clsPath::attendance(); ?>daily.php?attendance_date=<?= urlencode($attendance_date); ?>&classroom_id=<?= urlencode($classroom_id); ?>"
                                    class="btn btn-outline-secondary">
                                     عرض التقرير
                                 </a>

@@ -1,7 +1,7 @@
-@import './font.css';
+@import url('allFileCss.css');
 
 body {
-    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    background: linear-gradient(135deg, var(--main-color), var(--main-color-hover));
     min-height: 100vh;
 }
 
@@ -17,7 +17,8 @@ body {
 }
 
 .login-side {
-    background: linear-gradient(180deg, #0d6efd, #084298);
+    /*background: linear-gradient(180deg, #0d6efd, #084298);*/
+    background: linear-gradient(180deg, var(--main-color), var(--main-color-hover));
     color: #fff;
     padding: 40px;
 }
@@ -81,6 +82,7 @@ body {
 .small-link:hover {
     text-decoration: underline;
 }
+
 
 @media (max-width: 991px) {
     .login-side {

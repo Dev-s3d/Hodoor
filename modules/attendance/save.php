@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor', 'teacher']);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     clsHelper::redirect(clsPath::attendance() . 'index.php');
@@ -11,6 +12,10 @@ $attendance_date = clsHelper::post('attendance_date');
 $student_ids = $_POST['student_ids'] ?? [];
 $statuses = $_POST['statuses'] ?? [];
 $notes = $_POST['notes'] ?? [];
+
+$settingObj = new clsSetting($conn);
+$activeStatuses = $settingObj->getActiveAttendanceStatuses();
+$allowedStatuses = array_keys($activeStatuses);
 
 $errors = [];
 
@@ -26,6 +31,10 @@ if (empty($student_ids) || !is_array($student_ids)) {
     $errors[] = 'لا يوجد طلاب للحفظ';
 }
 
+if (empty($allowedStatuses)) {
+    $errors[] = 'لا توجد حالات حضور مفعلة';
+}
+
 if (!empty($errors)) {
     clsHelper::setMessage('error', implode('<br>', $errors));
     clsHelper::redirect(clsPath::attendance() . 'index.php');
@@ -36,11 +45,11 @@ $attendance = new clsAttendance($conn);
 foreach ($student_ids as $student_id) {
     $student_id = (int)$student_id;
 
-    $status = $statuses[$student_id] ?? 'present';
+    $status = $statuses[$student_id] ?? ($allowedStatuses[0] ?? 'present');
     $note = $notes[$student_id] ?? '';
 
-    if (!in_array($status, ['present', 'absent', 'late', 'excused'])) {
-        $status = 'present';
+    if (!in_array($status, $allowedStatuses)) {
+        $status = $allowedStatuses[0];
     }
 
     $attendance->id = null;
@@ -55,6 +64,7 @@ foreach ($student_ids as $student_id) {
 }
 
 clsHelper::setMessage('success', 'تم حفظ الحضور بنجاح');
+
 clsHelper::redirect(
-        clsPath::attendance() . 'daily.php?attendance_date=' . urlencode($attendance_date) . '&classroom_id=' . urlencode($classroom_id)
+    clsPath::attendance() . 'daily.php?attendance_date=' . urlencode($attendance_date) . '&classroom_id=' . urlencode($classroom_id)
 );

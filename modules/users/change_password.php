@@ -11,7 +11,7 @@ $title = 'تغيير كلمة المرور';
         <?php require_once '../../includes/navbar.php'; ?>
 
         <div class="content p-4">
-            
+
             <?php require_once '../../includes/alerts.php'; ?>
 
             <div class="d-flex justify-content-between align-items-center mb-4">

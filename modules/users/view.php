@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin']);
 $title = 'عرض المستخدم';
 
 $id = clsHelper::get('id');

@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor', 'teacher']);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     clsHelper::redirect(clsPath::attendance() . 'history.php');
@@ -21,8 +22,10 @@ if (!clsValidator::required($attendance_date) || !clsValidator::date($attendance
     $errors[] = 'التاريخ غير صحيح';
 }
 
-if (!in_array($status, ['present', 'absent', 'late', 'excused'])) {
-    $errors[] = 'حالة الحضور غير صحيحة';
+$settingObj = new clsSetting($conn);
+
+if (!$settingObj->isAttendanceStatusActive($status)) {
+    $errors[] = 'حالة الحضور المحددة غير مفعلة من الإعدادات';
 }
 
 if (!empty($errors)) {
@@ -31,6 +34,7 @@ if (!empty($errors)) {
 }
 
 $attendance = new clsAttendance($conn);
+
 if (!$attendance->loadById($id)) {
     clsHelper::setMessage('error', 'سجل الحضور غير موجود');
     clsHelper::redirect(clsPath::attendance() . 'history.php');

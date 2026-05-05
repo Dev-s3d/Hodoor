@@ -1,0 +1,561 @@
+/* =========================================================
+   MainColor.css
+   Custom Bootstrap Theme Override
+========================================================= */
+
+:root {
+    --main-color: #3852b4;
+    --main-color-hover: #2f4599;
+    /*--main-color: #af2929;*/
+    /*--main-color-hover: #6d1717;*/
+    --main-color-dark: #263a82;
+    --main-color-light: #eef2ff;
+
+    --secondary-color: #5e7ac4;
+
+    --body-bg: #f8f9fa;
+    --box-bg: #ffffff;
+
+    --text-color: #212529;
+    --text-muted: #6c757d;
+    --white-color: #ffffff;
+
+    --border-color: #dee2e6;
+    --border-light: #edf0f5;
+
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+
+    --main-radius: 12px;
+    --small-radius: 8px;
+
+    --main-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    --soft-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+
+    --focus-shadow: 0 0 0 0.25rem rgba(56, 82, 180, 0.25);
+}
+
+/* =========================================================
+   Base
+========================================================= */
+
+body {
+    background-color: var(--body-bg);
+    color: var(--text-color);
+}
+
+a {
+    color: var(--main-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--main-color-hover);
+}
+
+hr {
+    border-color: var(--border-color);
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* =========================================================
+   Bootstrap Main Colors
+========================================================= */
+
+.text-primary {
+    color: var(--main-color) !important;
+}
+
+.bg-primary {
+    background-color: var(--main-color) !important;
+}
+
+.border-primary {
+    border-color: var(--main-color) !important;
+}
+
+.link-primary {
+    color: var(--main-color) !important;
+}
+
+.link-primary:hover {
+    color: var(--main-color-hover) !important;
+}
+
+/* =========================================================
+   Buttons
+========================================================= */
+
+.btn {
+    border-radius: var(--small-radius);
+}
+
+.btn-primary {
+    color: var(--white-color) !important;
+    background-color: var(--main-color) !important;
+    border-color: var(--main-color) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+    color: var(--white-color) !important;
+    background-color: var(--main-color-hover) !important;
+    border-color: var(--main-color-hover) !important;
+}
+
+.btn-primary:focus,
+.btn-primary:active {
+    box-shadow: var(--focus-shadow) !important;
+}
+
+.btn-outline-primary {
+    color: var(--main-color) !important;
+    border-color: var(--main-color) !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active,
+.btn-outline-primary.active {
+    color: var(--white-color) !important;
+    background-color: var(--main-color) !important;
+    border-color: var(--main-color) !important;
+}
+
+.btn-link {
+    color: var(--main-color);
+}
+
+.btn-link:hover {
+    color: var(--main-color-hover);
+}
+
+/* =========================================================
+   Cards
+========================================================= */
+
+.card {
+    background-color: var(--box-bg);
+    border-color: var(--border-color);
+    border-radius: var(--main-radius);
+    box-shadow: var(--soft-shadow);
+}
+
+.card-header {
+    background-color: var(--main-color-light);
+    color: var(--text-color);
+    border-bottom-color: var(--border-color);
+    border-radius: var(--main-radius) var(--main-radius) 0 0 !important;
+}
+
+.card-footer {
+    background-color: var(--box-bg);
+    border-top-color: var(--border-color);
+}
+
+/* =========================================================
+   Forms
+========================================================= */
+
+.form-label {
+    color: var(--text-color);
+}
+
+.form-text {
+    color: var(--text-muted);
+}
+
+.form-control,
+.form-select {
+    color: var(--text-color);
+    background-color: var(--box-bg);
+    border-color: var(--border-color);
+    border-radius: var(--small-radius);
+}
+
+.form-control:focus,
+.form-select:focus {
+    color: var(--text-color);
+    background-color: var(--box-bg);
+    border-color: var(--main-color);
+    box-shadow: var(--focus-shadow);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.form-check-input:checked {
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+.form-check-input:focus {
+    border-color: var(--main-color);
+    box-shadow: var(--focus-shadow);
+}
+
+.input-group-text {
+    background-color: var(--main-color-light);
+    color: var(--main-color);
+    border-color: var(--border-color);
+}
+
+/* =========================================================
+   Navbar
+========================================================= */
+
+.navbar {
+    background-color: var(--box-bg);
+    box-shadow: var(--soft-shadow);
+}
+
+.navbar-brand {
+    color: var(--main-color) !important;
+    font-weight: 700;
+}
+
+.navbar-brand:hover {
+    color: var(--main-color-hover) !important;
+}
+
+.nav-link {
+    color: var(--text-color);
+}
+
+.nav-link:hover,
+.nav-link:focus,
+.nav-link.active {
+    color: var(--main-color) !important;
+}
+
+.navbar-toggler {
+    border-color: var(--border-color);
+}
+
+.navbar-toggler:focus {
+    box-shadow: var(--focus-shadow);
+}
+
+/* =========================================================
+   Navs / Tabs / Pills
+========================================================= */
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    background-color: var(--main-color);
+    color: var(--white-color) !important;
+}
+
+.nav-tabs {
+    border-bottom-color: var(--border-color);
+}
+
+.nav-tabs .nav-link {
+    color: var(--text-color);
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: var(--border-light);
+    color: var(--main-color);
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--main-color);
+    background-color: var(--box-bg);
+    border-color: var(--border-color) var(--border-color) var(--box-bg);
+}
+
+/* =========================================================
+   Tables
+========================================================= */
+
+.table {
+    color: var(--text-color);
+}
+
+.table th,
+.table td {
+    border-color: var(--border-color);
+}
+
+.table-primary {
+    --bs-table-bg: var(--main-color-light);
+    --bs-table-color: var(--text-color);
+    --bs-table-border-color: var(--border-color);
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--main-color-light);
+}
+
+.table thead th {
+    background-color: var(--main-color-light);
+    color: var(--text-color);
+}
+
+/* =========================================================
+   Alerts
+========================================================= */
+
+.alert {
+    border-radius: var(--main-radius);
+}
+
+.alert-primary {
+    color: var(--main-color-dark);
+    background-color: var(--main-color-light);
+    border-color: var(--secondary-color);
+}
+
+/* =========================================================
+   Badges
+========================================================= */
+
+.badge {
+    border-radius: var(--small-radius);
+}
+
+.badge.bg-primary,
+.bg-primary.badge {
+    background-color: var(--main-color) !important;
+    color: var(--white-color) !important;
+}
+
+/* =========================================================
+   List Group
+========================================================= */
+
+.list-group {
+    border-radius: var(--main-radius);
+}
+
+.list-group-item {
+    color: var(--text-color);
+    background-color: var(--box-bg);
+    border-color: var(--border-color);
+}
+
+.list-group-item.active {
+    color: var(--white-color);
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+.list-group-item-action:hover,
+.list-group-item-action:focus {
+    color: var(--main-color);
+    background-color: var(--main-color-light);
+}
+
+/* =========================================================
+   Dropdown
+========================================================= */
+
+.dropdown-menu {
+    background-color: var(--box-bg);
+    border-color: var(--border-color);
+    border-radius: var(--main-radius);
+    box-shadow: var(--main-shadow);
+}
+
+.dropdown-item {
+    color: var(--text-color);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    color: var(--main-color);
+    background-color: var(--main-color-light);
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    color: var(--white-color);
+    background-color: var(--main-color);
+}
+
+.dropdown-divider {
+    border-top-color: var(--border-color);
+}
+
+/* =========================================================
+   Modal
+========================================================= */
+
+.modal-content {
+    background-color: var(--box-bg);
+    border-color: var(--border-color);
+    border-radius: var(--main-radius);
+}
+
+.modal-header {
+    border-bottom-color: var(--border-color);
+}
+
+.modal-footer {
+    border-top-color: var(--border-color);
+}
+
+.modal-title {
+    color: var(--text-color);
+}
+
+/* =========================================================
+   Pagination
+========================================================= */
+
+.page-link {
+    color: var(--main-color);
+    background-color: var(--box-bg);
+    border-color: var(--border-color);
+}
+
+.page-link:hover {
+    color: var(--main-color-hover);
+    background-color: var(--main-color-light);
+    border-color: var(--border-color);
+}
+
+.page-link:focus {
+    box-shadow: var(--focus-shadow);
+}
+
+.page-item.active .page-link {
+    color: var(--white-color);
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+.page-item.disabled .page-link {
+    color: var(--text-muted);
+    background-color: var(--box-bg);
+    border-color: var(--border-color);
+}
+
+/* =========================================================
+   Breadcrumb
+========================================================= */
+
+.breadcrumb-item a {
+    color: var(--main-color);
+}
+
+.breadcrumb-item.active {
+    color: var(--text-muted);
+}
+
+/* =========================================================
+   Accordion
+========================================================= */
+
+.accordion-item {
+    background-color: var(--box-bg);
+    border-color: var(--border-color);
+}
+
+.accordion-button {
+    color: var(--text-color);
+    background-color: var(--box-bg);
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--main-color);
+    background-color: var(--main-color-light);
+    box-shadow: inset 0 -1px 0 var(--border-color);
+}
+
+.accordion-button:focus {
+    border-color: var(--main-color);
+    box-shadow: var(--focus-shadow);
+}
+
+/* =========================================================
+   Progress
+========================================================= */
+
+.progress {
+    background-color: var(--main-color-light);
+    border-radius: var(--small-radius);
+}
+
+.progress-bar {
+    background-color: var(--main-color);
+}
+
+/* =========================================================
+   Spinner
+========================================================= */
+
+.spinner-border.text-primary,
+.spinner-grow.text-primary {
+    color: var(--main-color) !important;
+}
+
+/* =========================================================
+   Toast
+========================================================= */
+
+.toast {
+    background-color: var(--box-bg);
+    border-color: var(--border-color);
+    border-radius: var(--main-radius);
+    box-shadow: var(--main-shadow);
+}
+
+.toast-header {
+    background-color: var(--main-color-light);
+    color: var(--text-color);
+    border-bottom-color: var(--border-color);
+}
+
+/* =========================================================
+   Offcanvas
+========================================================= */
+
+.offcanvas {
+    background-color: var(--box-bg);
+    color: var(--text-color);
+}
+
+.offcanvas-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* =========================================================
+   Utilities
+========================================================= */
+
+.shadow-custom {
+    box-shadow: var(--main-shadow);
+}
+
+.bg-main-light {
+    background-color: var(--main-color-light) !important;
+}
+
+.text-main {
+    color: var(--main-color) !important;
+}
+
+.border-main {
+    border-color: var(--main-color) !important;
+}
+
+.btn-main {
+    color: var(--white-color) !important;
+    background-color: var(--main-color) !important;
+    border-color: var(--main-color) !important;
+}
+
+.btn-main:hover {
+    background-color: var(--main-color-hover) !important;
+    border-color: var(--main-color-hover) !important;
+}

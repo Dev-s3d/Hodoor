@@ -1,7 +1,7 @@
 <?php
 
 require_once '../../includes/app.php';
-
+clsHelper::requireRole(['admin']);
 // منع الوصول المباشر
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     clsHelper::redirect(clsPath::users() . 'create.php');

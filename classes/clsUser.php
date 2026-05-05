@@ -150,7 +150,6 @@ class clsUser
             ':login' => $login
         ]);
 
-
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$user) {
@@ -472,9 +471,9 @@ class clsUser
             return false;
         }
 
-        if (!$this->isActive()) {
-            return false;
-        }
+        //if (!$this->isActive()) {
+        // return false;
+        //}
 
         if (!$this->checkPassword($password)) {
             return false;

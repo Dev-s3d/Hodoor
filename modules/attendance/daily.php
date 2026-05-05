@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor', 'teacher']);
 $title = 'التقرير اليومي';
 
 $attendance_date = clsHelper::get('attendance_date', date('Y-m-d'));
@@ -9,8 +10,10 @@ $classroomObj = new clsClassroom($conn);
 $classrooms = $classroomObj->getAll();
 
 $attendanceObj = new clsAttendance($conn);
+$settingObj = new clsSetting($conn);
 
 $records = [];
+
 if (!empty($classroom_id) && clsValidator::integer($classroom_id) && clsValidator::date($attendance_date)) {
     $records = $attendanceObj->getAllByDateAndClassroom($attendance_date, $classroom_id);
 }
@@ -76,6 +79,7 @@ $totalExcused = $attendanceObj->countByStatus($attendance_date, 'excused', $clas
             </div>
 
             <div class="row g-3 mb-4">
+
                 <div class="col-6 col-lg-2">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
@@ -88,7 +92,7 @@ $totalExcused = $attendanceObj->countByStatus($attendance_date, 'excused', $clas
                 <div class="col-6 col-lg-2">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
-                            <h6 class="text-muted">حاضر</h6>
+                            <h6 class="text-muted"><?= clsHelper::e($settingObj->getAttendanceStatusLabel('present')); ?></h6>
                             <h4 class="mb-0"><?= $totalPresent; ?></h4>
                         </div>
                     </div>
@@ -97,7 +101,7 @@ $totalExcused = $attendanceObj->countByStatus($attendance_date, 'excused', $clas
                 <div class="col-6 col-lg-2">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
-                            <h6 class="text-muted">غائب</h6>
+                            <h6 class="text-muted"><?= clsHelper::e($settingObj->getAttendanceStatusLabel('absent')); ?></h6>
                             <h4 class="mb-0"><?= $totalAbsent; ?></h4>
                         </div>
                     </div>
@@ -106,7 +110,7 @@ $totalExcused = $attendanceObj->countByStatus($attendance_date, 'excused', $clas
                 <div class="col-6 col-lg-2">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
-                            <h6 class="text-muted">متأخر</h6>
+                            <h6 class="text-muted"><?= clsHelper::e($settingObj->getAttendanceStatusLabel('late')); ?></h6>
                             <h4 class="mb-0"><?= $totalLate; ?></h4>
                         </div>
                     </div>
@@ -115,11 +119,12 @@ $totalExcused = $attendanceObj->countByStatus($attendance_date, 'excused', $clas
                 <div class="col-6 col-lg-2">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
-                            <h6 class="text-muted">مستأذن</h6>
+                            <h6 class="text-muted"><?= clsHelper::e($settingObj->getAttendanceStatusLabel('excused')); ?></h6>
                             <h4 class="mb-0"><?= $totalExcused; ?></h4>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="card shadow-sm border-0">
@@ -137,6 +142,7 @@ $totalExcused = $attendanceObj->countByStatus($attendance_date, 'excused', $clas
                                 <th>العمليات</th>
                             </tr>
                             </thead>
+
                             <tbody>
                             <?php if (!empty($records)): ?>
                                 <?php foreach ($records as $index => $record): ?>
@@ -145,15 +151,9 @@ $totalExcused = $attendanceObj->countByStatus($attendance_date, 'excused', $clas
                                         <td><?= clsHelper::e($record['student_name']); ?></td>
                                         <td><?= clsHelper::e($record['student_number']); ?></td>
                                         <td>
-                                            <?php if ($record['status'] === 'present'): ?>
-                                                <span class="badge bg-success">حاضر</span>
-                                            <?php elseif ($record['status'] === 'absent'): ?>
-                                                <span class="badge bg-danger">غائب</span>
-                                            <?php elseif ($record['status'] === 'late'): ?>
-                                                <span class="badge bg-warning text-dark">متأخر</span>
-                                            <?php else: ?>
-                                                <span class="badge bg-info text-dark">مستأذن</span>
-                                            <?php endif; ?>
+                                            <span class="badge <?= $settingObj->getAttendanceStatusBadgeClass($record['status']); ?>">
+                                                <?= clsHelper::e($settingObj->getAttendanceStatusLabel($record['status'])); ?>
+                                            </span>
                                         </td>
                                         <td><?= clsHelper::e($record['notes'] ?: '-'); ?></td>
                                         <td>
@@ -170,6 +170,7 @@ $totalExcused = $attendanceObj->countByStatus($attendance_date, 'excused', $clas
                                 </tr>
                             <?php endif; ?>
                             </tbody>
+
                         </table>
                     </div>
 

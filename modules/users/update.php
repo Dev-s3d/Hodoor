@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin']);
 
 // منع الوصول المباشر
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -117,11 +118,11 @@ if (!empty($password)) {
 
 // تنظيف old input بعد النجاح
 unset(
-        $_SESSION['old_full_name'],
-        $_SESSION['old_username'],
-        $_SESSION['old_email'],
-        $_SESSION['old_role'],
-        $_SESSION['old_status']
+    $_SESSION['old_full_name'],
+    $_SESSION['old_username'],
+    $_SESSION['old_email'],
+    $_SESSION['old_role'],
+    $_SESSION['old_status']
 );
 
 clsHelper::setMessage('success', 'تم تحديث المستخدم بنجاح');

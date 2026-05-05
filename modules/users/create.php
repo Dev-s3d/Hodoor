@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin']);
 $title = 'إضافة مستخدم جديد';
 ?>
 

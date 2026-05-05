@@ -1,0 +1,129 @@
+@import url('allFileCss.css');
+
+.hero {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #eef3ff 100%);
+}
+
+.hero-title {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.4;
+}
+
+.hero-title span {
+    color: var(--main-color);
+}
+
+.hero-card {
+    border-radius: 24px;
+    border: 0;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+}
+
+.feature-card {
+    border: 0;
+    border-radius: 20px;
+    transition: 0.2s;
+    height: 100%;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: #eef3ff;
+    color: var(--main-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 18px;
+}
+
+.section-title {
+    font-weight: 800;
+}
+
+.btn-main {
+    border-radius: 12px;
+    padding: 10px 22px;
+}
+
+.stat-box {
+    background: var(--white-color);
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+footer {
+    background: #111827;
+    color: #fff;
+}
+
+@media (max-width: 767px) {
+
+    /* تقليل حجم النافبار */
+    .navbar {
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+    }
+
+    /* اللوقو */
+    .navbar-brand {
+        font-size: 1.2rem !important;
+    }
+
+    .navbar-brand i {
+        font-size: 1.1rem;
+    }
+
+    /* الروابط */
+    .navbar .nav-link {
+        font-size: 0.9rem;
+        padding: 6px 0;
+    }
+
+    /* المسافات */
+    .navbar-nav {
+        gap: 2px;
+    }
+
+    /* الكونتينر اللي فيه الزر */
+    .navbar .d-flex {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* الزر */
+    .navbar .btn-main {
+        width: 100%;
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
+
+    /* زر القائمة (الهامبرغر) */
+    .navbar-toggler {
+        padding: 4px 8px;
+        font-size: 0.9rem;
+    }
+
+    .hero-title {
+        font-size: 34px;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 70px 0;
+    }
+
+}
+

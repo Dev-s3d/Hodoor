@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor']);
 
 $type = clsHelper::get('type', 'daily');
 $attendance_date = clsHelper::get('attendance_date');

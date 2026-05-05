@@ -1,23 +1,26 @@
+@import url('allFileCss.css');
+
 .sidebar {
     width: 250px;
     min-height: 100vh;
     flex-shrink: 0;
+    background-color: #0f172a;
 }
 
-.sidebar .nav-link {
-    border-radius: 8px;
-    transition: 0.2s;
-}
-
-.sidebar .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-}
-
+.sidebar .nav-link,
 .offcanvas .nav-link {
-    border-radius: 8px;
+    border-radius: 4px;
     transition: 0.2s;
 }
 
+.sidebar .nav-link:hover,
 .offcanvas .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: #2a3f91;
+    color: #fff !important;
+}
+
+.sidebar .nav-link.active,
+.offcanvas .nav-link.active {
+    background-color: #3852b4;
+    color: #fff !important;
 }

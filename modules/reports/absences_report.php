@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor']);
 $title = 'تقرير الغياب';
 
 $date_from = clsHelper::get('date_from');
@@ -10,6 +11,8 @@ $classroomObj = new clsClassroom($conn);
 $classrooms = $classroomObj->getAll();
 
 $report = new clsReport($conn);
+$settingObj = new clsSetting($conn);
+
 $rows = $report->getAbsencesReport($date_from ?: null, $date_to ?: null, $classroom_id ?: null);
 ?>
 
@@ -23,14 +26,16 @@ $rows = $report->getAbsencesReport($date_from ?: null, $date_to ?: null, $classr
             <?php require_once '../../includes/alerts.php'; ?>
 
             <div class="mb-4">
-                <h1 class="mb-1">تقرير الغياب</h1>
-                <p class="text-muted mb-0">عرض جميع حالات الغياب</p>
+                <h1 class="mb-1">تقرير <?= clsHelper::e($settingObj->getAttendanceStatusLabel('absent')); ?></h1>
+                <p class="text-muted mb-0">عرض جميع
+                    حالات <?= clsHelper::e($settingObj->getAttendanceStatusLabel('absent')); ?></p>
             </div>
 
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-body">
                     <form method="GET">
                         <div class="row g-3">
+
                             <div class="col-md-3">
                                 <label class="form-label">من تاريخ</label>
                                 <input type="date" name="date_from" class="form-control"
@@ -58,6 +63,7 @@ $rows = $report->getAbsencesReport($date_from ?: null, $date_to ?: null, $classr
                             <div class="col-md-3 d-flex align-items-end">
                                 <button type="submit" class="btn btn-primary">عرض</button>
                             </div>
+
                         </div>
                     </form>
                 </div>
@@ -65,6 +71,7 @@ $rows = $report->getAbsencesReport($date_from ?: null, $date_to ?: null, $classr
 
             <div class="card shadow-sm border-0">
                 <div class="card-body">
+
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
@@ -74,9 +81,11 @@ $rows = $report->getAbsencesReport($date_from ?: null, $date_to ?: null, $classr
                                 <th>الفصل</th>
                                 <th>اسم الطالب</th>
                                 <th>رقم الطالب</th>
+                                <th>الحالة</th>
                                 <th>ملاحظات</th>
                             </tr>
                             </thead>
+
                             <tbody>
                             <?php if (!empty($rows)): ?>
                                 <?php foreach ($rows as $index => $row): ?>
@@ -86,17 +95,24 @@ $rows = $report->getAbsencesReport($date_from ?: null, $date_to ?: null, $classr
                                         <td><?= clsHelper::e($row['class_name']); ?></td>
                                         <td><?= clsHelper::e($row['student_name']); ?></td>
                                         <td><?= clsHelper::e($row['student_number']); ?></td>
+                                        <td>
+                                            <span class="badge <?= $settingObj->getAttendanceStatusBadgeClass($row['status']); ?>">
+                                                <?= clsHelper::e($settingObj->getAttendanceStatusLabel($row['status'])); ?>
+                                            </span>
+                                        </td>
                                         <td><?= clsHelper::e($row['notes'] ?: '-'); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="6" class="text-center py-4">لا توجد بيانات</td>
+                                    <td colspan="7" class="text-center py-4">لا توجد بيانات</td>
                                 </tr>
                             <?php endif; ?>
                             </tbody>
+
                         </table>
                     </div>
+
                 </div>
             </div>
 

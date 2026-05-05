@@ -1,10 +1,12 @@
 <?php
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor', 'teacher']);
 $title = 'تعديل سجل الحضور';
 
 $id = clsHelper::get('id');
 
 $attendance = new clsAttendance($conn);
+
 if (!$id || !$attendance->loadById($id)) {
     clsHelper::setMessage('error', 'سجل الحضور غير موجود');
     clsHelper::redirect(clsPath::attendance() . 'history.php');
@@ -13,6 +15,7 @@ if (!$id || !$attendance->loadById($id)) {
 $student = new clsStudent($conn);
 $studentName = '-';
 $studentNumber = '-';
+
 if ($student->loadById($attendance->student_id)) {
     $studentName = $student->student_name;
     $studentNumber = $student->student_number;
@@ -20,8 +23,19 @@ if ($student->loadById($attendance->student_id)) {
 
 $classroom = new clsClassroom($conn);
 $classroomName = '-';
+
 if ($classroom->loadById($attendance->classroom_id)) {
     $classroomName = $classroom->class_name;
+}
+
+$settingObj = new clsSetting($conn);
+$activeStatuses = $settingObj->getActiveAttendanceStatuses();
+
+if (!isset($activeStatuses[$attendance->status])) {
+    $activeStatuses[$attendance->status] = [
+            'label' => $settingObj->getAttendanceStatusLabel($attendance->status),
+            'active' => false
+    ];
 }
 ?>
 
@@ -81,18 +95,12 @@ if ($classroom->loadById($attendance->classroom_id)) {
                             <div class="col-md-6">
                                 <label class="form-label">الحالة</label>
                                 <select name="status" class="form-select">
-                                    <option value="present" <?= $attendance->status === 'present' ? 'selected' : ''; ?>>
-                                        حاضر
-                                    </option>
-                                    <option value="absent" <?= $attendance->status === 'absent' ? 'selected' : ''; ?>>
-                                        غائب
-                                    </option>
-                                    <option value="late" <?= $attendance->status === 'late' ? 'selected' : ''; ?>>
-                                        متأخر
-                                    </option>
-                                    <option value="excused" <?= $attendance->status === 'excused' ? 'selected' : ''; ?>>
-                                        مستأذن
-                                    </option>
+                                    <?php foreach ($activeStatuses as $statusKey => $statusData): ?>
+                                        <option value="<?= clsHelper::e($statusKey); ?>" <?= $attendance->status === $statusKey ? 'selected' : ''; ?>>
+                                            <?= clsHelper::e($statusData['label']); ?>
+                                            <?= !$statusData['active'] ? ' - غير مفعلة حاليًا' : ''; ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
 

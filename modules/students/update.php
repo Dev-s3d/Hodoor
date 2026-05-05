@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../includes/app.php';
+clsHelper::requireRole(['admin', 'supervisor']);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     clsHelper::redirect(clsPath::students() . 'index.php');

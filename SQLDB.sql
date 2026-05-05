@@ -71,7 +71,6 @@ CREATE TABLE settings
 );
 
 
-
 -- أولًا: أمثلة المستخدمين
 INSERT INTO users (full_name, username, email, password, role, status, created_at) VALUES
 ('Saad Aldosaeri', 'saad', 'saad@hodoor.com', '123456', 'admin', 1, '2026-04-01 08:00:00'),

@@ -36,7 +36,7 @@ if (!$id || !$user->loadById($id)) {
                 </a>
             </div>
 
-            <div class="card shadow-sm border-0">
+            <div class="card shadow-sm border-0 ">
                 <div class="card-body">
 
                     <form action="<?= clsPath::users(); ?>update.php" method="POST">
@@ -47,25 +47,37 @@ if (!$id || !$user->loadById($id)) {
                         <div class="row g-3">
 
                             <div class="col-md-6">
-                                <label class="form-label">الاسم الكامل</label>
+                                <label class="form-label">
+                                    <i class="fa-regular fa-address-card fs-5 text-primary"></i>
+                                    الاسم الكامل
+                                </label>
                                 <input type="text" name="full_name" class="form-control"
                                        value="<?= clsHelper::old('full_name', $user->full_name); ?>">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">اسم المستخدم</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-id-card-clip fs-5 text-primary"></i>
+                                    اسم المستخدم
+                                </label>
                                 <input type="text" name="username" class="form-control"
                                        value="<?= clsHelper::old('username', $user->username); ?>">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">البريد الإلكتروني</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-at fs-5 text-primary"></i>
+                                    البريد الإلكتروني
+                                </label>
                                 <input type="email" name="email" class="form-control"
                                        value="<?= clsHelper::old('email', $user->email); ?>">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">الدور</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-lock-open fs-5 text-primary"></i>
+                                    الدور
+                                </label>
                                 <?php $oldRole = clsHelper::old('role', $user->role); ?>
                                 <select name="role" class="form-select">
                                     <option value="">اختر الدور</option>
@@ -79,7 +91,10 @@ if (!$id || !$user->loadById($id)) {
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">الحالة</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-user-check fs-5 text-primary"></i>
+                                    الحالة
+                                </label>
                                 <?php $oldStatus = clsHelper::old('status', (string)$user->status); ?>
                                 <select name="status" class="form-select">
                                     <option value="1" <?= $oldStatus == '1' ? 'selected' : ''; ?>>مفعل</option>
@@ -88,13 +103,19 @@ if (!$id || !$user->loadById($id)) {
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">كلمة المرور الجديدة</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-key fs-5 text-primary"></i>
+                                    كلمة المرور الجديدة
+                                </label>
                                 <input type="password" name="password" class="form-control"
                                        placeholder="اتركها فارغة إذا لا تريد التغيير">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">تأكيد كلمة المرور الجديدة</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-key fs-5 text-primary"></i>
+                                    تأكيد كلمة المرور الجديدة
+                                </label>
                                 <input type="password" name="confirm_password" class="form-control"
                                        placeholder="أعد إدخال كلمة المرور الجديدة">
                             </div>

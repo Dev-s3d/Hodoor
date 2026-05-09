@@ -49,22 +49,34 @@ if (!$id || !$classroom->loadById($id)) {
                     <div class="row g-4">
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">اسم الفصل</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-chalkboard fs-5 text-primary"></i>
+                                اسم الفصل
+                            </label>
                             <div class="fw-semibold"><?= clsHelper::e($classroom->class_name); ?></div>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">رمز الفصل</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-fingerprint fs-5 text-primary"></i>
+                                رمز الفصل
+                            </label>
                             <div class="fw-semibold"><?= clsHelper::e($classroom->class_code); ?></div>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">المرحلة / المستوى</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-brands fa-gitter fs-5 text-primary"></i>
+                                المرحلة / المستوى
+                            </label>
                             <div class="fw-semibold"><?= clsHelper::e($classroom->level_name); ?></div>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">تاريخ الإنشاء</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-calendar-days fs-5 text-primary"></i>
+                                تاريخ الإنشاء
+                            </label>
                             <div class="fw-semibold"><?= clsHelper::e($classroom->created_at); ?></div>
                         </div>
 

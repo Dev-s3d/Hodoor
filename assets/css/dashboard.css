@@ -46,3 +46,7 @@
     border-bottom: 0;
     padding-bottom: 0;
 }
+
+.font-size-30 {
+    font-size: 30px !important;
+}

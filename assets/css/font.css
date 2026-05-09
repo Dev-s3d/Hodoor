@@ -53,6 +53,10 @@ body {
     font-style: normal;
 }
 
+.font-weight-500 {
+    font-weight: 500 !important;
+}
+
 .tajawal-extralight {
     font-family: "Tajawal", sans-serif;
     font-weight: 200;

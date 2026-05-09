@@ -1,7 +1,8 @@
 <div class="navbar-custom bg-white shadow-sm px-3 d-flex justify-content-between align-items-center">
 
     <div class="d-flex align-items-center gap-2">
-        <button class="btn btn-outline-secondary d-lg-none" type="button" data-bs-toggle="offcanvas"
+        <button class="btn btn-primary d-lg-none d-flex justify-content-center align-items-center p-2" type="button"
+                data-bs-toggle="offcanvas"
                 data-bs-target="#mobileSidebar" aria-controls="mobileSidebar">
             <i class="fa fa-bars"></i>
         </button>
@@ -11,9 +12,9 @@
 
     <div class="d-flex align-items-center">
         <div class="dropdown">
-            <a href="#" class="text-decoration-none text-dark d-flex align-items-center gap-2 user-name"
+            <a href="#" class="text-decoration-none text-dark d-flex align-items-start gap-1"
                data-bs-toggle="dropdown" aria-expanded="false">
-                <span><?= clsHelper::e($_SESSION['full_name']); ?></span>
+                <span><?= clsHelper::e($_SESSION['username']); ?></span>
                 <i class="fa-regular fa-circle-user fs-5"></i>
             </a>
 

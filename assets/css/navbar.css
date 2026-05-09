@@ -5,9 +5,6 @@
     z-index: 1020;
 }
 
-.user-name {
-    font-weight: 500;
-}
 
 @media (max-width: 767.98px) {
     .navbar-custom {

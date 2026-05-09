@@ -6,6 +6,13 @@ $title = 'الطلاب';
 
 $studentObj = new clsStudent($conn);
 
+$woman = $studentObj->countByGender("female");
+$man = $studentObj->countByGender();
+
+$active = $studentObj->countByStatus("active");
+$notActive = $studentObj->countByStatus("notActive");
+
+
 $limit = 10;
 
 $page = isset($_GET['page']) && is_numeric($_GET['page'])
@@ -56,14 +63,67 @@ $students = $studentObj->getPaginated($limit, $offset);
             </div>
 
             <div class="row g-3 mb-4">
-                <div class="col-md-6 col-lg-3">
+
+                <div class="col-md-6 col-lg-2 flip-in-hor-bottom">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
                             <h6 class="text-muted">إجمالي الطلاب</h6>
-                            <h3 class="mb-0"><?= $totalStudents; ?></h3>
+                            <div class="d-flex justify-content-between">
+                                <h3 class="mb-0 d-inline-block"><?= $totalStudents; ?></h3>
+                                <i class="fa-solid fa-user-graduate fs-5 text-success font-size-30"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-6 col-lg-2 flip-in-hor-bottom">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <h6 class="text-muted">أنثى</h6>
+                            <div class="d-flex justify-content-between">
+                                <h3 class="mb-0 d-inline-block"><?= $woman; ?></h3>
+                                <i class="fa-solid fa-person-dress fs-5 text-danger font-size-30"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-2 flip-in-hor-bottom">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <h6 class="text-muted">ذكر</h6>
+                            <div class="d-flex justify-content-between">
+                                <h3 class="mb-0 d-inline-block"><?= $man; ?></h3>
+                                <i class="fa-solid fa-person fs-5 text-primary font-size-30"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-2 flip-in-hor-bottom">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <h6 class="text-muted">المفعلين</h6>
+                            <div class="d-flex justify-content-between">
+                                <h3 class="mb-0 d-inline-block"><?= $active; ?></h3>
+                                <i class="fa-solid fa-check fs-5 text-success font-size-30"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-2 flip-in-hor-bottom">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <h6 class="text-muted">الغير مفعلين</h6>
+                            <div class="d-flex justify-content-between">
+                                <h3 class="mb-0 d-inline-block"><?= $notActive; ?></h3>
+                                <i class="fa-solid fa-xmark fs-5 text-danger font-size-30"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="card shadow-sm border-0">
@@ -79,7 +139,7 @@ $students = $studentObj->getPaginated($limit, $offset);
                         </div>
                     </div>
 
-                    <div class="table-responsive">
+                    <div class="table-responsive text-center">
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
                             <tr>
@@ -88,6 +148,9 @@ $students = $studentObj->getPaginated($limit, $offset);
                                 <th>رقم الطالب</th>
                                 <th>الفصل</th>
                                 <th>الجنس</th>
+                                <th>جوال الطالب</th>
+                                <th>اسم ولي الامر</th>
+                                <th>جوال ولي الامر</th>
                                 <th>الحالة</th>
                                 <th>العمليات</th>
                             </tr>
@@ -108,6 +171,9 @@ $students = $studentObj->getPaginated($limit, $offset);
                                         <td>
                                             <?= $student['gender'] === 'female' ? 'أنثى' : 'ذكر'; ?>
                                         </td>
+                                        <td><?= clsHelper::e($student['phone']); ?></td>
+                                        <td><?= clsHelper::e($student['parent_name']); ?></td>
+                                        <td><?= clsHelper::e($student['parent_phone']); ?></td>
 
                                         <td>
                                             <?php if ((int)$student['status'] === 1): ?>
@@ -117,19 +183,19 @@ $students = $studentObj->getPaginated($limit, $offset);
                                             <?php endif; ?>
                                         </td>
 
-                                        <td class="d-flex gap-1 flex-wrap">
+                                        <td class="d-flex gap-1 flex-wrap justify-content-center">
                                             <a href="<?= clsPath::students(); ?>view.php?id=<?= $student['id']; ?>"
-                                               class="btn btn-sm btn-outline-info">
+                                               class="btn btn-sm btn-secondary">
                                                 عرض
                                             </a>
 
                                             <a href="<?= clsPath::students(); ?>edit.php?id=<?= $student['id']; ?>"
-                                               class="btn btn-sm btn-outline-primary">
+                                               class="btn btn-sm btn-primary">
                                                 تعديل
                                             </a>
 
                                             <a href="<?= clsPath::students(); ?>delete.php?id=<?= $student['id']; ?>"
-                                               class="btn btn-sm btn-outline-danger">
+                                               class="btn btn-sm btn-danger">
                                                 حذف
                                             </a>
                                         </td>
@@ -160,6 +226,7 @@ $students = $studentObj->getPaginated($limit, $offset);
                                         <a class="page-link"
                                            href="<?= clsPath::students(); ?>index.php?page=<?= $i; ?>">
                                             <?= $i; ?>
+                                            
                                         </a>
                                     </li>
                                 <?php endfor; ?>

@@ -238,7 +238,7 @@ class clsClassroom
     */
     public function getAll()
     {
-        $query = "SELECT * FROM classrooms ORDER BY id DESC";
+        $query = "SELECT * FROM classrooms ORDER BY id ASC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
 

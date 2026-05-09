@@ -545,10 +545,29 @@ class clsUser
     */
     public function getAllUsers()
     {
-        $query = "SELECT * FROM users ORDER BY id DESC";
+        $query = "SELECT * FROM users ORDER BY id ASC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countByStatus($st = "active")
+    {
+        $status = $st === 'active' ? 1 : 0;
+        
+        $query = "SELECT COUNT(*) AS total 
+              FROM users 
+              WHERE status = :status";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute([
+            ':status' => $status
+        ]);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return (int)($row['total'] ?? 0);
     }
 }

@@ -42,21 +42,8 @@ $latestAttendance = array_slice($todayRows, 0, 8);
                     <h1 class="mb-1">مرحبًابك <?= clsHelper::e($_SESSION['full_name']); ?></h1>
                     <p class="text-muted mb-0">
                         هذه نظرة عامة على نظام
-                        <strong>Hodoor</strong> ليوم
-                        <span class="bg-danger-subtle text-danger p-2 rounded-1"><?= clsHelper::e($today); ?></span>
+                        <strong>Hodoor</strong>
                     </p>
-                </div>
-
-                <div class="d-flex gap-2 flex-wrap">
-                    <a href="<?= clsPath::attendance(); ?>index.php" class="btn btn-primary">
-                        <i class="fa fa-check me-1"></i>
-                        تسجيل الحضور
-                    </a>
-
-                    <a href="<?= clsPath::reports(); ?>daily_report.php" class="btn btn-outline-secondary">
-                        <i class="fa fa-chart-bar me-1"></i>
-                        التقارير
-                    </a>
                 </div>
             </div>
 
@@ -108,7 +95,10 @@ $latestAttendance = array_slice($todayRows, 0, 8);
 
             <div class="mb-3">
                 <h4 class="mb-1">ملخص حضور اليوم</h4>
-                <p class="text-muted mb-0">إحصائيات الحضور الخاصة بتاريخ <?= clsHelper::e($today); ?></p>
+                <p class="text-muted mb-0">
+                    إحصائيات الحضور الخاصة بتاريخ
+                    <span class="bg-danger-subtle text-danger p-2 rounded-1"><?= clsHelper::e($today); ?></span>
+                </p>
             </div>
 
             <div class="row g-3 mb-4">

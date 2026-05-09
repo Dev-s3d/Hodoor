@@ -35,7 +35,10 @@ $title = 'إضافة فصل جديد';
                         <div class="row g-3">
 
                             <div class="col-md-6">
-                                <label class="form-label">اسم الفصل</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-chalkboard fs-5 text-primary"></i>
+                                    اسم الفصل
+                                </label>
                                 <input
                                         type="text"
                                         name="class_name"
@@ -45,7 +48,10 @@ $title = 'إضافة فصل جديد';
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">رمز الفصل</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-fingerprint fs-5 text-primary"></i>
+                                    رمز الفصل
+                                </label>
                                 <input
                                         type="text"
                                         name="class_code"
@@ -55,7 +61,10 @@ $title = 'إضافة فصل جديد';
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">المرحلة / المستوى</label>
+                                <label class="form-label">
+                                    <i class="fa-brands fa-gitter fs-5 text-primary"></i>
+                                    المرحلة / المستوى
+                                </label>
                                 <input
                                         type="text"
                                         name="level_name"

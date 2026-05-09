@@ -34,51 +34,73 @@ $title = 'إضافة مستخدم جديد';
                         <div class="row g-3">
 
                             <div class="col-md-6">
-                                <label class="form-label">الاسم الكامل</label>
+                                <label class="form-label">
+                                    <i class="fa-regular fa-address-card fs-5 text-primary"></i>
+                                    الاسم الكامل
+                                </label>
                                 <input type="text" name="full_name" class="form-control"
                                        value="<?= clsHelper::old('full_name'); ?>">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">اسم المستخدم</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-id-card-clip fs-5 text-primary"></i>
+                                    اسم المستخدم
+                                </label>
                                 <input type="text" name="username" class="form-control"
                                        value="<?= clsHelper::old('username'); ?>">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">البريد الإلكتروني</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-at fs-5 text-primary"></i>
+                                    البريد الإلكتروني
+                                </label>
                                 <input type="email" name="email" class="form-control"
                                        value="<?= clsHelper::old('email'); ?>">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">الدور</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-lock-open fs-5 text-primary"></i>
+                                    الدور
+                                </label>
                                 <select name="role" class="form-select">
                                     <option value="">اختر الدور</option>
                                     <option value="admin" <?= clsHelper::old('role') === 'admin' ? 'selected' : ''; ?>>
                                         مدير
                                     </option>
-                                    <option value="teacher" <?= clsHelper::old('role') === 'teacher' ? 'selected' : ''; ?>>
-                                        معلم
-                                    </option>
                                     <option value="supervisor" <?= clsHelper::old('role') === 'supervisor' ? 'selected' : ''; ?>>
                                         مشرف
                                     </option>
+                                    <option value="teacher" <?= clsHelper::old('role') === 'teacher' ? 'selected' : ''; ?>>
+                                        معلم
+                                    </option>
+
                                 </select>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">كلمة المرور</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-key fs-5 text-primary"></i>
+                                    كلمة المرور
+                                </label>
                                 <input type="password" name="password" class="form-control">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">تأكيد كلمة المرور</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-key fs-5 text-primary"></i>
+                                    تأكيد كلمة المرور
+                                </label>
                                 <input type="password" name="confirm_password" class="form-control">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">الحالة</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-user-check fs-5 text-primary"></i>
+                                    الحالة
+                                </label>
                                 <select name="status" class="form-select">
                                     <option value="1" <?= clsHelper::old('status', '1') == '1' ? 'selected' : ''; ?>>
                                         مفعل

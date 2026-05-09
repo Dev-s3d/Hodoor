@@ -32,20 +32,23 @@ $classrooms = $classroomObj->getAll();
             </div>
 
             <div class="row g-3 mb-4">
-                <div class="col-md-6 col-lg-3">
+                <div class="col-md-4 col-lg-2 flip-in-hor-bottom">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
                             <h6 class="text-muted">إجمالي الفصول</h6>
-                            <h3 class="mb-0"><?= $totalClasses; ?></h3>
+                            <div class="d-flex justify-content-between">
+                                <h3 class="mb-0"><?= $totalClasses; ?></h3>
+                                <i class="fa-solid fa-chalkboard-user fs-5 text-success font-size-30"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+
             <div class="card shadow-sm border-0">
                 <div class="card-body">
-
-                    <div class="table-responsive">
+                    <div class="table-responsive text-center">
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
                             <tr>
@@ -53,7 +56,6 @@ $classrooms = $classroomObj->getAll();
                                 <th>اسم الفصل</th>
                                 <th>رمز الفصل</th>
                                 <th>المرحلة / المستوى</th>
-                                <th>تاريخ الإنشاء</th>
                                 <th>العمليات</th>
                             </tr>
                             </thead>
@@ -65,20 +67,20 @@ $classrooms = $classroomObj->getAll();
                                         <td><?= clsHelper::e($classroom['class_name']); ?></td>
                                         <td><?= clsHelper::e($classroom['class_code']); ?></td>
                                         <td><?= clsHelper::e($classroom['level_name']); ?></td>
-                                        <td><?= clsHelper::dateOnly($classroom['created_at']); ?></td>
-                                        <td class="d-flex gap-1 flex-wrap">
+
+                                        <td class="d-flex gap-1 flex-wrap justify-content-center">
                                             <a href="<?= clsPath::classrooms(); ?>view.php?id=<?= $classroom['id']; ?>"
-                                               class="btn btn-sm btn-outline-info">
+                                               class="btn btn-sm btn-secondary">
                                                 عرض
                                             </a>
 
                                             <a href="<?= clsPath::classrooms(); ?>edit.php?id=<?= $classroom['id']; ?>"
-                                               class="btn btn-sm btn-outline-primary">
+                                               class="btn btn-sm btn-primary">
                                                 تعديل
                                             </a>
 
                                             <a href="<?= clsPath::classrooms(); ?>delete.php?id=<?= $classroom['id']; ?>"
-                                               class="btn btn-sm btn-outline-danger">
+                                               class="btn btn-sm btn-danger">
                                                 حذف
                                             </a>
                                         </td>

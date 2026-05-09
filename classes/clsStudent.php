@@ -220,4 +220,42 @@ class clsStudent
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function countByGender($Ge = "male")
+    {
+        $Gender = $Ge === 'male' ? "male" : "female";
+
+        $query = "SELECT COUNT(*) AS total 
+              FROM students 
+              WHERE gender = :gender";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute([
+            ':gender' => $Gender
+        ]);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return (int)($row['total'] ?? 0);
+    }
+
+    public function countByStatus($st = "active")
+    {
+        $status = $st === 'active' ? 1 : 0;
+
+        $query = "SELECT COUNT(*) AS total 
+              FROM students 
+              WHERE status = :status";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute([
+            ':status' => $status
+        ]);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return (int)($row['total'] ?? 0);
+    }
 }

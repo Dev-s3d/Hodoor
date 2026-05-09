@@ -81,9 +81,9 @@
 
 <!-- Sidebar Mobile Offcanvas -->
 <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="mobileSidebar">
-    <div class="offcanvas-header border-bottom border-secondary">
-        <h5 class="offcanvas-title">Hodoor</h5>
+    <div class="offcanvas-header border-bottom border-primary">
         <button type="button" class="btn-close btn-close-white ms-0 me-auto" data-bs-dismiss="offcanvas"></button>
+        <h5 class="offcanvas-title">Hodoor</h5>
     </div>
 
     <div class="offcanvas-body">

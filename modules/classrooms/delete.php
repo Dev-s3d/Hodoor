@@ -11,6 +11,29 @@ if (!$id || !$classroom->loadById($id)) {
     clsHelper::setMessage('error', 'الفصل غير موجود');
     clsHelper::redirect(clsPath::classrooms() . 'index.php');
 }
+
+/*
+|--------------------------------------------------------------------------
+| عند إرسال النموذج نحذف الفصل
+|--------------------------------------------------------------------------
+*/
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
+    $postId = clsHelper::post('id');
+
+    if ($postId != $classroom->id) {
+        clsHelper::setMessage('error', 'بيانات غير صحيحة');
+        clsHelper::redirect(clsPath::classrooms() . 'index.php');
+    }
+
+    if ($classroom->delete()) {
+        clsHelper::setMessage('success', 'تم حذف الفصل بنجاح');
+    } else {
+        clsHelper::setMessage('error', 'حدث خطأ أثناء حذف الفصل');
+    }
+
+    clsHelper::redirect(clsPath::classrooms() . 'index.php');
+}
+
 ?>
 
 <?php require_once '../../includes/header.php'; ?>
@@ -58,31 +81,6 @@ if (!$id || !$classroom->loadById($id)) {
                             </a>
                         </div>
                     </form>
-
-                    <?php
-                    /*
-                    |--------------------------------------------------------------------------
-                    | عند إرسال النموذج نحذف الفصل
-                    |--------------------------------------------------------------------------
-                    */
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
-                        $postId = clsHelper::post('id');
-
-                        if ($postId != $classroom->id) {
-                            clsHelper::setMessage('error', 'بيانات غير صحيحة');
-                            clsHelper::redirect(clsPath::classrooms() . 'index.php');
-                        }
-
-                        if ($classroom->delete()) {
-                            clsHelper::setMessage('success', 'تم حذف الفصل بنجاح');
-                        } else {
-                            clsHelper::setMessage('error', 'حدث خطأ أثناء حذف الفصل');
-                        }
-
-                        clsHelper::redirect(clsPath::classrooms() . 'index.php');
-                    }
-                    ?>
-
                 </div>
             </div>
 

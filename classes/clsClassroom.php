@@ -263,6 +263,29 @@ class clsClassroom
 
     /*
     |--------------------------------------------------------------------------
+    | countStudentsInClass
+    |--------------------------------------------------------------------------
+    | عدّ جميع الطلاب داخل الفصل
+    */
+    public function countStudentsInClass($idClass)
+    {
+        $query = "SELECT COUNT(*) AS total
+              FROM students
+              WHERE classroom_id = :idClass";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute([
+            ':idClass' => (int)$idClass
+        ]);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return (int)($row['total'] ?? 0);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | toArray
     |--------------------------------------------------------------------------
     | تحويل بيانات الكائن إلى مصفوفة

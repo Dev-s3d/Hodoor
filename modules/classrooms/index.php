@@ -32,7 +32,7 @@ $classrooms = $classroomObj->getAll();
             </div>
 
             <div class="row g-3 mb-4">
-                <div class="col-md-4 col-lg-2 flip-in-hor-bottom">
+                <div class="col-lg-4 flip-in-hor-bottom">
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
                             <h6 class="text-muted">إجمالي الفصول</h6>
@@ -45,60 +45,95 @@ $classrooms = $classroomObj->getAll();
                 </div>
             </div>
 
+            <div class="row g-4">
+                <?php if (!empty($classrooms)): ?>
+                    <?php $counter = 0; ?>
+                    <?php foreach ($classrooms as $classroom): ?>
+                        <?php $counter++; ?>
+                        <div class="col-md-6 col-xl-3 flip-in-hor-bottom">
+                            <div class="classroom-card card border-0 shadow-sm h-100">
 
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <div class="table-responsive text-center">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
-                            <tr>
-                                <th>#</th>
-                                <th>اسم الفصل</th>
-                                <th>رمز الفصل</th>
-                                <th>المرحلة / المستوى</th>
-                                <th>العمليات</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php if (!empty($classrooms)): ?>
-                                <?php foreach ($classrooms as $classroom): ?>
-                                    <tr>
-                                        <td><?= clsHelper::e($classroom['id']); ?></td>
-                                        <td><?= clsHelper::e($classroom['class_name']); ?></td>
-                                        <td><?= clsHelper::e($classroom['class_code']); ?></td>
-                                        <td><?= clsHelper::e($classroom['level_name']); ?></td>
+                                <div class="card-body p-4">
 
-                                        <td class="d-flex gap-1 flex-wrap justify-content-center">
-                                            <a href="<?= clsPath::classrooms(); ?>view.php?id=<?= $classroom['id']; ?>"
-                                               class="btn btn-sm btn-secondary">
-                                                عرض
-                                            </a>
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div>
+                                            <h5 class="fw-bold mb-1">
+                                                <?= clsHelper::e($classroom['class_name']); ?>
+                                            </h5>
 
-                                            <a href="<?= clsPath::classrooms(); ?>edit.php?id=<?= $classroom['id']; ?>"
-                                               class="btn btn-sm btn-primary">
-                                                تعديل
-                                            </a>
+                                            <span class="badge bg-primary-subtle text-primary">
+                                            <?= clsHelper::e($classroom['level_name']); ?>
+                                        </span>
+                                        </div>
 
-                                            <a href="<?= clsPath::classrooms(); ?>delete.php?id=<?= $classroom['id']; ?>"
-                                               class="btn btn-sm btn-danger">
-                                                حذف
-                                            </a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="6" class="text-center py-4">لا توجد فصول حاليًا</td>
-                                </tr>
-                            <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
+                                        <div class="classroom-icon">
+                                            <?= $counter; ?>
+                                        </div>
+                                    </div>
 
-                </div>
+                                    <div class="mb-3">
+                                        <div class="text-muted small">رمز الفصل</div>
+                                        <div class="fw-semibold">
+                                            <?= clsHelper::e($classroom['class_code']); ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-4">
+                                        <div class="col-6">
+                                            <div class="classroom-stat">
+                                                <div class="text-muted small">الطلاب</div>
+                                                <strong>
+                                                    <?= $classroomObj->countStudentsInClass($classroom['id']); ?>
+                                                </strong>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="classroom-stat">
+                                                <div class="text-muted small">تاريخ الإنشاء</div>
+                                                <strong><?= clsHelper::dateOnly($classroom['created_at']); ?></strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <a href="<?= clsPath::classrooms(); ?>view.php?id=<?= $classroom['id']; ?>"
+                                           class="btn btn-sm btn-secondary">
+                                            عرض
+                                        </a>
+
+                                        <a href="<?= clsPath::classrooms(); ?>edit.php?id=<?= $classroom['id']; ?>"
+                                           class="btn btn-sm btn-light">
+                                            تعديل
+                                        </a>
+
+                                        <a href="<?= clsPath::attendance(); ?>take.php?classroom_id=<?= $classroom['id']; ?>&attendance_date=<?= date('Y-m-d'); ?>"
+                                           class="btn btn-sm btn-primary">
+                                            تحضير
+                                        </a>
+
+                                        <a href="<?= clsPath::classrooms(); ?>delete.php?id=<?= $classroom['id']; ?>"
+                                           class="btn btn-sm btn-outline-danger">
+                                            حذف
+                                        </a>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="6" class="text-center py-4">لا توجد فصول حاليًا</td>
+                    </tr>
+                <?php endif; ?>
+
             </div>
 
         </div>
+    </div>
+    </div>
 
     </div>
 

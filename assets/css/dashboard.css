@@ -50,3 +50,33 @@
 .font-size-30 {
     font-size: 30px !important;
 }
+
+/* Page classroom  كل ما يخص صفحات الفصول  */
+.classroom-card {
+    border-radius: 20px;
+    transition: 0.2s ease-in-out;
+}
+
+.classroom-card:hover {
+    transform: translateY(-4px);
+}
+
+.classroom-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #f8f9fa;
+    color: #3852b4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.classroom-stat {
+    background: #f8f9fa;
+    border-radius: 14px;
+    padding: 12px;
+}
+
+/* Page classroom End */

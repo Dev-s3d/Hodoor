@@ -35,19 +35,28 @@ $classrooms = $classroomObj->getAll();
                         <div class="row g-3">
 
                             <div class="col-md-6">
-                                <label class="form-label">اسم الطالب</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-address-card fs-5 text-primary"></i>
+                                    اسم الطالب
+                                </label>
                                 <input type="text" name="student_name" class="form-control"
                                        value="<?= clsHelper::old('student_name'); ?>">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">رقم الطالب</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-fingerprint fs-5 text-primary"></i>
+                                    رقم الطالب
+                                </label>
                                 <input type="text" name="student_number" class="form-control"
                                        value="<?= clsHelper::old('student_number'); ?>">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">الفصل</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-chalkboard fs-5 text-primary"></i>
+                                    الفصل
+                                </label>
                                 <select name="classroom_id" class="form-select">
                                     <option value="">اختر الفصل</option>
                                     <?php foreach ($classrooms as $classroom): ?>
@@ -59,7 +68,10 @@ $classrooms = $classroomObj->getAll();
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">الجنس</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-person-half-dress fs-5 text-primary"></i>
+                                    الجنس
+                                </label>
                                 <select name="gender" class="form-select">
                                     <option value="male" <?= clsHelper::old('gender', 'male') === 'male' ? 'selected' : ''; ?>>
                                         ذكر
@@ -71,37 +83,55 @@ $classrooms = $classroomObj->getAll();
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">تاريخ الميلاد</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-cake-candles fs-5 text-primary"></i>
+                                    تاريخ الميلاد
+                                </label>
                                 <input type="date" name="birth_date" class="form-control"
                                        value="<?= clsHelper::old('birth_date'); ?>">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">هاتف الطالب</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-mobile-screen-button fs-5 text-primary"></i>
+                                    هاتف الطالب
+                                </label>
                                 <input type="text" name="phone" class="form-control"
                                        value="<?= clsHelper::old('phone'); ?>">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">اسم ولي الأمر</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-person-breastfeeding fs-5 text-primary"></i>
+                                    اسم ولي الأمر
+                                </label>
                                 <input type="text" name="parent_name" class="form-control"
                                        value="<?= clsHelper::old('parent_name'); ?>">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">هاتف ولي الأمر</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-mobile-screen-button fs-5 text-primary"></i>
+                                    هاتف ولي الأمر
+                                </label>
                                 <input type="text" name="parent_phone" class="form-control"
                                        value="<?= clsHelper::old('parent_phone'); ?>">
                             </div>
 
                             <div class="col-md-12">
-                                <label class="form-label">العنوان</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-location-dot fs-5 text-primary"></i>
+                                    العنوان
+                                </label>
                                 <textarea name="address" class="form-control"
                                           rows="3"><?= clsHelper::old('address'); ?></textarea>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">الحالة</label>
+                                <label class="form-label">
+                                    <i class="fa-solid fa-user-check fs-5 text-primary"></i>
+                                    الحالة
+                                </label>
                                 <select name="status" class="form-select">
                                     <option value="1" <?= clsHelper::old('status', '1') == '1' ? 'selected' : ''; ?>>
                                         مفعل

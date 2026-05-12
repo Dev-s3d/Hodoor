@@ -51,52 +51,82 @@ if (!empty($student->classroom_id) && $classroom->loadById($student->classroom_i
                     <div class="row g-4">
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">اسم الطالب</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-address-card fs-5 text-primary"></i>
+                                اسم الطالب
+                            </label>
                             <div class="fw-semibold"><?= clsHelper::e($student->student_name); ?></div>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">رقم الطالب</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-fingerprint fs-5 text-primary"></i>
+                                رقم الطالب
+                            </label>
                             <div class="fw-semibold"><?= clsHelper::e($student->student_number); ?></div>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">الفصل</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-chalkboard fs-5 text-primary"></i>
+                                الفصل
+                            </label>
                             <div class="fw-semibold"><?= clsHelper::e($className); ?></div>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">الجنس</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-person-half-dress fs-5 text-primary"></i>
+                                الجنس
+                            </label>
                             <div class="fw-semibold"><?= $student->gender === 'female' ? 'أنثى' : 'ذكر'; ?></div>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">تاريخ الميلاد</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-cake-candles fs-5 text-primary"></i>
+                                تاريخ الميلاد
+                            </label>
                             <div class="fw-semibold"><?= clsHelper::e($student->birth_date ?: '-'); ?></div>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">هاتف الطالب</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-mobile-screen-button fs-5 text-primary"></i>
+                                هاتف الطالب
+                            </label>
                             <div class="fw-semibold"><?= clsHelper::e($student->phone ?: '-'); ?></div>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">اسم ولي الأمر</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-person-breastfeeding fs-5 text-primary"></i>
+                                اسم ولي الأمر
+                            </label>
                             <div class="fw-semibold"><?= clsHelper::e($student->parent_name ?: '-'); ?></div>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">هاتف ولي الأمر</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-mobile-screen-button fs-5 text-primary"></i>
+                                هاتف ولي الأمر
+                            </label>
                             <div class="fw-semibold"><?= clsHelper::e($student->parent_phone ?: '-'); ?></div>
                         </div>
 
                         <div class="col-md-12">
-                            <label class="form-label text-muted">العنوان</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-location-dot fs-5 text-primary"></i>
+                                العنوان
+                            </label>
                             <div class="fw-semibold"><?= nl2br(clsHelper::e($student->address ?: '-')); ?></div>
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">الحالة</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-user-check fs-5 text-primary"></i>
+                                الحالة
+                            </label>
                             <div class="fw-semibold">
                                 <?php if ((int)$student->status === 1): ?>
                                     <span class="badge bg-success">مفعل</span>
@@ -107,7 +137,11 @@ if (!empty($student->classroom_id) && $classroom->loadById($student->classroom_i
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-muted">تاريخ الإنشاء</label>
+                            <label class="form-label text-muted">
+                                <i class="fa-solid fa-calendar-days fs-5 text-primary"></i>
+
+                                تاريخ الإنشاء
+                            </label>
                             <div class="fw-semibold"><?= clsHelper::e($student->created_at); ?></div>
                         </div>
 

@@ -132,10 +132,12 @@ $users = $userObj->getAllUsers()
                             </tr>
                             </thead>
                             <tbody>
+
                             <?php if (!empty($users)): ?>
+                                <?php $counter = 1; ?>
                                 <?php foreach ($users as $user): ?>
                                     <tr>
-                                        <td><?= clsHelper::e($user['id']); ?></td>
+                                        <td><?= clsHelper::e($counter); ?></td>
                                         <td><?= clsHelper::e($user['full_name']); ?></td>
                                         <td><?= clsHelper::e($user['username']); ?></td>
 
@@ -173,6 +175,7 @@ $users = $userObj->getAllUsers()
                                                class="btn btn-sm btn-danger">حذف</a>
                                         </td>
                                     </tr>
+                                    <?php $counter++; ?>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>

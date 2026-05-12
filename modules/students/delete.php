@@ -10,6 +10,24 @@ if (!$id || !$student->loadById($id)) {
     clsHelper::setMessage('error', 'الطالب غير موجود');
     clsHelper::redirect(clsPath::students() . 'index.php');
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
+    $postId = clsHelper::post('id');
+
+    if ($postId != $student->id) {
+        clsHelper::setMessage('error', 'بيانات غير صحيحة');
+        clsHelper::redirect(clsPath::students() . 'index.php');
+    }
+
+    if ($student->delete()) {
+        clsHelper::setMessage('success', 'تم حذف الطالب بنجاح');
+    } else {
+        clsHelper::setMessage('error', 'حدث خطأ أثناء حذف الطالب');
+    }
+
+    clsHelper::redirect(clsPath::students() . 'index.php');
+}
+
 ?>
 
 <?php require_once '../../includes/header.php'; ?>
@@ -55,26 +73,6 @@ if (!$id || !$student->loadById($id)) {
                             </a>
                         </div>
                     </form>
-
-                    <?php
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
-                        $postId = clsHelper::post('id');
-
-                        if ($postId != $student->id) {
-                            clsHelper::setMessage('error', 'بيانات غير صحيحة');
-                            clsHelper::redirect(clsPath::students() . 'index.php');
-                        }
-
-                        if ($student->delete()) {
-                            clsHelper::setMessage('success', 'تم حذف الطالب بنجاح');
-                        } else {
-                            clsHelper::setMessage('error', 'حدث خطأ أثناء حذف الطالب');
-                        }
-
-                        clsHelper::redirect(clsPath::students() . 'index.php');
-                    }
-                    ?>
-
                 </div>
             </div>
 

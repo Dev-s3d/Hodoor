@@ -48,7 +48,7 @@ $today = date('Y-m-d');
                                     <div class="col-md-6">
                                         <label class="form-label">التاريخ</label>
                                         <input type="date" name="attendance_date" class="form-control"
-                                               value="<?= $today; ?>">
+                                               value="<?= $today; ?>" disabled>
                                     </div>
 
                                 </div>

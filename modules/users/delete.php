@@ -11,6 +11,25 @@ if (!$id || !$user->loadById($id)) {
     clsHelper::setMessage('error', 'المستخدم غير موجود');
     clsHelper::redirect(clsPath::users() . 'index.php');
 }
+
+// إذا تم إرسال النموذج نحذف المستخدم
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
+    $postId = clsHelper::post('id');
+
+    if ($postId != $user->id) {
+        clsHelper::setMessage('error', 'بيانات غير صحيحة');
+        clsHelper::redirect(clsPath::users() . 'index.php');
+    }
+
+    if ($user->delete()) {
+        clsHelper::setMessage('success', 'تم حذف المستخدم بنجاح');
+    } else {
+        clsHelper::setMessage('error', 'حدث خطأ أثناء حذف المستخدم');
+    }
+
+    clsHelper::redirect(clsPath::users() . 'index.php');
+}
+
 ?>
 
 <?php require_once '../../includes/header.php'; ?>
@@ -56,27 +75,6 @@ if (!$id || !$user->loadById($id)) {
                             </a>
                         </div>
                     </form>
-
-                    <?php
-                    // إذا تم إرسال النموذج نحذف المستخدم
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_delete'])) {
-                        $postId = clsHelper::post('id');
-
-                        if ($postId != $user->id) {
-                            clsHelper::setMessage('error', 'بيانات غير صحيحة');
-                            clsHelper::redirect(clsPath::users() . 'index.php');
-                        }
-
-                        if ($user->delete()) {
-                            clsHelper::setMessage('success', 'تم حذف المستخدم بنجاح');
-                        } else {
-                            clsHelper::setMessage('error', 'حدث خطأ أثناء حذف المستخدم');
-                        }
-
-                        clsHelper::redirect(clsPath::users() . 'index.php');
-                    }
-                    ?>
-
                 </div>
             </div>
 

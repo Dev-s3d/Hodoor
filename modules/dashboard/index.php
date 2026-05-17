@@ -254,11 +254,11 @@ $latestAttendance = array_slice($todayRows, 0, 8);
                             <ul class="list-unstyled mb-0 dashboard-info-list">
                                 <li class="mb-2">
                                     <strong>اسم المستخدم:</strong>
-                                    <?= clsHelper::e($_SESSION['username']); ?>
+                                    <?= clsHelper::e(clsHelper::sessionGet('auth', 'username')); ?>
                                 </li>
                                 <li class="mb-2">
                                     <strong>البريد:</strong>
-                                    <?= clsHelper::e($_SESSION['email']); ?>
+                                    <?= clsHelper::e(clsHelper::sessionGet('auth', 'email')); ?>
                                 </li>
                                 <li class="mb-0">
                                     <strong>التاريخ اليوم:</strong>

@@ -1,4 +1,5 @@
 <?php
+
 require_once '../../includes/app.php';
 clsHelper::requireRole(['admin', 'supervisor']);
 $title = 'تعديل الفصل';
@@ -11,6 +12,8 @@ if (!$id || !$classroom->loadById($id)) {
     clsHelper::setMessage('error', 'الفصل غير موجود');
     clsHelper::redirect(clsPath::classrooms() . 'index.php');
 }
+
+clsHelper::showSessions();
 ?>
 
 <?php require_once '../../includes/header.php'; ?>

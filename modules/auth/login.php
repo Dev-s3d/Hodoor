@@ -2,10 +2,16 @@
 require_once '../../config/bootstrap.php';
 
 // إذا المستخدم مسجل دخول
-if (isset($_SESSION['user_id'])) {
+if (clsHelper::auth('user_id') !== null) {
+    if (clsHelper::isTeacher()) {
+        clsHelper::redirect(clsPath::attendance() . 'index.php');
+    }
+
     clsHelper::redirect(clsPath::dashboardIndex());
 }
 
+$rememberLogin = $_COOKIE['remember_user'] ?? '';
+$loginValue = clsHelper::old('login', $rememberLogin);
 ?>
 
 <!doctype html>
@@ -15,12 +21,10 @@ if (isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل دخول الإدارة - Hodoor</title>
-    <!-- Bootstrap -->
+
     <link href="<?= clsPath::bootstrapCss(); ?>" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="<?= clsPath::fontawesome(); ?>">
-    <!-- Style -->
-    <link rel="stylesheet" href="<?= clsPath::assets(); ?>/css/login.css">
+    <link rel="stylesheet" href="<?= clsPath::assets(); ?>css/login.css">
 </head>
 
 <body>
@@ -31,32 +35,38 @@ if (isset($_SESSION['user_id'])) {
             <div class="card login-card">
                 <div class="row g-0">
 
-                    <!-- الجانب التعريفي -->
                     <div class="col-lg-6">
                         <div class="login-side h-100 d-flex flex-column justify-content-center">
                             <div class="brand-icon">
                                 <i class="fa-solid fa-school"></i>
                             </div>
+
                             <h2>مرحبًا بك في نظام Hodoor</h2>
+
                             <p>
                                 نظام متكامل لإدارة حضور الطلاب، يتيح لك تسجيل الحضور والغياب
                                 والتأخير بسهولة، مع تقارير دقيقة ولوحة تحكم احترافية.
                             </p>
 
                             <ul class="list-unstyled mt-4 mb-0">
-                                <li class="mb-3"><i class="fa-solid fa-check text-success me-2"></i> تسجيل الحضور اليومي
-                                    بسهولة
+                                <li class="mb-3">
+                                    <i class="fa-solid fa-check text-success me-2"></i>
+                                    تسجيل الحضور اليومي بسهولة
                                 </li>
-                                <li class="mb-3"><i class="fa-solid fa-check text-success me-2"></i> تقارير مفصلة للطلاب
+
+                                <li class="mb-3">
+                                    <i class="fa-solid fa-check text-success me-2"></i>
+                                    تقارير مفصلة للطلاب
                                 </li>
-                                <li class="mb-3"><i class="fa-solid fa-check text-success me-2"></i> إدارة الصفوف
-                                    والطلاب
+
+                                <li class="mb-3">
+                                    <i class="fa-solid fa-check text-success me-2"></i>
+                                    إدارة الصفوف والطلاب
                                 </li>
                             </ul>
                         </div>
                     </div>
 
-                    <!-- نموذج تسجيل الدخول -->
                     <div class="col-lg-6">
                         <div class="login-form-side">
 
@@ -69,28 +79,22 @@ if (isset($_SESSION['user_id'])) {
 
                             <form action="<?= clsPath::loginAction(); ?>" method="POST">
 
-                                <!-- اسم المستخدم -->
                                 <div class="mb-3">
                                     <label class="form-label">اسم المستخدم أو البريد الإلكتروني</label>
-
-                                    <?php
-                                    $rememberLogin = $_COOKIE['remember_user'] ?? '';
-                                    $loginValue = clsHelper::old('login', $rememberLogin);
-                                    ?>
 
                                     <input
                                             type="text"
                                             name="login"
                                             class="form-control"
                                             placeholder="أدخل البيانات"
-                                            value="<?= $rememberLogin; ?>"
+                                            value="<?= $loginValue; ?>"
                                             required
                                     >
                                 </div>
 
-                                <!-- كلمة المرور -->
                                 <div class="mb-3">
                                     <label class="form-label">كلمة المرور</label>
+
                                     <div class="input-group">
                                         <input
                                                 type="password"
@@ -100,18 +104,29 @@ if (isset($_SESSION['user_id'])) {
                                                 placeholder="أدخل كلمة المرور"
                                                 required
                                         >
-                                        <button type="button" class="btn btn-outline-primary"
+
+                                        <button
+                                                type="button"
+                                                class="btn btn-outline-primary"
                                                 onclick="togglePassword()">
                                             <i class="fa-solid fa-eye" id="icon"></i>
                                         </button>
                                     </div>
                                 </div>
 
-                                <!-- تذكرني -->
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="remember">
-                                        <label class="form-check-label">تذكرني</label>
+                                        <input
+                                                class="form-check-input"
+                                                type="checkbox"
+                                                name="remember"
+                                                id="remember"
+                                                <?= !empty($rememberLogin) ? 'checked' : ''; ?>
+                                        >
+
+                                        <label class="form-check-label" for="remember">
+                                            تذكرني
+                                        </label>
                                     </div>
 
                                     <a href="forgot_password.php" class="small-link text-primary">
@@ -119,7 +134,6 @@ if (isset($_SESSION['user_id'])) {
                                     </a>
                                 </div>
 
-                                <!-- زر الدخول -->
                                 <div class="d-grid">
                                     <button class="btn btn-primary btn-login">
                                         دخول
@@ -159,5 +173,4 @@ if (isset($_SESSION['user_id'])) {
 <script src="<?= clsPath::bootstrapJs(); ?>"></script>
 
 </body>
-
 </html>

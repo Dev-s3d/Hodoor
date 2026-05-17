@@ -4,7 +4,7 @@ require_once '../../includes/app.php';
 
 // منع الوصول المباشر
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    clsHelper::redirect(clsPath::profile());
+    clsHelper::redirect(clsPath::editProfile());
 }
 
 $id = clsHelper::post('id');
@@ -12,10 +12,10 @@ $full_name = clsHelper::post('full_name');
 $username = clsHelper::post('username');
 $email = clsHelper::post('email');
 
-// حفظ القيم القديمة
-$_SESSION['old_full_name'] = $full_name;
-$_SESSION['old_username'] = $username;
-$_SESSION['old_email'] = $email;
+// حفظ القيم القديمة عند حدوث خطأ
+clsHelper::sessionSet('old', 'full_name', $full_name);
+clsHelper::sessionSet('old', 'username', $username);
+clsHelper::sessionSet('old', 'email', $email);
 
 $errors = [];
 
@@ -27,7 +27,7 @@ $errors = [];
 */
 if (!clsValidator::required($id) || !clsValidator::integer($id)) {
     $errors[] = 'بيانات المستخدم غير صحيحة';
-} elseif ((int)$id !== (int)$_SESSION['user_id']) {
+} elseif ((int)$id !== (int)clsHelper::auth('user_id')) {
     $errors[] = 'غير مصرح لك بتعديل هذا المستخدم';
 }
 
@@ -56,12 +56,12 @@ if (!clsValidator::required($email)) {
 
 if (!empty($errors)) {
     clsHelper::setMessage('error', implode('<br>', $errors));
-    clsHelper::redirect(clsPath::profile());
+    clsHelper::redirect(clsPath::editProfile());
 }
 
 $user = new clsUser($conn);
 
-if (!$user->loadById($_SESSION['user_id'])) {
+if (!$user->loadById(clsHelper::auth('user_id'))) {
     clsHelper::setMessage('error', 'المستخدم غير موجود');
     clsHelper::redirect(clsPath::login());
 }
@@ -81,7 +81,7 @@ if ($user->emailExistsExceptCurrent($email, $user->id)) {
 
 if (!empty($errors)) {
     clsHelper::setMessage('error', implode('<br>', $errors));
-    clsHelper::redirect(clsPath::profile());
+    clsHelper::redirect(clsPath::editProfile());
 }
 
 /*
@@ -95,22 +95,28 @@ $user->username = $username;
 $user->email = $email;
 
 if ($user->update()) {
-    /*
-    | تحديث بيانات الجلسة بعد نجاح التعديل
-    */
-    $_SESSION['full_name'] = $user->full_name;
-    $_SESSION['username'] = $user->username;
-    $_SESSION['email'] = $user->email;
 
-    unset(
-        $_SESSION['old_full_name'],
-        $_SESSION['old_username'],
-        $_SESSION['old_email']
-    );
+    /*
+    |--------------------------------------------------------------------------
+    | تحديث بيانات الجلسة بعد نجاح التعديل
+    |--------------------------------------------------------------------------
+    */
+    clsHelper::sessionSet('auth', 'full_name', $user->full_name);
+    clsHelper::sessionSet('auth', 'username', $user->username);
+    clsHelper::sessionSet('auth', 'email', $user->email);
+
+    /*
+    |--------------------------------------------------------------------------
+    | حذف القيم القديمة بعد النجاح
+    |--------------------------------------------------------------------------
+    */
+    clsHelper::sessionRemove('old', 'full_name');
+    clsHelper::sessionRemove('old', 'username');
+    clsHelper::sessionRemove('old', 'email');
 
     clsHelper::setMessage('success', 'تم تحديث الملف الشخصي بنجاح');
-    clsHelper::redirect(clsPath::profile());
+    clsHelper::redirect(clsPath::editProfile());
 }
 
 clsHelper::setMessage('error', 'حدث خطأ أثناء تحديث الملف الشخصي');
-clsHelper::redirect(clsPath::profile());
+clsHelper::redirect(clsPath::editProfile());

@@ -26,12 +26,12 @@ class clsHelper
 
     public static function clean($value)
     {
-        return htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
+        return trim($value);
     }
 
     public static function e($value)
     {
-        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
     }
 
     /*
@@ -42,27 +42,86 @@ class clsHelper
 
     public static function post($key, $default = null)
     {
-        return isset($_POST[$key]) ? self::clean($_POST[$key]) : $default;
+        return isset($_POST[$key]) ? trim($_POST[$key]) : $default;
     }
 
     public static function get($key, $default = null)
     {
-        return isset($_GET[$key]) ? self::clean($_GET[$key]) : $default;
+        return isset($_GET[$key]) ? trim($_GET[$key]) : $default;
     }
 
     /*
     |--------------------------------------------------------------------------
-    | Old Input (for forms)
+    | Session Helpers
+    |--------------------------------------------------------------------------
+    */
+
+    public static function sessionSet($group, $key, $value)
+    {
+        $_SESSION[$group][$key] = $value;
+    }
+
+    public static function sessionGet($group, $key, $default = null)
+    {
+        return $_SESSION[$group][$key] ?? $default;
+    }
+
+    public static function sessionRemove($group, $key = null)
+    {
+        if ($key === null) {
+            unset($_SESSION[$group]);
+            return;
+        }
+
+        unset($_SESSION[$group][$key]);
+    }
+
+    public static function sessionSetArray($group, $data)
+    {
+        $_SESSION[$group] = $data;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Auth Session
+    |--------------------------------------------------------------------------
+    */
+
+    public static function auth($key = null)
+    {
+        if ($key === null) {
+            return $_SESSION['auth'] ?? [];
+        }
+
+        return self::sessionGet('auth', $key);
+    }
+
+    public static function clearAuth()
+    {
+        self::sessionRemove('auth');
+    }
+
+    public static function role()
+    {
+        return self::auth('role');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Old Inputs
     |--------------------------------------------------------------------------
     */
 
     public static function old($key, $default = '')
     {
-        if (isset($_SESSION['old'][$key])) {
-            return self::e($_SESSION['old'][$key]);
-        }
+        return self::e(
+            self::sessionGet('old', $key, $default)
+        );
+    }
 
-        return self::e($default);
+    public static function forgetOld()
+    {
+        self::sessionRemove('old');
     }
 
     /*
@@ -83,90 +142,25 @@ class clsHelper
     |--------------------------------------------------------------------------
     */
 
-    public static function setMessage($key, $value)
+    public static function setMessage($type, $message)
     {
-        $_SESSION[$key] = $value;
+        self::sessionSet('flash', $type, $message);
     }
 
-    public static function getMessage($key)
+    public static function getMessage($type)
     {
-        if (isset($_SESSION[$key])) {
-            $value = $_SESSION[$key];
-            unset($_SESSION[$key]);
-            return $value;
-        }
+        $message = self::sessionGet('flash', $type);
 
-        return null;
+        self::sessionRemove('flash', $type);
+
+        return $message;
     }
 
     /*
     |--------------------------------------------------------------------------
-    | Date Helpers
+    | Permissions
     |--------------------------------------------------------------------------
     */
-
-    public static function now()
-    {
-        return date('Y-m-d H:i:s');
-    }
-
-    public static function today()
-    {
-        return date('Y-m-d');
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Random String
-    |--------------------------------------------------------------------------
-    */
-
-    public static function random($length = 10)
-    {
-        return substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, $length);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Debug
-    |--------------------------------------------------------------------------
-    */
-
-    public static function dd($data)
-    {
-        echo "<pre>";
-        print_r($data);
-        echo "</pre>";
-        die();
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | datetime
-    |--------------------------------------------------------------------------
-    */
-
-    public static function dateOnly($datetime)
-    {
-        // إذا القيمة فارغة
-        if (empty($datetime)) {
-            return '';
-        }
-
-        // تحويل النص إلى timestamp ثم إخراج التاريخ فقط
-        return date('Y-m-d', strtotime($datetime));
-    }
-
-    /*
-|--------------------------------------------------------------------------
-| permissions And role
-|--------------------------------------------------------------------------
-*/
-
-    public static function role()
-    {
-        return $_SESSION['role'] ?? null;
-    }
 
     public static function isAdmin()
     {
@@ -194,15 +188,72 @@ class clsHelper
 
     public static function requireRole($roles)
     {
-        if (!self::hasRole($roles)) {
-            self::setMessage('error', 'غير مصرح لك بالدخول إلى هذه الصفحة');
+        if (self::hasRole($roles)) {
+            return;
+        }
+
+        self::setMessage('error', 'غير مصرح لك بالدخول');
+
+        if (self::isTeacher()) {
             self::redirect(clsPath::attendance() . 'index.php');
         }
+
+        self::redirect(clsPath::dashboardIndex());
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Date Helpers
+    |--------------------------------------------------------------------------
+    */
+
+    public static function now()
+    {
+        return date('Y-m-d H:i:s');
+    }
+
+    public static function today()
+    {
+        return date('Y-m-d');
+    }
+
+    public static function dateOnly($datetime)
+    {
+        if (empty($datetime)) {
+            return '';
+        }
+
+        return date('Y-m-d', strtotime($datetime));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Random
+    |--------------------------------------------------------------------------
+    */
+
+    public static function random($length = 10)
+    {
+        return substr(
+            str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),
+            0,
+            $length
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | URL
+    |--------------------------------------------------------------------------
+    */
 
     public static function isActiveUrl($url)
     {
-        $currentUrl = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+            ? 'https://'
+            : 'http://';
+
+        $currentUrl = $scheme . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
         return strtok($currentUrl, '?') === strtok($url, '?');
     }
@@ -210,5 +261,26 @@ class clsHelper
     public static function activeClass($url)
     {
         return self::isActiveUrl($url) ? 'active' : '';
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Debug
+    |--------------------------------------------------------------------------
+    */
+
+    public static function dd($data)
+    {
+        echo "<pre dir='ltr'>";
+        print_r($data);
+        echo "</pre>";
+        die();
+    }
+
+    public static function showSessions()
+    {
+        echo "<pre dir='ltr'>";
+        print_r($_SESSION);
+        echo "</pre>";
     }
 }

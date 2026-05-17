@@ -39,7 +39,7 @@ $title = 'إضافة مستخدم جديد';
                                     الاسم الكامل
                                 </label>
                                 <input type="text" name="full_name" class="form-control"
-                                       value="<?= clsHelper::old('full_name'); ?>">
+                                       value="<?= clsHelper::old('userAddNewFullName'); ?>">
                             </div>
 
                             <div class="col-md-6">
@@ -48,7 +48,7 @@ $title = 'إضافة مستخدم جديد';
                                     اسم المستخدم
                                 </label>
                                 <input type="text" name="username" class="form-control"
-                                       value="<?= clsHelper::old('username'); ?>">
+                                       value="<?= clsHelper::old('userAddNewUsername'); ?>">
                             </div>
 
                             <div class="col-md-6">
@@ -57,7 +57,7 @@ $title = 'إضافة مستخدم جديد';
                                     البريد الإلكتروني
                                 </label>
                                 <input type="email" name="email" class="form-control"
-                                       value="<?= clsHelper::old('email'); ?>">
+                                       value="<?= clsHelper::old('userAddNewEmail'); ?>">
                             </div>
 
                             <div class="col-md-6">
@@ -66,14 +66,13 @@ $title = 'إضافة مستخدم جديد';
                                     الدور
                                 </label>
                                 <select name="role" class="form-select">
-                                    <option value="">اختر الدور</option>
-                                    <option value="admin" <?= clsHelper::old('role') === 'admin' ? 'selected' : ''; ?>>
+                                    <option value="admin" <?= clsHelper::old('userAddNewRole') === 'admin' ? 'selected' : ''; ?>>
                                         مدير
                                     </option>
-                                    <option value="supervisor" <?= clsHelper::old('role') === 'supervisor' ? 'selected' : ''; ?>>
+                                    <option value="supervisor" <?= clsHelper::old('userAddNewRole') === 'supervisor' ? 'selected' : ''; ?>>
                                         مشرف
                                     </option>
-                                    <option value="teacher" <?= clsHelper::old('role') === 'teacher' ? 'selected' : ''; ?>>
+                                    <option value="teacher" <?= clsHelper::old('userAddNewRole') === 'teacher' ? 'selected' : ''; ?>>
                                         معلم
                                     </option>
 
@@ -102,10 +101,11 @@ $title = 'إضافة مستخدم جديد';
                                     الحالة
                                 </label>
                                 <select name="status" class="form-select">
-                                    <option value="1" <?= clsHelper::old('status', '1') == '1' ? 'selected' : ''; ?>>
+                                    <option value="1" <?= clsHelper::old('userAddNewStatus', '1') == '1' ? 'selected' : ''; ?>>
                                         مفعل
                                     </option>
-                                    <option value="0" <?= clsHelper::old('status') === '0' ? 'selected' : ''; ?>>غير
+                                    <option value="0" <?= clsHelper::old('userAddNewStatus') === '0' ? 'selected' : ''; ?>>
+                                        غير
                                         مفعل
                                     </option>
                                 </select>

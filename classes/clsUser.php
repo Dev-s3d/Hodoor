@@ -410,22 +410,7 @@ class clsUser
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | getAllActive
-    |--------------------------------------------------------------------------
-    | جلب جميع المستخدمين المفعلين فقط
-    */
-    public function getAllActive()
-    {
-        $query = "SELECT * FROM users WHERE status = 1 ORDER BY id DESC";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
+    
     /*
     |--------------------------------------------------------------------------
     | countAll
@@ -492,11 +477,13 @@ class clsUser
     {
         session_regenerate_id(true);
 
-        $_SESSION['user_id'] = $this->id;
-        $_SESSION['full_name'] = $this->full_name;
-        $_SESSION['username'] = $this->username;
-        $_SESSION['email'] = $this->email;
-        $_SESSION['role'] = $this->role;
+        clsHelper::sessionSetArray('auth', [
+            'user_id' => $this->id,
+            'full_name' => $this->full_name,
+            'username' => $this->username,
+            'email' => $this->email,
+            'role' => $this->role
+        ]);
     }
 
     /*
@@ -552,10 +539,15 @@ class clsUser
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function countByStatus($st = "active")
+    public function countByStatus($st = 'active')
     {
-        $status = $st === 'active' ? 1 : 0;
-        
+        $allowed = [
+            'active' => 1,
+            'inactive' => 0
+        ];
+
+        $status = $allowed[$st] ?? 1;
+
         $query = "SELECT COUNT(*) AS total 
               FROM users 
               WHERE status = :status";

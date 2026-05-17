@@ -1,0 +1,28 @@
+$_SESSION = [
+    'auth' => [
+        'user_id'   => 1,
+        'full_name' => 'Saad',
+        'username'  => 'saad',
+        'email'     => 'saad@test.com',
+        'role'      => 'admin'
+    ],
+
+    'old' => [
+        'login' => 'saad'
+    ],
+
+    'flash' => [
+        'success' => 'تم الحفظ بنجاح'
+    ],
+
+    'filters' => [
+        'students' => [
+            'page' => 1,
+            'search' => ''
+        ],
+        'attendance' => [
+            'classroom_id' => 2,
+            'date' => '2026-05-17'
+        ]
+    ]
+];

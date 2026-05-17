@@ -45,92 +45,167 @@ $classrooms = $classroomObj->getAll();
                 </div>
             </div>
 
-            <div class="row g-4">
+            <div class="row g-5">
+
                 <?php if (!empty($classrooms)): ?>
-                    <?php $counter = 0; ?>
-                    <?php foreach ($classrooms as $classroom): ?>
-                        <?php $counter++; ?>
-                        <div class="col-md-6 col-xl-3 flip-in-hor-bottom">
-                            <div class="classroom-card card border-0 shadow-sm h-100">
 
-                                <div class="card-body p-4">
+                    <?php foreach ($classrooms as $index => $classroom): ?>
 
-                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="col-md-6 col-xl-4">
+
+                            <div class="classroom-card-modern position-relative overflow-hidden h-100">
+
+                                <!-- Top -->
+                                <div class="classroom-top">
+
+                                    <div class="d-flex justify-content-between align-items-start">
+
                                         <div>
-                                            <h5 class="fw-bold mb-1">
+
+                                            <div class="classroom-level mb-2">
+                                                <?= clsHelper::e($classroom['level_name']); ?>
+                                            </div>
+
+                                            <h4 class="classroom-title mb-1">
                                                 <?= clsHelper::e($classroom['class_name']); ?>
-                                            </h5>
+                                            </h4>
 
-                                            <span class="badge bg-primary-subtle text-primary">
-                                            <?= clsHelper::e($classroom['level_name']); ?>
-                                        </span>
+                                            <div class="classroom-code">
+                                                <?= clsHelper::e($classroom['class_code']); ?>
+                                            </div>
+
                                         </div>
 
-                                        <div class="classroom-icon">
-                                            <?= $counter; ?>
+                                        <div class="classroom-number">
+                                            <?= $index + 1; ?>
                                         </div>
+
                                     </div>
 
-                                    <div class="mb-3">
-                                        <div class="text-muted small">رمز الفصل</div>
-                                        <div class="fw-semibold">
-                                            <?= clsHelper::e($classroom['class_code']); ?>
-                                        </div>
-                                    </div>
+                                </div>
 
-                                    <div class="row g-2 mb-4">
+                                <!-- Body -->
+                                <div class="classroom-body">
+
+                                    <div class="row g-3 mb-4">
+
                                         <div class="col-6">
-                                            <div class="classroom-stat">
-                                                <div class="text-muted small">الطلاب</div>
-                                                <strong>
-                                                    <?= $classroomObj->countStudentsInClass($classroom['id']); ?>
-                                                </strong>
+                                            <div class="classroom-box">
+
+                                                <div class="classroom-box-icon bg-primary-subtle text-primary">
+                                                    <i class="fa fa-users"></i>
+                                                </div>
+
+                                                <div>
+                                                    <small>عدد الطلاب</small>
+
+                                                    <h5 class="mb-0">
+                                                        <?= $classroomObj->countStudentsInClass($classroom['id']); ?>
+                                                    </h5>
+                                                </div>
+
                                             </div>
                                         </div>
 
                                         <div class="col-6">
-                                            <div class="classroom-stat">
-                                                <div class="text-muted small">تاريخ الإنشاء</div>
-                                                <strong><?= clsHelper::dateOnly($classroom['created_at']); ?></strong>
+                                            <div class="classroom-box">
+
+                                                <div class="classroom-box-icon bg-success-subtle text-success">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+
+                                                <div>
+                                                    <small>الإنشاء</small>
+
+                                                    <h6 class="mb-0">
+                                                        <?= clsHelper::dateOnly($classroom['created_at']); ?>
+                                                    </h6>
+                                                </div>
+
                                             </div>
                                         </div>
+
                                     </div>
 
-                                    <div class="d-flex gap-2 flex-wrap">
-                                        <a href="<?= clsPath::classrooms(); ?>view.php?id=<?= $classroom['id']; ?>"
-                                           class="btn btn-sm btn-secondary">
-                                            عرض
-                                        </a>
-
-                                        <a href="<?= clsPath::classrooms(); ?>edit.php?id=<?= $classroom['id']; ?>"
-                                           class="btn btn-sm btn-light">
-                                            تعديل
-                                        </a>
+                                    <!-- Buttons -->
+                                    <div class="d-grid gap-2">
 
                                         <a href="<?= clsPath::attendance(); ?>take.php?classroom_id=<?= $classroom['id']; ?>&attendance_date=<?= date('Y-m-d'); ?>"
-                                           class="btn btn-sm btn-primary">
-                                            تحضير
+                                           class="btn btn-primary classroom-btn-main">
+
+                                            <i class="fa fa-check-circle me-1"></i>
+                                            بدء التحضير
+
                                         </a>
 
-                                        <a href="<?= clsPath::classrooms(); ?>delete.php?id=<?= $classroom['id']; ?>"
-                                           class="btn btn-sm btn-outline-danger">
-                                            حذف
-                                        </a>
+                                        <div class="d-flex gap-2">
+
+                                            <a href="<?= clsPath::classrooms(); ?>view.php?id=<?= $classroom['id']; ?>"
+                                               class="btn btn-light w-100">
+
+                                                <i class="fa fa-eye me-1"></i>
+                                                عرض
+
+                                            </a>
+
+                                            <a href="<?= clsPath::classrooms(); ?>edit.php?id=<?= $classroom['id']; ?>"
+                                               class="btn btn-light w-100">
+
+                                                <i class="fa fa-pen me-1"></i>
+                                                تعديل
+
+                                            </a>
+
+                                            <a href="<?= clsPath::classrooms(); ?>delete.php?id=<?= $classroom['id']; ?>"
+                                               class="btn btn-outline-danger">
+
+                                                <i class="fa fa-trash"></i>
+
+                                            </a>
+
+                                        </div>
+
                                     </div>
 
                                 </div>
 
                             </div>
+
                         </div>
+
                     <?php endforeach; ?>
+
                 <?php else: ?>
-                    <tr>
-                        <td colspan="6" class="text-center py-4">لا توجد فصول حاليًا</td>
-                    </tr>
+
+                    <div class="col-12">
+
+                        <div class="empty-classrooms text-center py-5">
+
+                            <div class="mb-3">
+                                <i class="fa fa-school fa-4x text-secondary opacity-50"></i>
+                            </div>
+
+                            <h4 class="mb-2">لا توجد فصول حالياً</h4>
+
+                            <p class="text-muted">
+                                قم بإضافة فصل جديد للبدء في إدارة الطلاب والحضور
+                            </p>
+
+                            <a href="<?= clsPath::classrooms(); ?>create.php"
+                               class="btn btn-primary mt-2">
+
+                                <i class="fa fa-plus me-1"></i>
+                                إضافة فصل
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
                 <?php endif; ?>
 
             </div>
-
         </div>
     </div>
     </div>

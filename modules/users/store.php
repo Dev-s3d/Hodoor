@@ -17,11 +17,11 @@ $confirm_password = clsHelper::post('confirm_password');
 $status = clsHelper::post('status', '1');
 
 // حفظ القيم القديمة عند الخطأ
-$_SESSION['old_full_name'] = $full_name;
-$_SESSION['old_username'] = $username;
-$_SESSION['old_email'] = $email;
-$_SESSION['old_role'] = $role;
-$_SESSION['old_status'] = $status;
+$_SESSION['old']['userAddNewFullName'] = $full_name;
+$_SESSION['old']['userAddNewUsername'] = $username;
+$_SESSION['old']['userAddNewEmail'] = $email;
+$_SESSION['old']['userAddNewRole'] = $role;
+$_SESSION['old']['userAddNewStatus'] = $status;
 
 $errors = [];
 

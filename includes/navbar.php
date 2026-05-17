@@ -1,43 +1,64 @@
 <div class="navbar-custom bg-white shadow-sm px-3 d-flex justify-content-between align-items-center">
 
     <div class="d-flex align-items-center gap-2">
-        <button class="btn btn-primary d-lg-none d-flex justify-content-center align-items-center p-2" type="button"
+
+        <button
+                class="btn btn-primary d-lg-none d-flex justify-content-center align-items-center p-2"
+                type="button"
                 data-bs-toggle="offcanvas"
-                data-bs-target="#mobileSidebar" aria-controls="mobileSidebar">
+                data-bs-target="#mobileSidebar"
+                aria-controls="mobileSidebar">
+
             <i class="fa fa-bars"></i>
+
         </button>
 
-        <h5 class="mb-0"><?= $title ?? '' ?></h5>
+        <h5 class="mb-0">
+            <?= clsHelper::e($title ?? ''); ?>
+        </h5>
+
     </div>
 
     <div class="d-flex align-items-center">
+
         <div class="dropdown">
-            <a href="#" class="text-decoration-none text-dark d-flex align-items-start gap-1"
-               data-bs-toggle="dropdown" aria-expanded="false">
-                <span><?= clsHelper::e($_SESSION['username']); ?></span>
-                <i class="fa-regular fa-circle-user fs-5"></i>
+
+            <a href="#"
+               class="text-decoration-none text-dark d-flex align-items-center gap-2"
+               data-bs-toggle="dropdown">
+
+                <span class="fw-semibold">
+
+                    <?= clsHelper::e(
+                            clsHelper::auth('full_name')
+                    ); ?>
+
+                </span>
+
+                <i class="fa-regular fa-circle-user fs-4"></i>
+
             </a>
 
-            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                <li>
-                    <a class="dropdown-item" href="<?= clsPath::profile(); ?>">
-                        <i class="fa-regular fa-user me-2"></i>
-                        الملف الشخصي
-                    </a>
-                </li>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0">
 
-                <li>
-                    <a class="dropdown-item" href="<?= clsPath::profile(); ?>">
-                        <i class="fa-regular fa-pen-to-square me-2"></i>
-                        تعديل البيانات
-                    </a>
-                </li>
+                <li class="px-3 py-2">
 
-                <li>
-                    <a class="dropdown-item" href="<?= clsPath::changePassword(); ?>">
-                        <i class="fa-solid fa-key me-2"></i>
-                        تغيير كلمة المرور
-                    </a>
+                    <div class="fw-bold">
+
+                        <?= clsHelper::e(
+                                clsHelper::auth('full_name')
+                        ); ?>
+
+                    </div>
+
+                    <small class="text-muted">
+
+                        <?= clsHelper::e(
+                                clsHelper::auth('email')
+                        ); ?>
+
+                    </small>
+
                 </li>
 
                 <li>
@@ -45,13 +66,62 @@
                 </li>
 
                 <li>
-                    <a class="dropdown-item text-danger" href="<?= clsPath::logout(); ?>">
+
+                    <a class="dropdown-item"
+                       href="<?= clsPath::profile(); ?>">
+
+                        <i class="fa-regular fa-user me-2"></i>
+
+                        الملف الشخصي
+
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a class="dropdown-item"
+                       href="<?= clsPath::editProfile(); ?>">
+
+                        <i class="fa-regular fa-pen-to-square me-2"></i>
+
+                        تعديل البيانات
+
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a class="dropdown-item"
+                       href="<?= clsPath::changePassword(); ?>">
+
+                        <i class="fa-solid fa-key me-2"></i>
+
+                        تغيير كلمة المرور
+
+                    </a>
+
+                </li>
+
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+
+                <li>
+
+                    <a class="dropdown-item text-danger"
+                       href="<?= clsPath::logout(); ?>">
                         <i class="fa-solid fa-right-from-bracket me-2"></i>
                         تسجيل الخروج
                     </a>
+
                 </li>
+
             </ul>
+
         </div>
+
     </div>
 
 </div>

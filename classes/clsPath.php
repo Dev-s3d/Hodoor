@@ -169,6 +169,11 @@ class clsPath
         return self::users() . "profile.php";
     }
 
+    public static function editProfile()
+    {
+        return self::users() . "edit_profile.php";
+    }
+
     public static function changePassword()
     {
         return self::users() . "change_password.php";

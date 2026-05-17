@@ -15,9 +15,9 @@ $class_code = clsHelper::post('class_code');
 $level_name = clsHelper::post('level_name');
 
 // حفظ القيم القديمة عند الخطأ
-$_SESSION['old_class_name'] = $class_name;
-$_SESSION['old_class_code'] = $class_code;
-$_SESSION['old_level_name'] = $level_name;
+$_SESSION['old']['class_name'] = $class_name;
+$_SESSION['old']['class_code'] = $class_code;
+$_SESSION['old']['level_name'] = $level_name;
 
 $errors = [];
 
@@ -90,9 +90,9 @@ $classroom->level_name = $level_name;
 */
 if ($classroom->update()) {
     unset(
-        $_SESSION['old_class_name'],
-        $_SESSION['old_class_code'],
-        $_SESSION['old_level_name']
+        $_SESSION['old']['class_name'],
+        $_SESSION['old']['class_code'],
+        $_SESSION['old']['level_name']
     );
 
     clsHelper::setMessage('success', 'تم تحديث الفصل بنجاح');

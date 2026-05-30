@@ -283,4 +283,15 @@ class clsHelper
         print_r($_SESSION);
         echo "</pre>";
     }
+
+    public static function attendanceStatus($status)
+    {
+        return match ($status) {
+            'present' => 'حاضر',
+            'absent' => 'غائب',
+            'late' => 'متأخر',
+            'excused' => 'مستأذن',
+            default => '-'
+        };
+    }
 }

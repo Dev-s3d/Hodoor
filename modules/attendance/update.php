@@ -43,7 +43,7 @@ if (!$attendance->loadById($id)) {
 $attendance->attendance_date = $attendance_date;
 $attendance->status = $status;
 $attendance->notes = $notes;
-$attendance->recorded_by = $_SESSION['user_id'];
+$attendance->recorded_by = clsHelper::auth('user_id');
 
 if ($attendance->update()) {
     clsHelper::setMessage('success', 'تم تحديث سجل الحضور بنجاح');

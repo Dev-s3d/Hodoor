@@ -21,7 +21,7 @@ $info = clsHelper::getMessage('info');
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <i class="fa-solid fa-circle-xmark me-2"></i>
 
-        <?= clsHelper::e($error); ?>
+        <?= strip_tags($error, '<br>'); ?>
 
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>

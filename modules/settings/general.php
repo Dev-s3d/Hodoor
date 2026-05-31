@@ -56,8 +56,10 @@ $default_lang = $setting->get('default_lang', 'ar');
 
                             <div class="col-md-6">
                                 <label class="form-label">اللغة الافتراضية</label>
-                                <select name="default_lang" class="form-select">
-                                    <option value="ar" <?= $default_lang === 'ar' ? 'selected' : ''; ?>>العربية</option>
+                                <select name="default_lang" class="form-select" disabled>
+                                    <option value="ar" <?= $default_lang === 'ar' ? 'selected' : ''; ?>>
+                                        العربية
+                                    </option>
                                     <option value="en" <?= $default_lang === 'en' ? 'selected' : ''; ?>>English</option>
                                 </select>
                             </div>

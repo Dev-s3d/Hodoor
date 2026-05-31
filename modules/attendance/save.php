@@ -58,7 +58,7 @@ foreach ($student_ids as $student_id) {
     $attendance->attendance_date = $attendance_date;
     $attendance->status = $status;
     $attendance->notes = $note;
-    $attendance->recorded_by = $_SESSION['user_id'];
+    $attendance->recorded_by = clsHelper::auth('user_id');
 
     $attendance->saveOrUpdate();
 }

@@ -61,9 +61,11 @@ $rows = $report->getWeeklyReport($date_from, $date_to, $classroom_id ?: null);
                             <div class="col-md-3 d-flex align-items-end gap-2">
                                 <button type="submit" class="btn btn-primary">عرض</button>
                                 <a href="<?= clsPath::reports(); ?>print_report.php?type=weekly&date_from=<?= urlencode($date_from); ?>&date_to=<?= urlencode($date_to); ?>&classroom_id=<?= urlencode($classroom_id); ?>"
-                                   class="btn btn-outline-secondary">طباعة</a>
+                                   class="btn btn-outline-secondary" target="_blank">طباعة</a>
                                 <a href="<?= clsPath::reports(); ?>export_report.php?type=weekly&date_from=<?= urlencode($date_from); ?>&date_to=<?= urlencode($date_to); ?>&classroom_id=<?= urlencode($classroom_id); ?>"
-                                   class="btn btn-outline-success">تصدير CSV</a>
+                                   class="btn btn-outline-success">
+                                    تصدير Excel
+                                </a>
                             </div>
                         </div>
                     </form>

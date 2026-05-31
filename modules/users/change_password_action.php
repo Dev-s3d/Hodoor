@@ -35,7 +35,7 @@ if (!empty($errors)) {
 
 $user = new clsUser($conn);
 
-if (!$user->loadById($_SESSION['user_id'])) {
+if (!$user->loadById(clsHelper::auth('user_id'))) {
     clsHelper::setMessage('error', 'المستخدم غير موجود');
     clsHelper::redirect(clsPath::login());
 }

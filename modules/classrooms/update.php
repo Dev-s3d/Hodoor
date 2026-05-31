@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../includes/app.php';
+
 clsHelper::requireRole(['admin', 'supervisor']);
 
 // منع الوصول المباشر
@@ -15,9 +16,9 @@ $class_code = clsHelper::post('class_code');
 $level_name = clsHelper::post('level_name');
 
 // حفظ القيم القديمة عند الخطأ
-$_SESSION['old']['class_name'] = $class_name;
-$_SESSION['old']['class_code'] = $class_code;
-$_SESSION['old']['level_name'] = $level_name;
+clsHelper::sessionSet('old', 'class_name', $class_name);
+clsHelper::sessionSet('old', 'class_code', $class_code);
+clsHelper::sessionSet('old', 'level_name', $level_name);
 
 $errors = [];
 
@@ -50,7 +51,7 @@ if (!clsValidator::required($level_name)) {
 
 if (!empty($errors)) {
     clsHelper::setMessage('error', implode('<br>', $errors));
-    clsHelper::redirect(clsPath::classrooms() . 'edit.php?id=' . $id);
+    clsHelper::redirect(clsPath::classrooms() . 'edit.php?id=' . urlencode($id));
 }
 
 $classroom = new clsClassroom($conn);
@@ -71,7 +72,7 @@ if ($classroom->classCodeExistsExceptCurrent($class_code, $id)) {
 
 if (!empty($errors)) {
     clsHelper::setMessage('error', implode('<br>', $errors));
-    clsHelper::redirect(clsPath::classrooms() . 'edit.php?id=' . $id);
+    clsHelper::redirect(clsPath::classrooms() . 'edit.php?id=' . urlencode($id));
 }
 
 /*
@@ -89,15 +90,14 @@ $classroom->level_name = $level_name;
 |--------------------------------------------------------------------------
 */
 if ($classroom->update()) {
-    unset(
-        $_SESSION['old']['class_name'],
-        $_SESSION['old']['class_code'],
-        $_SESSION['old']['level_name']
-    );
+
+    clsHelper::sessionRemove('old', 'class_name');
+    clsHelper::sessionRemove('old', 'class_code');
+    clsHelper::sessionRemove('old', 'level_name');
 
     clsHelper::setMessage('success', 'تم تحديث الفصل بنجاح');
     clsHelper::redirect(clsPath::classrooms() . 'index.php');
 }
 
 clsHelper::setMessage('error', 'حدث خطأ أثناء تحديث الفصل');
-clsHelper::redirect(clsPath::classrooms() . 'edit.php?id=' . $id);
+clsHelper::redirect(clsPath::classrooms() . 'edit.php?id=' . urlencode($id));

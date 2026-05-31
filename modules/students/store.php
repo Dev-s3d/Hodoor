@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../includes/app.php';
+
 clsHelper::requireRole(['admin', 'supervisor']);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -18,16 +19,21 @@ $parent_phone = clsHelper::post('parent_phone');
 $address = clsHelper::post('address');
 $status = clsHelper::post('status', '1');
 
-$_SESSION['old_classroom_id'] = $classroom_id;
-$_SESSION['old_student_name'] = $student_name;
-$_SESSION['old_student_number'] = $student_number;
-$_SESSION['old_gender'] = $gender;
-$_SESSION['old_birth_date'] = $birth_date;
-$_SESSION['old_phone'] = $phone;
-$_SESSION['old_parent_name'] = $parent_name;
-$_SESSION['old_parent_phone'] = $parent_phone;
-$_SESSION['old_address'] = $address;
-$_SESSION['old_status'] = $status;
+/*
+|--------------------------------------------------------------------------
+| حفظ القيم القديمة عند الخطأ
+|--------------------------------------------------------------------------
+*/
+clsHelper::sessionSet('old', 'classroom_id', $classroom_id);
+clsHelper::sessionSet('old', 'student_name', $student_name);
+clsHelper::sessionSet('old', 'student_number', $student_number);
+clsHelper::sessionSet('old', 'gender', $gender);
+clsHelper::sessionSet('old', 'birth_date', $birth_date);
+clsHelper::sessionSet('old', 'phone', $phone);
+clsHelper::sessionSet('old', 'parent_name', $parent_name);
+clsHelper::sessionSet('old', 'parent_phone', $parent_phone);
+clsHelper::sessionSet('old', 'address', $address);
+clsHelper::sessionSet('old', 'status', $status);
 
 $errors = [];
 
@@ -85,18 +91,17 @@ $student->address = $address;
 $student->status = (int)$status;
 
 if ($student->insert()) {
-    unset(
-        $_SESSION['old_classroom_id'],
-        $_SESSION['old_student_name'],
-        $_SESSION['old_student_number'],
-        $_SESSION['old_gender'],
-        $_SESSION['old_birth_date'],
-        $_SESSION['old_phone'],
-        $_SESSION['old_parent_name'],
-        $_SESSION['old_parent_phone'],
-        $_SESSION['old_address'],
-        $_SESSION['old_status']
-    );
+
+    clsHelper::sessionRemove('old', 'classroom_id');
+    clsHelper::sessionRemove('old', 'student_name');
+    clsHelper::sessionRemove('old', 'student_number');
+    clsHelper::sessionRemove('old', 'gender');
+    clsHelper::sessionRemove('old', 'birth_date');
+    clsHelper::sessionRemove('old', 'phone');
+    clsHelper::sessionRemove('old', 'parent_name');
+    clsHelper::sessionRemove('old', 'parent_phone');
+    clsHelper::sessionRemove('old', 'address');
+    clsHelper::sessionRemove('old', 'status');
 
     clsHelper::setMessage('success', 'تم إضافة الطالب بنجاح');
     clsHelper::redirect(clsPath::students() . 'index.php');

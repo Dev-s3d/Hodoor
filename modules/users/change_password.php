@@ -34,7 +34,7 @@ $title = 'تغيير كلمة المرور';
                         <div class="row g-3">
 
                             <div class="col-md-12">
-                                <label class="form-label text-danger">كلمة المرور الحالية</label>
+                                <label class="form-label text-warning">كلمة المرور الحالية</label>
                                 <input type="password" name="current_password" class="form-control">
                             </div>
 

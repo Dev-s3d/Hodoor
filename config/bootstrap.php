@@ -5,6 +5,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+
 define('BASE_PATH', dirname(__DIR__));
 
 // تحميل الإعدادات

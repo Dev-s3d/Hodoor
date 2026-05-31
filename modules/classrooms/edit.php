@@ -13,7 +13,6 @@ if (!$id || !$classroom->loadById($id)) {
     clsHelper::redirect(clsPath::classrooms() . 'index.php');
 }
 
-clsHelper::showSessions();
 ?>
 
 <?php require_once '../../includes/header.php'; ?>

@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../includes/app.php';
+
 clsHelper::requireRole(['admin', 'supervisor']);
 
 // منع الوصول المباشر
@@ -14,9 +15,9 @@ $class_code = clsHelper::post('class_code');
 $level_name = clsHelper::post('level_name');
 
 // حفظ القيم القديمة عند الخطأ
-$_SESSION['old']['class_name'] = $class_name;
-$_SESSION['old']['class_code'] = $class_code;
-$_SESSION['old']['level_name'] = $level_name;
+clsHelper::sessionSet('old', 'class_name', $class_name);
+clsHelper::sessionSet('old', 'class_code', $class_code);
+clsHelper::sessionSet('old', 'level_name', $level_name);
 
 $errors = [];
 
@@ -79,11 +80,10 @@ $classroom->level_name = $level_name;
 |--------------------------------------------------------------------------
 */
 if ($classroom->insert()) {
-    unset(
-        $_SESSION['old_class_name'],
-        $_SESSION['old_class_code'],
-        $_SESSION['old_level_name']
-    );
+
+    clsHelper::sessionRemove('old', 'class_name');
+    clsHelper::sessionRemove('old', 'class_code');
+    clsHelper::sessionRemove('old', 'level_name');
 
     clsHelper::setMessage('success', 'تم إضافة الفصل بنجاح');
     clsHelper::redirect(clsPath::classrooms() . 'index.php');

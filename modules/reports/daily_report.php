@@ -56,7 +56,9 @@ $rows = $report->getDailyReport($attendance_date, $classroom_id ?: null);
                                 <a href="<?= clsPath::reports(); ?>print_report.php?type=daily&attendance_date=<?= urlencode($attendance_date); ?>&classroom_id=<?= urlencode($classroom_id); ?>"
                                    class="btn btn-outline-secondary" target="_blank">طباعة</a>
                                 <a href="<?= clsPath::reports(); ?>export_report.php?type=daily&attendance_date=<?= urlencode($attendance_date); ?>&classroom_id=<?= urlencode($classroom_id); ?>"
-                                   class="btn btn-outline-success">تصدير CSV</a>
+                                   class="btn btn-outline-success">
+                                    تصدير Excel
+                                </a>
                             </div>
                         </div>
                     </form>

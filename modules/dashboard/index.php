@@ -10,7 +10,7 @@ $attendanceObj = new clsAttendance($conn);
 $reportObj = new clsReport($conn);
 $settingObj = new clsSetting($conn);
 
-$today = date('d-m-Y');
+$today = date('Y-m-d');
 
 $totalUsers = $userObj->countAll();
 $totalClassrooms = $classroomObj->countAll();
@@ -39,7 +39,9 @@ $latestAttendance = array_slice($todayRows, 0, 8);
 
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
                 <div>
-                    <h1 class="mb-1">مرحبًابك <?= clsHelper::e($_SESSION['full_name']); ?></h1>
+                    <h1 class="mb-1">مرحبًابك
+                        <?= clsHelper::e(clsHelper::auth('full_name')); ?>
+                    </h1>
                     <p class="text-muted mb-0">
                         هذه نظرة عامة على نظام
                         <strong>Hodoor</strong>

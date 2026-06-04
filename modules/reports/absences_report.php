@@ -60,8 +60,21 @@ $rows = $report->getAbsencesReport($date_from ?: null, $date_to ?: null, $classr
                                 </select>
                             </div>
 
-                            <div class="col-md-3 d-flex align-items-end">
+                            <div class="col-md-2 d-flex align-items-end gap-2">
                                 <button type="submit" class="btn btn-primary">عرض</button>
+
+                                <a href="print_report.php?type=absences&classroom_id=<?= urlencode($classroom_id); ?>&date_from=<?= urlencode($date_from); ?>&date_to=<?= urlencode($date_to); ?>"
+                                   target="_blank"
+                                   class="btn btn-outline-secondary">
+                                    طباعة
+                                    <i class="fa fa-print"></i>
+                                </a>
+
+                                <a href="export_report.php?type=absences&classroom_id=<?= urlencode($classroom_id); ?>&date_from=<?= urlencode($date_from); ?>&date_to=<?= urlencode($date_to); ?>"
+                                   class="btn btn-success">
+                                    تصدير Excel
+                                    <i class="fa fa-file-excel"></i>
+                                </a>
                             </div>
 
                         </div>

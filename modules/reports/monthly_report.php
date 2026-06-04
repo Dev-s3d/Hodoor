@@ -65,11 +65,13 @@ $rows = $report->getMonthlyReport($year, $month, $classroom_id ?: null);
                                 <a href="<?= clsPath::reports(); ?>print_report.php?type=monthly&year=<?= urlencode($year); ?>&month=<?= urlencode($month); ?>&classroom_id=<?= urlencode($classroom_id); ?>"
                                    class="btn btn-outline-secondary" target="_blank">
                                     طباعة
+                                    <i class="fa fa-print"></i>
                                 </a>
 
                                 <a href="<?= clsPath::reports(); ?>export_report.php?type=monthly&year=<?= urlencode($year); ?>&month=<?= urlencode($month); ?>&classroom_id=<?= urlencode($classroom_id); ?>"
                                    class="btn btn-outline-success">
                                     تصدير Excel
+                                    <i class="fa fa-file-excel"></i>
                                 </a>
                             </div>
 

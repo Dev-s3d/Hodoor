@@ -64,8 +64,23 @@ if (!empty($student_id) && clsValidator::integer($student_id)) {
                                        value="<?= clsHelper::e($date_to); ?>">
                             </div>
 
-                            <div class="col-md-2 d-flex align-items-end">
+                            <div class="col-md-2 d-flex align-items-end gap-2">
                                 <button type="submit" class="btn btn-primary">عرض</button>
+
+                                <?php if (!empty($student_id)): ?>
+                                    <a href="print_report.php?type=student&student_id=<?= urlencode($student_id); ?>&date_from=<?= urlencode($date_from); ?>&date_to=<?= urlencode($date_to); ?>"
+                                       target="_blank"
+                                       class="btn btn-outline-secondary">
+                                        طباعة
+                                        <i class="fa fa-print"></i>
+                                    </a>
+
+                                    <a href="export_report.php?type=student&student_id=<?= urlencode($student_id); ?>&date_from=<?= urlencode($date_from); ?>&date_to=<?= urlencode($date_to); ?>"
+                                       class="btn btn-success">
+                                        تصدير Excel
+                                        <i class="fa fa-file-excel"></i>
+                                    </a>
+                                <?php endif; ?>
                             </div>
 
                         </div>

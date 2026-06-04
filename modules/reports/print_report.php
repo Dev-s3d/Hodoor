@@ -11,6 +11,7 @@ $date_to = clsHelper::get('date_to');
 $year = clsHelper::get('year');
 $month = clsHelper::get('month');
 $classroom_id = clsHelper::get('classroom_id');
+$student_id = clsHelper::get('student_id');
 
 $report = new clsReport($conn);
 $setting = new clsSetting($conn);
@@ -32,6 +33,26 @@ switch ($type) {
     case 'monthly':
         $pageTitle = 'تقرير الحضور الشهري';
         $rows = $report->getMonthlyReport($year ?: date('Y'), $month ?: date('m'), $classroom_id ?: null);
+        break;
+
+    case 'classroom':
+        $pageTitle = 'تقرير الفصل';
+        $rows = $report->getClassroomReport($classroom_id, $date_from ?: null, $date_to ?: null);
+        break;
+
+    case 'student':
+        $pageTitle = 'تقرير الطالب';
+        $rows = $report->getStudentReport($student_id, $date_from ?: null, $date_to ?: null);
+        break;
+
+    case 'absences':
+        $pageTitle = 'تقرير الغياب';
+        $rows = $report->getAbsencesReport($date_from ?: null, $date_to ?: null, $classroom_id ?: null);
+        break;
+
+    case 'late':
+        $pageTitle = 'تقرير التأخير';
+        $rows = $report->getLateReport($date_from ?: null, $date_to ?: null, $classroom_id ?: null);
         break;
 }
 

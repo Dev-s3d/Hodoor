@@ -1,9 +1,9 @@
 <?php
 
 require_once '../../includes/app.php';
+
 clsHelper::requireRole(['admin']);
 
-// منع الوصول المباشر
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     clsHelper::redirect(clsPath::users() . 'index.php');
 }
@@ -17,12 +17,17 @@ $status = clsHelper::post('status', '1');
 $password = clsHelper::post('password');
 $confirm_password = clsHelper::post('confirm_password');
 
-// حفظ القيم القديمة للرجوع عند الخطأ
-$_SESSION['old_full_name'] = $full_name;
-$_SESSION['old_username'] = $username;
-$_SESSION['old_email'] = $email;
-$_SESSION['old_role'] = $role;
-$_SESSION['old_status'] = $status;
+$oldFields = [
+    'userEditFullName' => $full_name,
+    'userEditUsername' => $username,
+    'userEditEmail' => $email,
+    'userEditRole' => $role,
+    'userEditStatus' => $status,
+];
+
+foreach ($oldFields as $key => $value) {
+    clsHelper::sessionSet('old', $key, $value);
+}
 
 $errors = [];
 
@@ -58,7 +63,6 @@ if (!clsValidator::in($status, ['0', '1', 0, 1])) {
     $errors[] = 'الحالة المحددة غير صحيحة';
 }
 
-// إذا كتب كلمة مرور جديدة، نتحقق منها
 if (!empty($password) || !empty($confirm_password)) {
     if (!clsValidator::password($password)) {
         $errors[] = 'كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل';
@@ -71,7 +75,7 @@ if (!empty($password) || !empty($confirm_password)) {
 
 if (!empty($errors)) {
     clsHelper::setMessage('error', implode('<br>', $errors));
-    clsHelper::redirect(clsPath::users() . 'edit.php?id=' . $id);
+    clsHelper::redirect(clsPath::users() . 'edit.php' . urlencode($id));
 }
 
 $user = new clsUser($conn);
@@ -81,7 +85,9 @@ if (!$user->loadById($id)) {
     clsHelper::redirect(clsPath::users() . 'index.php');
 }
 
-// تحقق التكرار مع استثناء المستخدم الحالي
+$oldFullName = $user->full_name;
+$oldUsername = $user->username;
+
 if ($user->usernameExistsExceptCurrent($username, $id)) {
     $errors[] = 'اسم المستخدم مستخدم من قبل مستخدم آخر';
 }
@@ -92,38 +98,52 @@ if ($user->emailExistsExceptCurrent($email, $id)) {
 
 if (!empty($errors)) {
     clsHelper::setMessage('error', implode('<br>', $errors));
-    clsHelper::redirect(clsPath::users() . 'edit.php?id=' . $id);
+    clsHelper::redirect(clsPath::users() . 'edit.php' . urlencode($id));
 }
 
-// تحديث بيانات الكائن
 $user->full_name = $full_name;
 $user->username = $username;
 $user->email = $email;
 $user->role = $role;
 $user->status = (int)$status;
 
-// حفظ التعديلات
 if (!$user->update()) {
     clsHelper::setMessage('error', 'حدث خطأ أثناء تحديث بيانات المستخدم');
-    clsHelper::redirect(clsPath::users() . 'edit.php?id=' . $id);
+    clsHelper::redirect(clsPath::users() . 'edit.php' . urlencode($id));
 }
 
-// تحديث كلمة المرور إذا تم إدخالها
+$passwordChanged = false;
+
 if (!empty($password)) {
     if (!$user->updatePassword($password)) {
         clsHelper::setMessage('error', 'تم تحديث البيانات لكن حدث خطأ أثناء تحديث كلمة المرور');
-        clsHelper::redirect(clsPath::users() . 'edit.php?id=' . $id);
+        clsHelper::redirect(clsPath::users() . 'edit.php' . urlencode($id));
     }
+
+    $passwordChanged = true;
 }
 
-// تنظيف old input بعد النجاح
-unset(
-    $_SESSION['old_full_name'],
-    $_SESSION['old_username'],
-    $_SESSION['old_email'],
-    $_SESSION['old_role'],
-    $_SESSION['old_status']
-);
+foreach (array_keys($oldFields) as $key) {
+    clsHelper::sessionRemove('old', $key);
+}
 
 clsHelper::setMessage('success', 'تم تحديث المستخدم بنجاح');
+
+$description = 'تم تعديل بيانات المستخدم: '
+    . $oldFullName
+    . ' (' . $oldUsername . ')'
+    . ' إلى: '
+    . $user->full_name
+    . ' (' . $user->username . ')';
+
+if ($passwordChanged) {
+    $description .= ' مع تغيير كلمة المرور';
+}
+
+clsLog::add(
+    $conn,
+    'تعديل مستخدم',
+    $description
+);
+
 clsHelper::redirect(clsPath::users() . 'index.php');

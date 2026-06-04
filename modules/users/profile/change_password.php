@@ -1,18 +1,18 @@
 <?php
-require_once '../../includes/app.php';
+require_once '../../../includes/app.php';
 $title = 'تغيير كلمة المرور';
 ?>
 
-<?php require_once '../../includes/header.php'; ?>
-<?php require_once '../../includes/sidebar.php'; ?>
+<?php require_once '../../../includes/header.php'; ?>
+<?php require_once '../../../includes/sidebar.php'; ?>
 
     <div class="main-content w-100">
 
-        <?php require_once '../../includes/navbar.php'; ?>
+        <?php require_once '../../../includes/navbar.php'; ?>
 
         <div class="content p-4">
 
-            <?php require_once '../../includes/alerts.php'; ?>
+            <?php require_once '../../../includes/alerts.php'; ?>
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
@@ -20,10 +20,19 @@ $title = 'تغيير كلمة المرور';
                     <p class="text-muted mb-0">يمكنك تغيير كلمة مرور حسابك من هنا</p>
                 </div>
 
-                <a href="<?= clsPath::profile(); ?>" class="btn btn-outline-secondary">
-                    <i class="fa fa-arrow-right me-1"></i>
-                    الرجوع
-                </a>
+                <?php if (clsHelper::hasRole(['admin', 'supervisor'])): ?>
+                    <a href="<?= clsPath::dashboardIndex(); ?>" class="btn btn-outline-secondary">
+                        <i class="fa fa-arrow-right me-1"></i>
+                        الرجوع
+                    </a>
+                <?php endif; ?>
+
+                <?php if (clsHelper::hasRole(['teacher'])): ?>
+                    <a href="<?= clsPath::attendance() . 'index.php'; ?>" class="btn btn-outline-secondary">
+                        <i class="fa fa-arrow-right me-1"></i>
+                        الرجوع
+                    </a>
+                <?php endif; ?>
             </div>
 
             <div class="card shadow-sm border-0">
@@ -55,10 +64,18 @@ $title = 'تغيير كلمة المرور';
                                 <i class="fa fa-save me-1"></i>
                                 تحديث كلمة المرور
                             </button>
+                            
+                            <?php if (clsHelper::hasRole(['admin', 'supervisor'])): ?>
+                                <a href="<?= clsPath::dashboardIndex(); ?>" class="btn btn-light border">
+                                    إلغاء
+                                </a>
+                            <?php endif; ?>
 
-                            <a href="<?= clsPath::profile(); ?>" class="btn btn-light border">
-                                إلغاء
-                            </a>
+                            <?php if (clsHelper::hasRole(['teacher'])): ?>
+                                <a href="<?= clsPath::attendance() . 'index.php'; ?>" class="btn btn-light border">
+                                    إلغاء
+                                </a>
+                            <?php endif; ?>
                         </div>
 
                     </form>
@@ -70,4 +87,4 @@ $title = 'تغيير كلمة المرور';
 
     </div>
 
-<?php require_once '../../includes/footer.php'; ?>
+<?php require_once '../../../includes/footer.php'; ?>

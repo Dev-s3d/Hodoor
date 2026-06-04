@@ -17,6 +17,12 @@ $settingObj = new clsSetting($conn);
 $activeStatuses = $settingObj->getActiveAttendanceStatuses();
 $allowedStatuses = array_keys($activeStatuses);
 
+$classroomObj = new clsClassroom($conn);
+if (!$classroomObj->loadById($classroom_id)) {
+    clsHelper::setMessage('error', 'الفصل غير موجود');
+    clsHelper::redirect(clsPath::attendance() . 'index.php');
+}
+
 $errors = [];
 
 if (!clsValidator::required($classroom_id) || !clsValidator::integer($classroom_id)) {
@@ -64,7 +70,11 @@ foreach ($student_ids as $student_id) {
 }
 
 clsHelper::setMessage('success', 'تم حفظ الحضور بنجاح');
-
+clsLog::add(
+    $conn,
+    'تحضير جديد',
+    'تم تسجيل حضور الفصل: ' . $classroomObj->class_name . ' - التاريخ: ' . $attendance_date . ' - عدد الطلاب: ' . count($student_ids)
+);
 clsHelper::redirect(
     clsPath::attendance() . 'daily.php?attendance_date=' . urlencode($attendance_date) . '&classroom_id=' . urlencode($classroom_id)
 );

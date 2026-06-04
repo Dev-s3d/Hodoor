@@ -4,29 +4,27 @@ require_once '../../includes/app.php';
 
 clsHelper::requireRole(['admin', 'supervisor']);
 
-// منع الوصول المباشر
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     clsHelper::redirect(clsPath::classrooms() . 'index.php');
 }
 
-// قراءة المدخلات
 $id = clsHelper::post('id');
 $class_name = clsHelper::post('class_name');
 $class_code = clsHelper::post('class_code');
 $level_name = clsHelper::post('level_name');
 
-// حفظ القيم القديمة عند الخطأ
-clsHelper::sessionSet('old', 'class_name', $class_name);
-clsHelper::sessionSet('old', 'class_code', $class_code);
-clsHelper::sessionSet('old', 'level_name', $level_name);
+$oldFields = [
+    'class_name' => $class_name,
+    'class_code' => $class_code,
+    'level_name' => $level_name,
+];
+
+foreach ($oldFields as $key => $value) {
+    clsHelper::sessionSet('old', $key, $value);
+}
 
 $errors = [];
 
-/*
-|--------------------------------------------------------------------------
-| التحقق من المدخلات
-|--------------------------------------------------------------------------
-*/
 if (!clsValidator::required($id) || !clsValidator::integer($id)) {
     $errors[] = 'رقم الفصل غير صحيح';
 }
@@ -61,42 +59,33 @@ if (!$classroom->loadById($id)) {
     clsHelper::redirect(clsPath::classrooms() . 'index.php');
 }
 
-/*
-|--------------------------------------------------------------------------
-| التحقق من عدم تكرار رمز الفصل
-|--------------------------------------------------------------------------
-*/
-if ($classroom->classCodeExistsExceptCurrent($class_code, $id)) {
-    $errors[] = 'رمز الفصل مستخدم من قبل فصل آخر';
-}
+$oldClassName = $classroom->class_name;
+$oldClassCode = $classroom->class_code;
 
-if (!empty($errors)) {
-    clsHelper::setMessage('error', implode('<br>', $errors));
+if ($classroom->classCodeExistsExceptCurrent($class_code, $id)) {
+    clsHelper::setMessage('error', 'رمز الفصل مستخدم من قبل فصل آخر');
     clsHelper::redirect(clsPath::classrooms() . 'edit.php?id=' . urlencode($id));
 }
 
-/*
-|--------------------------------------------------------------------------
-| تحديث بيانات الكائن
-|--------------------------------------------------------------------------
-*/
 $classroom->class_name = $class_name;
 $classroom->class_code = $class_code;
 $classroom->level_name = $level_name;
 
-/*
-|--------------------------------------------------------------------------
-| حفظ التعديلات
-|--------------------------------------------------------------------------
-*/
 if ($classroom->update()) {
 
-    clsHelper::sessionRemove('old', 'class_name');
-    clsHelper::sessionRemove('old', 'class_code');
-    clsHelper::sessionRemove('old', 'level_name');
+    foreach (array_keys($oldFields) as $key) {
+        clsHelper::sessionRemove('old', $key);
+    }
 
     clsHelper::setMessage('success', 'تم تحديث الفصل بنجاح');
-    clsHelper::redirect(clsPath::classrooms() . 'index.php');
+
+    clsLog::add(
+        $conn,
+        'تعديل فصل',
+        'تم تعديل الفصل: ' . $oldClassName . ' (' . $oldClassCode . ') إلى: ' . $classroom->class_name . ' (' . $classroom->class_code . ')'
+    );
+
+    clsHelper::redirect(clsPath::classrooms() . 'view.php?id=' . urlencode($classroom->id));
 }
 
 clsHelper::setMessage('error', 'حدث خطأ أثناء تحديث الفصل');

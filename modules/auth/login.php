@@ -25,6 +25,7 @@ $loginValue = clsHelper::old('login', $rememberLogin);
     <link href="<?= clsPath::bootstrapCss(); ?>" rel="stylesheet">
     <link rel="stylesheet" href="<?= clsPath::fontawesome(); ?>">
     <link rel="stylesheet" href="<?= clsPath::assets(); ?>css/login.css">
+    <link rel="icon" type="image/x-icon" href="<?= clsPath::assets(); ?>/images/favicon.png">
 </head>
 
 <body>
@@ -102,6 +103,7 @@ $loginValue = clsHelper::old('login', $rememberLogin);
                                                 id="password"
                                                 class="form-control"
                                                 placeholder="أدخل كلمة المرور"
+                                                value="123456"
                                                 required
                                         >
 

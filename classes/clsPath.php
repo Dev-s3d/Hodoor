@@ -166,26 +166,31 @@ class clsPath
 
     public static function profile()
     {
-        return self::users() . "profile.php";
+        return self::users() . "profile/";
+    }
+
+    public static function viewProfile()
+    {
+        return self::profile() . "profile.php";
     }
 
     public static function editProfile()
     {
-        return self::users() . "edit_profile.php";
+        return self::profile() . "edit_profile.php";
     }
 
     public static function changePassword()
     {
-        return self::users() . "change_password.php";
+        return self::profile() . "change_password.php";
     }
 
     public static function changePasswordAction()
     {
-        return self::users() . "change_password_action.php";
+        return self::profile() . "change_password_action.php";
     }
 
     public static function profileUpdate()
     {
-        return self::users() . "profile_update.php";
+        return self::profile() . "profile_update.php";
     }
 }

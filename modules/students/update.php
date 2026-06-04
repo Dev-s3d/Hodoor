@@ -1,5 +1,4 @@
 <?php
-
 require_once '../../includes/app.php';
 
 clsHelper::requireRole(['admin', 'supervisor']);
@@ -20,21 +19,22 @@ $parent_phone = clsHelper::post('parent_phone');
 $address = clsHelper::post('address');
 $status = clsHelper::post('status', '1');
 
-/*
-|--------------------------------------------------------------------------
-| حفظ القيم القديمة عند الخطأ
-|--------------------------------------------------------------------------
-*/
-clsHelper::sessionSet('old', 'classroom_id', $classroom_id);
-clsHelper::sessionSet('old', 'student_name', $student_name);
-clsHelper::sessionSet('old', 'student_number', $student_number);
-clsHelper::sessionSet('old', 'gender', $gender);
-clsHelper::sessionSet('old', 'birth_date', $birth_date);
-clsHelper::sessionSet('old', 'phone', $phone);
-clsHelper::sessionSet('old', 'parent_name', $parent_name);
-clsHelper::sessionSet('old', 'parent_phone', $parent_phone);
-clsHelper::sessionSet('old', 'address', $address);
-clsHelper::sessionSet('old', 'status', $status);
+$oldFields = [
+    'classroom_id' => $classroom_id,
+    'student_name' => $student_name,
+    'student_number' => $student_number,
+    'gender' => $gender,
+    'birth_date' => $birth_date,
+    'phone' => $phone,
+    'parent_name' => $parent_name,
+    'parent_phone' => $parent_phone,
+    'address' => $address,
+    'status' => $status,
+];
+
+foreach ($oldFields as $key => $value) {
+    clsHelper::sessionSet('old', $key, $value);
+}
 
 $errors = [];
 
@@ -80,12 +80,10 @@ if (!$student->loadById($id)) {
     clsHelper::redirect(clsPath::students() . 'index.php');
 }
 
-if ($student->studentNumberExistsExceptCurrent($student_number, $id)) {
-    $errors[] = 'رقم الطالب مستخدم من قبل طالب آخر';
-}
+$oldStudentName = $student->student_name;
 
-if (!empty($errors)) {
-    clsHelper::setMessage('error', implode('<br>', $errors));
+if ($student->studentNumberExistsExceptCurrent($student_number, $id)) {
+    clsHelper::setMessage('error', 'رقم الطالب مستخدم من قبل طالب آخر');
     clsHelper::redirect(clsPath::students() . 'edit.php?id=' . urlencode($id));
 }
 
@@ -102,19 +100,19 @@ $student->status = (int)$status;
 
 if ($student->update()) {
 
-    clsHelper::sessionRemove('old', 'classroom_id');
-    clsHelper::sessionRemove('old', 'student_name');
-    clsHelper::sessionRemove('old', 'student_number');
-    clsHelper::sessionRemove('old', 'gender');
-    clsHelper::sessionRemove('old', 'birth_date');
-    clsHelper::sessionRemove('old', 'phone');
-    clsHelper::sessionRemove('old', 'parent_name');
-    clsHelper::sessionRemove('old', 'parent_phone');
-    clsHelper::sessionRemove('old', 'address');
-    clsHelper::sessionRemove('old', 'status');
+    foreach (array_keys($oldFields) as $key) {
+        clsHelper::sessionRemove('old', $key);
+    }
 
     clsHelper::setMessage('success', 'تم تحديث الطالب بنجاح');
-    clsHelper::redirect(clsPath::students() . 'index.php');
+
+    clsLog::add(
+        $conn,
+        'تعديل طالب',
+        'تم تعديل بيانات الطالب: ' . $oldStudentName . ' إلى: ' . $student->student_name
+    );
+    
+    clsHelper::redirect(clsPath::students() . 'view.php?id=' . urlencode($student->id));
 }
 
 clsHelper::setMessage('error', 'حدث خطأ أثناء تحديث الطالب');

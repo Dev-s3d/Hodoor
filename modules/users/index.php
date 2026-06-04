@@ -13,7 +13,11 @@ $totalSupervisors = $userObj->countByRole('supervisor');
 $active = $userObj->countByStatus();
 $notActive = $userObj->countByStatus("notActive");
 
-$users = $userObj->getAllUsers()
+$search = $_GET['search'] ?? '';
+$role = $_GET['role'] ?? '';
+$status = $_GET['status'] ?? '';
+
+$users = $userObj->getAllUsers($search, $role, $status);
 ?>
 
 <?php require_once '../../includes/header.php'; ?>
@@ -114,7 +118,56 @@ $users = $userObj->getAllUsers()
                 </div>
 
             </div>
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
 
+                    <form method="GET" class="row g-3 align-items-end">
+
+                        <div class="col-md-4">
+                            <label class="form-label">بحث</label>
+                            <input type="text"
+                                   name="search"
+                                   class="form-control"
+                                   placeholder="الاسم، اسم المستخدم، البريد"
+                                   value="<?= clsHelper::e($search); ?>">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">الدور</label>
+                            <select name="role" class="form-select">
+                                <option value="">كل الأدوار</option>
+                                <option value="admin" <?= $role === 'admin' ? 'selected' : ''; ?>>مدير</option>
+                                <option value="supervisor" <?= $role === 'supervisor' ? 'selected' : ''; ?>>مشرف
+                                </option>
+                                <option value="teacher" <?= $role === 'teacher' ? 'selected' : ''; ?>>معلم</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">الحالة</label>
+                            <select name="status" class="form-select">
+                                <option value="">كل الحالات</option>
+                                <option value="1" <?= $status === '1' ? 'selected' : ''; ?>>مفعل</option>
+                                <option value="0" <?= $status === '0' ? 'selected' : ''; ?>>غير مفعل</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary w-100" title="بحث">
+                                <i class="fa fa-search"></i>
+                            </button>
+
+                            <a href="<?= clsPath::users(); ?>index.php"
+                               class="btn btn-outline-secondary"
+                               title="إعادة تعيين">
+                                <i class="fa fa-rotate-right"></i>
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
             <div class="card shadow-sm border-0 ">
                 <div class="card-body">
                     <div class="table-responsive text-center">
@@ -166,13 +219,28 @@ $users = $userObj->getAllUsers()
                                             <?php endif; ?>
                                         </td>
                                         <td><?= clsHelper::e(clsHelper::dateOnly($user['created_at'])); ?></td>
-                                        <td class="d-flex gap-1 flex-wrap justify-content-center">
-                                            <a href="<?= clsPath::users(); ?>view.php?id=<?= $user['id']; ?>"
-                                               class="btn btn-sm btn-secondary">عرض</a>
-                                            <a href="<?= clsPath::users(); ?>edit.php?id=<?= $user['id']; ?>"
-                                               class="btn btn-sm btn-primary">تعديل</a>
-                                            <a href="<?= clsPath::users(); ?>delete.php?id=<?= $user['id']; ?>"
-                                               class="btn btn-sm btn-danger">حذف</a>
+                                        <td>
+                                            <div class="d-flex gap-1 flex-wrap justify-content-center">
+                                                <a href="<?= clsPath::users(); ?>view.php?id=<?= $user['id']; ?>"
+                                                   class="btn btn-sm btn-outline-secondary"
+                                                   title="عرض">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+
+                                                <a href="<?= clsPath::users(); ?>edit.php?id=<?= $user['id']; ?>"
+                                                   class="btn btn-sm btn-outline-primary"
+                                                   title="تعديل">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+
+                                                <?php if ((int)$user['id'] !== (int)clsHelper::auth('user_id')): ?>
+                                                    <a href="<?= clsPath::users(); ?>delete.php?id=<?= $user['id']; ?>"
+                                                       class="btn btn-sm btn-outline-danger"
+                                                       title="حذف">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
                                         </td>
                                     </tr>
                                     <?php $counter++; ?>

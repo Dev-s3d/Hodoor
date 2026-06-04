@@ -1,5 +1,5 @@
 <?php
-require_once '../../includes/app.php';
+require_once '../../../includes/app.php';
 $title = 'الملف الشخصي';
 
 $user = new clsUser($conn);
@@ -10,12 +10,12 @@ if (!$user->loadById(clsHelper::auth('user_id'))) {
 }
 ?>
 
-<?php require_once '../../includes/header.php'; ?>
-<?php require_once '../../includes/sidebar.php'; ?>
+<?php require_once '../../../includes/header.php'; ?>
+<?php require_once '../../../includes/sidebar.php'; ?>
 
     <div class="main-content w-100">
 
-        <?php require_once '../../includes/navbar.php'; ?>
+        <?php require_once '../../../includes/navbar.php'; ?>
 
         <div class="content p-4">
 
@@ -101,12 +101,21 @@ if (!$user->loadById(clsHelper::auth('user_id'))) {
 
                     </div>
 
-                    <div class="mt-4 d-flex gap-2">
-                        <a href="<?= clsPath::dashboardIndex(); ?>" class="btn btn-light border">
-                            رجوع
-                        </a>
-                    </div>
+                    <?php if (clsHelper::hasRole(['admin', 'supervisor'])): ?>
+                        <div class="mt-4 d-flex gap-2">
+                            <a href="<?= clsPath::dashboardIndex(); ?>" class="btn btn-light border">
+                                رجوع
+                            </a>
+                        </div>
+                    <?php endif; ?>
 
+                    <?php if (clsHelper::hasRole(['teacher'])): ?>
+                        <div class="mt-4 d-flex gap-2">
+                            <a href="<?= clsPath::attendance() . 'index.php'; ?>" class="btn btn-light border">
+                                رجوع
+                            </a>
+                        </div>
+                    <?php endif; ?>
 
                 </div>
             </div>
@@ -115,4 +124,4 @@ if (!$user->loadById(clsHelper::auth('user_id'))) {
 
     </div>
 
-<?php require_once '../../includes/footer.php'; ?>
+<?php require_once '../../../includes/footer.php'; ?>

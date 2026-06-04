@@ -1,13 +1,13 @@
 <?php
 
 require_once '../../includes/app.php';
+
 clsHelper::requireRole(['admin']);
-// منع الوصول المباشر
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     clsHelper::redirect(clsPath::users() . 'create.php');
 }
 
-// قراءة المدخلات
 $full_name = clsHelper::post('full_name');
 $username = clsHelper::post('username');
 $email = clsHelper::post('email');
@@ -16,16 +16,20 @@ $password = clsHelper::post('password');
 $confirm_password = clsHelper::post('confirm_password');
 $status = clsHelper::post('status', '1');
 
-// حفظ القيم القديمة عند الخطأ
-$_SESSION['old']['userAddNewFullName'] = $full_name;
-$_SESSION['old']['userAddNewUsername'] = $username;
-$_SESSION['old']['userAddNewEmail'] = $email;
-$_SESSION['old']['userAddNewRole'] = $role;
-$_SESSION['old']['userAddNewStatus'] = $status;
+$oldFields = [
+    'userAddNewFullName' => $full_name,
+    'userAddNewUsername' => $username,
+    'userAddNewEmail' => $email,
+    'userAddNewRole' => $role,
+    'userAddNewStatus' => $status,
+];
+
+foreach ($oldFields as $key => $value) {
+    clsHelper::sessionSet('old', $key, $value);
+}
 
 $errors = [];
 
-// تحقق المدخلات
 if (!clsValidator::required($full_name)) {
     $errors[] = 'الاسم الكامل مطلوب';
 } elseif (!clsValidator::minLength($full_name, 3)) {
@@ -73,7 +77,6 @@ if (!empty($errors)) {
 
 $user = new clsUser($conn);
 
-// تحقق التكرار
 if ($user->usernameExists($username)) {
     $errors[] = 'اسم المستخدم مستخدم مسبقًا';
 }
@@ -87,7 +90,6 @@ if (!empty($errors)) {
     clsHelper::redirect(clsPath::users() . 'create.php');
 }
 
-// تجهيز الكائن
 $user->full_name = $full_name;
 $user->username = $username;
 $user->email = $email;
@@ -95,17 +97,20 @@ $user->password = clsHelper::hashPassword($password);
 $user->role = $role;
 $user->status = (int)$status;
 
-// حفظ
 if ($user->insert()) {
-    unset(
-        $_SESSION['old_full_name'],
-        $_SESSION['old_username'],
-        $_SESSION['old_email'],
-        $_SESSION['old_role'],
-        $_SESSION['old_status']
-    );
+
+    foreach (array_keys($oldFields) as $key) {
+        clsHelper::sessionRemove('old', $key);
+    }
 
     clsHelper::setMessage('success', 'تم إضافة المستخدم بنجاح');
+
+    clsLog::add(
+        $conn,
+        'إضافة مستخدم',
+        'تمت إضافة المستخدم: ' . $user->full_name
+    );
+
     clsHelper::redirect(clsPath::users() . 'index.php');
 }
 

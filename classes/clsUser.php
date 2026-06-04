@@ -410,7 +410,7 @@ class clsUser
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
     /*
     |--------------------------------------------------------------------------
     | countAll
@@ -530,10 +530,43 @@ class clsUser
     |--------------------------------------------------------------------------
     | جلب جميع المستخدمين
     */
-    public function getAllUsers()
+    public function getAllUsers($search = '', $role = '', $status = '')
     {
-        $query = "SELECT * FROM users ORDER BY id ASC";
-        $stmt = $this->conn->prepare($query);
+        $sql = "SELECT * FROM users WHERE 1=1";
+        $params = [];
+
+        if (!empty($search)) {
+            $sql .= " AND (
+            full_name LIKE :search
+            OR username LIKE :search
+            OR email LIKE :search
+        )";
+
+            $params[':search'] = '%' . $search . '%';
+        }
+
+        if (!empty($role)) {
+            $sql .= " AND role = :role";
+            $params[':role'] = $role;
+        }
+
+        if ($status !== '') {
+            $sql .= " AND status = :status";
+            $params[':status'] = (int)$status;
+        }
+
+        $sql .= " ORDER BY id DESC";
+
+        $stmt = $this->conn->prepare($sql);
+
+        foreach ($params as $key => $value) {
+            if ($key === ':status') {
+                $stmt->bindValue($key, $value, PDO::PARAM_INT);
+            } else {
+                $stmt->bindValue($key, $value);
+            }
+        }
+
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

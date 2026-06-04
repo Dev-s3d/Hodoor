@@ -47,6 +47,7 @@ $totalExcused = $attendanceObj->countByStatus($attendance_date, 'excused', $clas
                             <div class="col-md-4">
                                 <label class="form-label">التاريخ</label>
                                 <input type="date" name="attendance_date" class="form-control"
+                                       disabled
                                        value="<?= clsHelper::e($attendance_date); ?>">
                             </div>
 

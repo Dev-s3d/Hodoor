@@ -203,15 +203,49 @@ class clsStudent
 |--------------------------------------------------------------------------
 | جلب الطلاب على دفعات بدل جلب الكل
 */
-    public function getPaginated($limit, $offset)
+    public function getPaginated($limit, $offset, $search = '', $gender = '', $status = '')
     {
-        $query = "SELECT students.*, classrooms.class_name
-              FROM students
-              LEFT JOIN classrooms ON classrooms.id = students.classroom_id
-              ORDER BY students.id DESC
-              LIMIT :limit OFFSET :offset";
+        $sql = "SELECT students.*, classrooms.class_name
+            FROM students
+            LEFT JOIN classrooms ON students.classroom_id = classrooms.id
+            WHERE 1=1";
 
-        $stmt = $this->conn->prepare($query);
+        $params = [];
+
+        if (!empty($search)) {
+            $sql .= " AND (
+            students.student_name LIKE :search
+            OR students.student_number LIKE :search
+            OR students.phone LIKE :search
+            OR students.parent_name LIKE :search
+            OR students.parent_phone LIKE :search
+            OR classrooms.class_name LIKE :search
+        )";
+
+            $params[':search'] = '%' . $search . '%';
+        }
+
+        if (!empty($gender)) {
+            $sql .= " AND students.gender = :gender";
+            $params[':gender'] = $gender;
+        }
+
+        if ($status !== '') {
+            $sql .= " AND students.status = :status";
+            $params[':status'] = (int)$status;
+        }
+
+        $sql .= " ORDER BY students.id DESC LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->conn->prepare($sql);
+
+        foreach ($params as $key => $value) {
+            if ($key === ':status') {
+                $stmt->bindValue($key, $value, PDO::PARAM_INT);
+            } else {
+                $stmt->bindValue($key, $value);
+            }
+        }
 
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
@@ -219,6 +253,53 @@ class clsStudent
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countFiltered($search = '', $gender = '', $status = '')
+    {
+        $sql = "SELECT COUNT(*)
+            FROM students
+            LEFT JOIN classrooms ON students.classroom_id = classrooms.id
+            WHERE 1=1";
+
+        $params = [];
+
+        if (!empty($search)) {
+            $sql .= " AND (
+            students.student_name LIKE :search
+            OR students.student_number LIKE :search
+            OR students.phone LIKE :search
+            OR students.parent_name LIKE :search
+            OR students.parent_phone LIKE :search
+            OR classrooms.class_name LIKE :search
+        )";
+
+            $params[':search'] = '%' . $search . '%';
+        }
+
+        if (!empty($gender)) {
+            $sql .= " AND students.gender = :gender";
+            $params[':gender'] = $gender;
+        }
+
+        if ($status !== '') {
+            $sql .= " AND students.status = :status";
+            $params[':status'] = (int)$status;
+        }
+
+        $stmt = $this->conn->prepare($sql);
+
+        foreach ($params as $key => $value) {
+            if ($key === ':status') {
+                $stmt->bindValue($key, $value, PDO::PARAM_INT);
+            } else {
+                $stmt->bindValue($key, $value);
+            }
+        }
+
+        $stmt->execute();
+
+        return (int)$stmt->fetchColumn();
     }
 
     public function countByGender($Ge = "male")
@@ -257,5 +338,24 @@ class clsStudent
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return (int)($row['total'] ?? 0);
+    }
+
+    /*
+|--------------------------------------------------------------------------
+| getClassroom
+|--------------------------------------------------------------------------
+| جلب الفصل الخاص بالطالب
+*/
+    public function getClassroom()
+    {
+        if (empty($this->classroom_id)) {
+            return null;
+        }
+
+        $classroom = new clsClassroom($this->conn);
+
+        return $classroom->loadById($this->classroom_id)
+            ? $classroom
+            : null;
     }
 }

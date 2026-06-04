@@ -33,6 +33,11 @@ if (!$user->isActive()) {
 $user->createSession();
 
 clsHelper::sessionRemove('old', 'login');
+clsLog::add(
+    $conn,
+    'تسجيل دخول',
+    'قام المستخدم بتسجيل الدخول إلى النظام'
+);
 
 if ($remember) {
     setcookie('remember_user', $user->username, time() + (86400 * 30), '/');

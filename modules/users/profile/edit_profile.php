@@ -1,5 +1,5 @@
 <?php
-require_once '../../includes/app.php';
+require_once '../../../includes/app.php';
 $title = 'الملف الشخصي';
 
 $user = new clsUser($conn);
@@ -11,16 +11,16 @@ if (!$user->loadById(clsHelper::auth('user_id'))) {
 
 ?>
 
-<?php require_once '../../includes/header.php'; ?>
-<?php require_once '../../includes/sidebar.php'; ?>
+<?php require_once '../../../includes/header.php'; ?>
+<?php require_once '../../../includes/sidebar.php'; ?>
 
     <div class="main-content w-100">
 
-        <?php require_once '../../includes/navbar.php'; ?>
+        <?php require_once '../../../includes/navbar.php'; ?>
 
         <div class="content p-4">
 
-            <?php require_once '../../includes/alerts.php'; ?>
+            <?php require_once '../../../includes/alerts.php'; ?>
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
@@ -105,9 +105,17 @@ if (!$user->loadById(clsHelper::auth('user_id'))) {
                                 حفظ التعديلات
                             </button>
 
-                            <a href="<?= clsPath::dashboardIndex(); ?>" class="btn btn-light border">
-                                رجوع
-                            </a>
+                            <?php if (clsHelper::hasRole(['admin', 'supervisor'])): ?>
+                                <a href="<?= clsPath::dashboardIndex(); ?>" class="btn btn-light border">
+                                    رجوع
+                                </a>
+                            <?php endif; ?>
+
+                            <?php if (clsHelper::hasRole(['teacher'])): ?>
+                                <a href="<?= clsPath::attendance() . 'index.php'; ?>" class="btn btn-light border">
+                                    رجوع
+                                </a>
+                            <?php endif; ?>
                         </div>
 
                     </form>
@@ -119,4 +127,4 @@ if (!$user->loadById(clsHelper::auth('user_id'))) {
 
     </div>
 
-<?php require_once '../../includes/footer.php'; ?>
+<?php require_once '../../../includes/footer.php'; ?>

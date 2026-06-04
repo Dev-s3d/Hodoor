@@ -234,12 +234,33 @@ class clsClassroom
     |--------------------------------------------------------------------------
     | getAll
     |--------------------------------------------------------------------------
-    | جلب جميع الفصول
+    | جلب جميع الفصول مع البحث
     */
-    public function getAll()
+    public function getAll($search = '')
     {
-        $query = "SELECT * FROM classrooms ORDER BY id ASC";
+        $query = "SELECT * FROM classrooms WHERE 1=1";
+
+        $params = [];
+
+        if (!empty($search)) {
+
+            $query .= " AND (
+            class_name LIKE :search
+            OR class_code LIKE :search
+            OR level_name LIKE :search
+        )";
+
+            $params[':search'] = '%' . $search . '%';
+        }
+
+        $query .= " ORDER BY id ASC";
+
         $stmt = $this->conn->prepare($query);
+
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -300,4 +321,48 @@ class clsClassroom
             'created_at' => $this->created_at,
         ];
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | studentsCount
+    |--------------------------------------------------------------------------
+    | عدد الطلاب داخل الفصل الحالي
+    */
+    public function studentsCount()
+    {
+        if (empty($this->id)) {
+            return 0;
+        }
+
+        return $this->countStudentsInClass($this->id);
+    }
+
+    /*
+|--------------------------------------------------------------------------
+| getStudents
+|--------------------------------------------------------------------------
+| جلب طلاب الفصل الحالي
+*/
+    public function getStudents()
+    {
+        if (empty($this->id)) {
+            return [];
+        }
+
+        $studentObj = new clsStudent($this->conn);
+
+        return $studentObj->getAllByClassroomId($this->id);
+    }
+
+    /*
+|--------------------------------------------------------------------------
+| hasStudents
+|--------------------------------------------------------------------------
+| هل يحتوي الفصل على طلاب؟
+*/
+    public function hasStudents()
+    {
+        return $this->studentsCount() > 0;
+    }
+
 }

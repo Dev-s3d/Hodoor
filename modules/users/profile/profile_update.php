@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../includes/app.php';
+require_once '../../../includes/app.php';
 
 // منع الوصول المباشر
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -115,6 +115,11 @@ if ($user->update()) {
     clsHelper::sessionRemove('old', 'email');
 
     clsHelper::setMessage('success', 'تم تحديث الملف الشخصي بنجاح');
+    clsLog::add(
+        $conn,
+        'تحديث الملف الشخصي',
+        'تمت عملية تحديث الملف الشخصي بنجاح , ' . $user->full_name
+    );
     clsHelper::redirect(clsPath::editProfile());
 }
 

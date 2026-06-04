@@ -25,6 +25,7 @@ require_once BASE_PATH . '/classes/clsAttendance.php';
 require_once BASE_PATH . '/classes/clsReport.php';
 require_once BASE_PATH . '/classes/clsSetting.php';
 require_once BASE_PATH . '/classes/clsPath.php';
+require_once BASE_PATH . '/classes/clsLog.php';
 
 // إنشاء اتصال قاعدة البيانات (اختياري)
 $db = new clsDatabase();

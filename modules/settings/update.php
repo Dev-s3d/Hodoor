@@ -1,6 +1,7 @@
 <?php
 
 require_once '../../includes/app.php';
+
 clsHelper::requireRole(['admin']);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -34,6 +35,13 @@ if ($form_type === 'school_info') {
     $setting->set('school_address', $school_address);
 
     clsHelper::setMessage('success', 'تم تحديث معلومات المدرسة بنجاح');
+
+    clsLog::add(
+        $conn,
+        'تعديل الإعدادات',
+        'تم تعديل معلومات المدرسة'
+    );
+
     clsHelper::redirect(clsPath::settings() . 'school_info.php');
 }
 
@@ -63,6 +71,13 @@ if ($form_type === 'general') {
     $setting->set('default_lang', $default_lang);
 
     clsHelper::setMessage('success', 'تم تحديث الإعدادات العامة بنجاح');
+
+    clsLog::add(
+        $conn,
+        'تعديل الإعدادات',
+        'تم تعديل الإعدادات العامة'
+    );
+
     clsHelper::redirect(clsPath::settings() . 'general.php');
 }
 
@@ -79,6 +94,13 @@ if ($form_type === 'attendance_status') {
     $setting->set('enable_excused', $enable_excused);
 
     clsHelper::setMessage('success', 'تم تحديث إعدادات الحضور بنجاح');
+
+    clsLog::add(
+        $conn,
+        'تعديل الإعدادات',
+        'تم تعديل إعدادات الحضور'
+    );
+
     clsHelper::redirect(clsPath::settings() . 'attendance_status.php');
 }
 

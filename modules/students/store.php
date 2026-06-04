@@ -104,6 +104,11 @@ if ($student->insert()) {
     clsHelper::sessionRemove('old', 'status');
 
     clsHelper::setMessage('success', 'تم إضافة الطالب بنجاح');
+    clsLog::add(
+        $conn,
+        'إضافة طالب',
+        'تمت إضافة الطالب: ' . $student->student_name
+    );
     clsHelper::redirect(clsPath::students() . 'index.php');
 }
 

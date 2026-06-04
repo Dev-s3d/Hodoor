@@ -13,16 +13,16 @@ if (!$id || !$user->loadById($id)) {
 }
 ?>
 
-<?php require_once '../../includes/header.php'; ?>
-<?php require_once '../../includes/sidebar.php'; ?>
+<?php require_once '../../../includes/header.php'; ?>
+<?php require_once '../../../includes/sidebar.php'; ?>
 
     <div class="main-content w-100">
 
-        <?php require_once '../../includes/navbar.php'; ?>
+        <?php require_once '../../../includes/navbar.php'; ?>
 
         <div class="content p-4">
 
-            <?php require_once '../../includes/alerts.php'; ?>
+            <?php require_once '../../../includes/alerts.php'; ?>
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
@@ -142,4 +142,4 @@ if (!$id || !$user->loadById($id)) {
 
     </div>
 
-<?php require_once '../../includes/footer.php'; ?>
+<?php require_once '../../../includes/footer.php'; ?>

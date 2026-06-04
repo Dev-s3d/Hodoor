@@ -68,12 +68,9 @@
                 <li>
 
                     <a class="dropdown-item"
-                       href="<?= clsPath::profile(); ?>">
-
+                       href="<?= clsPath::viewProfile(); ?>">
                         <i class="fa-regular fa-user me-2"></i>
-
                         الملف الشخصي
-
                     </a>
 
                 </li>
@@ -82,11 +79,8 @@
 
                     <a class="dropdown-item"
                        href="<?= clsPath::editProfile(); ?>">
-
                         <i class="fa-regular fa-pen-to-square me-2"></i>
-
                         تعديل البيانات
-
                     </a>
 
                 </li>
@@ -95,11 +89,8 @@
 
                     <a class="dropdown-item"
                        href="<?= clsPath::changePassword(); ?>">
-
                         <i class="fa-solid fa-key me-2"></i>
-
                         تغيير كلمة المرور
-
                     </a>
 
                 </li>

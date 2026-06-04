@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../includes/app.php';
+require_once '../../../includes/app.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     clsHelper::redirect(clsPath::changePassword());
@@ -47,7 +47,17 @@ if (!$user->checkPassword($current_password)) {
 
 if ($user->updatePassword($new_password)) {
     clsHelper::setMessage('success', 'تم تغيير كلمة المرور بنجاح');
-    clsHelper::redirect(clsPath::profile());
+    clsLog::add(
+        $conn,
+        'تغيير كلمة المرور',
+        'تم تغيير كلمة المرور للمستخدم: ' . $user->full_name
+    );
+    
+    if ($user->role === 'teacher') {
+        clsHelper::redirect(clsPath::attendance() . 'index.php');
+    }
+
+    clsHelper::redirect(clsPath::dashboardIndex());
 }
 
 clsHelper::setMessage('error', 'حدث خطأ أثناء تحديث كلمة المرور');

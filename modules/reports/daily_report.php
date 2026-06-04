@@ -1,6 +1,6 @@
 <?php
 require_once '../../includes/app.php';
-clsHelper::requireRole(['admin', 'supervisor', 'teacher']);
+clsHelper::requireRole(['admin', 'supervisor']);
 $title = 'التقرير اليومي';
 
 $attendance_date = clsHelper::get('attendance_date', date('Y-m-d'));
@@ -53,8 +53,12 @@ $rows = $report->getDailyReport($attendance_date, $classroom_id ?: null);
 
                             <div class="col-md-4 d-flex align-items-end gap-2">
                                 <button type="submit" class="btn btn-primary">عرض</button>
+
                                 <a href="<?= clsPath::reports(); ?>print_report.php?type=daily&attendance_date=<?= urlencode($attendance_date); ?>&classroom_id=<?= urlencode($classroom_id); ?>"
-                                   class="btn btn-outline-secondary" target="_blank">طباعة</a>
+                                   class="btn btn-outline-secondary" target="_blank">
+                                    طباعة
+                                </a>
+
                                 <a href="<?= clsPath::reports(); ?>export_report.php?type=daily&attendance_date=<?= urlencode($attendance_date); ?>&classroom_id=<?= urlencode($classroom_id); ?>"
                                    class="btn btn-outline-success">
                                     تصدير Excel

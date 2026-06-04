@@ -294,4 +294,67 @@ class clsHelper
             default => '-'
         };
     }
+
+    public static function logBadge($action)
+    {
+        $class = 'bg-info';
+
+        switch ($action) {
+            case 'تسجيل دخول':
+                $class = 'bg-dark';
+                break;
+
+            case 'تسجيل خروج':
+                $class = 'bg-secondary';
+                break;
+
+            case 'إضافة مستخدم':
+            case 'إضافة طالب':
+            case 'إضافة فصل':
+                $class = 'bg-success';
+                break;
+
+            case 'تعديل مستخدم':
+            case 'تعديل طالب':
+            case 'تعديل فصل':
+            case 'تعديل الإعدادات':
+            case 'تعديل حضور':
+            case 'تغيير كلمة المرور':
+                $class = 'bg-warning text-dark';
+                break;
+
+            case 'حذف مستخدم':
+            case 'حذف طالب':
+            case 'حذف فصل':
+                $class = 'bg-danger';
+                break;
+
+            case 'تحضير جديد':
+                $class = 'bg-primary';
+                break;
+        }
+
+        return '<span class="badge ' . $class . ' px-2">'
+            . self::e($action)
+            . '</span>';
+    }
+
+    public static function genderBadge($gender)
+    {
+        if ($gender === 'female') {
+            return '<span class="badge bg-danger px-3">أنثى</span>';
+        }
+
+        return '<span class="badge bg-primary px-3">ذكر</span>';
+    }
+
+    public static function statusBadge($status)
+    {
+        if ((int)$status === 1) {
+            return '<span class="badge bg-success px-3">مفعل</span>';
+        }
+
+        return '<span class="badge bg-secondary px-3">غير مفعل</span>';
+    }
+
 }

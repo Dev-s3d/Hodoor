@@ -1,8 +1,11 @@
 <?php
 $dashboardActive = clsHelper::activeClass(clsPath::dashboardIndex());
 
+$logsPath = clsPath::root() . 'modules/logs/index.php';
+
 $systemOpen = clsHelper::isActiveUrl(clsPath::users() . 'index.php')
-        || clsHelper::isActiveUrl(clsPath::settings() . 'index.php');
+        || clsHelper::isActiveUrl(clsPath::settings() . 'index.php')
+        || clsHelper::isActiveUrl($logsPath);
 
 $schoolOpen = clsHelper::isActiveUrl(clsPath::classrooms() . 'index.php')
         || clsHelper::isActiveUrl(clsPath::students() . 'index.php');
@@ -37,41 +40,6 @@ $reportsOpen = clsHelper::isActiveUrl(clsPath::reports() . 'daily_report.php')
                     <i class="fa fa-home me-2"></i>
                     الرئيسية
                 </a>
-            </li>
-        <?php endif; ?>
-
-        <?php if (clsHelper::isAdmin()): ?>
-            <li class="nav-item mb-2">
-                <a class="nav-link text-white d-flex justify-content-between align-items-center <?= $systemOpen ? 'active' : ''; ?>"
-                   data-bs-toggle="collapse"
-                   href="#desktopSystemMenu"
-                   role="button">
-                    <span>
-                        <i class="fa fa-user-shield me-2"></i>
-                        إدارة النظام
-                    </span>
-                    <i class="fa fa-angle-down small"></i>
-                </a>
-
-                <div class="collapse <?= $systemOpen ? 'show' : ''; ?>" id="desktopSystemMenu">
-                    <ul class="nav flex-column sidebar-submenu mt-2">
-                        <li class="nav-item">
-                            <a href="<?= clsPath::users(); ?>index.php"
-                               class="nav-link text-white <?= clsHelper::activeClass(clsPath::users() . 'index.php'); ?>">
-                                <i class="fa fa-user-cog me-2"></i>
-                                المستخدمين
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="<?= clsPath::settings(); ?>index.php"
-                               class="nav-link text-white <?= clsHelper::activeClass(clsPath::settings() . 'index.php'); ?>">
-                                <i class="fa fa-cog me-2"></i>
-                                الإعدادات
-                            </a>
-                        </li>
-                    </ul>
-                </div>
             </li>
         <?php endif; ?>
 
@@ -153,7 +121,7 @@ $reportsOpen = clsHelper::isActiveUrl(clsPath::reports() . 'daily_report.php')
             </li>
         <?php endif; ?>
 
-        <?php if (clsHelper::hasRole(['admin', 'supervisor', 'teacher'])): ?>
+        <?php if (clsHelper::hasRole(['admin', 'supervisor'])): ?>
             <li class="nav-item mb-2">
                 <a class="nav-link text-white d-flex justify-content-between align-items-center <?= $reportsOpen ? 'active' : ''; ?>"
                    data-bs-toggle="collapse"
@@ -223,12 +191,59 @@ $reportsOpen = clsHelper::isActiveUrl(clsPath::reports() . 'daily_report.php')
             </li>
         <?php endif; ?>
 
+
+
+        <?php if (clsHelper::isAdmin()): ?>
+            <li class="nav-item mb-2">
+                <a class="nav-link text-white d-flex justify-content-between align-items-center <?= $systemOpen ? 'active' : ''; ?>"
+                   data-bs-toggle="collapse"
+                   href="#desktopSystemMenu"
+                   role="button">
+                    <span>
+                        <i class="fa fa-user-shield me-2"></i>
+                        إدارة النظام
+                    </span>
+                    <i class="fa fa-angle-down small"></i>
+                </a>
+
+                <div class="collapse <?= $systemOpen ? 'show' : ''; ?>" id="desktopSystemMenu">
+                    <ul class="nav flex-column sidebar-submenu mt-2">
+                        <li class="nav-item">
+                            <a href="<?= clsPath::users(); ?>index.php"
+                               class="nav-link text-white <?= clsHelper::activeClass(clsPath::users() . 'index.php'); ?>">
+                                <i class="fa fa-user-cog me-2"></i>
+                                المستخدمين
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="<?= clsPath::settings(); ?>index.php"
+                               class="nav-link text-white <?= clsHelper::activeClass(clsPath::settings() . 'index.php'); ?>">
+                                <i class="fa fa-cog me-2"></i>
+                                الإعدادات
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="<?= $logsPath; ?>"
+                               class="nav-link text-white <?= clsHelper::activeClass($logsPath); ?>">
+                                <i class="fa fa-history me-2"></i>
+                                سجل النظام
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        <?php endif; ?>
+
+
         <li class="nav-item mt-3">
             <a href="<?= clsPath::logout(); ?>" class="nav-link text-danger">
                 <i class="fa fa-sign-out-alt me-2"></i>
                 تسجيل الخروج
             </a>
         </li>
+
 
     </ul>
 </div>
@@ -253,38 +268,6 @@ $reportsOpen = clsHelper::isActiveUrl(clsPath::reports() . 'daily_report.php')
                 </li>
             <?php endif; ?>
 
-            <?php if (clsHelper::isAdmin()): ?>
-                <li class="nav-item mb-2">
-                    <a class="nav-link text-white d-flex justify-content-between align-items-center <?= $systemOpen ? 'active' : ''; ?>"
-                       data-bs-toggle="collapse"
-                       href="#mobileSystemMenu">
-                        <span>
-                            <i class="fa fa-user-shield me-2"></i>
-                            إدارة النظام
-                        </span>
-                        <i class="fa fa-angle-down small"></i>
-                    </a>
-
-                    <div class="collapse <?= $systemOpen ? 'show' : ''; ?>" id="mobileSystemMenu">
-                        <ul class="nav flex-column sidebar-submenu mt-2">
-                            <li class="nav-item">
-                                <a href="<?= clsPath::users(); ?>index.php"
-                                   class="nav-link text-white <?= clsHelper::activeClass(clsPath::users() . 'index.php'); ?>">
-                                    المستخدمين
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="<?= clsPath::settings(); ?>index.php"
-                                   class="nav-link text-white <?= clsHelper::activeClass(clsPath::settings() . 'index.php'); ?>">
-                                    الإعدادات
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            <?php endif; ?>
-
             <?php if (clsHelper::hasRole(['admin', 'supervisor'])): ?>
                 <li class="nav-item mb-2">
                     <a class="nav-link text-white d-flex justify-content-between align-items-center <?= $schoolOpen ? 'active' : ''; ?>"
@@ -302,6 +285,7 @@ $reportsOpen = clsHelper::isActiveUrl(clsPath::reports() . 'daily_report.php')
                             <li class="nav-item">
                                 <a href="<?= clsPath::classrooms(); ?>index.php"
                                    class="nav-link text-white <?= clsHelper::activeClass(clsPath::classrooms() . 'index.php'); ?>">
+                                    <i class="fa fa-chalkboard me-2"></i>
                                     الفصول
                                 </a>
                             </li>
@@ -309,6 +293,7 @@ $reportsOpen = clsHelper::isActiveUrl(clsPath::reports() . 'daily_report.php')
                             <li class="nav-item">
                                 <a href="<?= clsPath::students(); ?>index.php"
                                    class="nav-link text-white <?= clsHelper::activeClass(clsPath::students() . 'index.php'); ?>">
+                                    <i class="fa fa-users me-2"></i>
                                     الطلاب
                                 </a>
                             </li>
@@ -334,6 +319,7 @@ $reportsOpen = clsHelper::isActiveUrl(clsPath::reports() . 'daily_report.php')
                             <li class="nav-item">
                                 <a href="<?= clsPath::attendance(); ?>index.php"
                                    class="nav-link text-white <?= clsHelper::activeClass(clsPath::attendance() . 'index.php'); ?>">
+                                    <i class="fa fa-clipboard-check me-2"></i>
                                     تسجيل الحضور
                                 </a>
                             </li>
@@ -341,6 +327,7 @@ $reportsOpen = clsHelper::isActiveUrl(clsPath::reports() . 'daily_report.php')
                             <li class="nav-item">
                                 <a href="<?= clsPath::attendance(); ?>daily.php"
                                    class="nav-link text-white <?= clsHelper::activeClass(clsPath::attendance() . 'daily.php'); ?>">
+                                    <i class="fa fa-calendar-day me-2"></i>
                                     حضور اليوم
                                 </a>
                             </li>
@@ -348,6 +335,7 @@ $reportsOpen = clsHelper::isActiveUrl(clsPath::reports() . 'daily_report.php')
                             <li class="nav-item">
                                 <a href="<?= clsPath::attendance(); ?>history.php"
                                    class="nav-link text-white <?= clsHelper::activeClass(clsPath::attendance() . 'history.php'); ?>">
+                                    <i class="fa fa-clock-rotate-left me-2"></i>
                                     سجل الحضور
                                 </a>
                             </li>
@@ -373,48 +361,102 @@ $reportsOpen = clsHelper::isActiveUrl(clsPath::reports() . 'daily_report.php')
                             <li class="nav-item">
                                 <a href="<?= clsPath::reports(); ?>daily_report.php"
                                    class="nav-link text-white <?= clsHelper::activeClass(clsPath::reports() . 'daily_report.php'); ?>">
+                                    <i class="fa fa-calendar-day me-2"></i>
                                     التقرير اليومي
                                 </a>
                             </li>
 
                             <?php if (clsHelper::hasRole(['admin', 'supervisor'])): ?>
                                 <li class="nav-item">
-                                    <a href="<?= clsPath::reports(); ?>weekly_report.php" class="nav-link text-white">
+                                    <a href="<?= clsPath::reports(); ?>weekly_report.php"
+                                       class="nav-link text-white <?= clsHelper::activeClass(clsPath::reports() . 'weekly_report.php'); ?>">
+                                        <i class="fa fa-calendar-week me-2"></i>
                                         التقرير الأسبوعي
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="<?= clsPath::reports(); ?>monthly_report.php" class="nav-link text-white">
+                                    <a href="<?= clsPath::reports(); ?>monthly_report.php"
+                                       class="nav-link text-white <?= clsHelper::activeClass(clsPath::reports() . 'monthly_report.php'); ?>">
+                                        <i class="fa fa-calendar-alt me-2"></i>
                                         التقرير الشهري
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
                                     <a href="<?= clsPath::reports(); ?>classroom_report.php"
-                                       class="nav-link text-white">
+                                       class="nav-link text-white <?= clsHelper::activeClass(clsPath::reports() . 'classroom_report.php'); ?>">
+                                        <i class="fa fa-chalkboard me-2"></i>
                                         تقرير فصل
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="<?= clsPath::reports(); ?>student_report.php" class="nav-link text-white">
+                                    <a href="<?= clsPath::reports(); ?>student_report.php"
+                                       class="nav-link text-white <?= clsHelper::activeClass(clsPath::reports() . 'student_report.php'); ?>">
+                                        <i class="fa fa-user-graduate me-2"></i>
                                         تقرير طالب
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="<?= clsPath::reports(); ?>absences_report.php" class="nav-link text-white">
+                                    <a href="<?= clsPath::reports(); ?>absences_report.php"
+                                       class="nav-link text-white <?= clsHelper::activeClass(clsPath::reports() . 'absences_report.php'); ?>">
+                                        <i class="fa fa-user-times me-2"></i>
                                         تقرير الغياب
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="<?= clsPath::reports(); ?>late_report.php" class="nav-link text-white">
+                                    <a href="<?= clsPath::reports(); ?>late_report.php"
+                                       class="nav-link text-white <?= clsHelper::activeClass(clsPath::reports() . 'late_report.php'); ?>">
+                                        <i class="fa fa-clock me-2"></i>
                                         تقرير التأخير
                                     </a>
                                 </li>
                             <?php endif; ?>
+                        </ul>
+                    </div>
+                </li>
+            <?php endif; ?>
+
+            <?php if (clsHelper::isAdmin()): ?>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white d-flex justify-content-between align-items-center <?= $systemOpen ? 'active' : ''; ?>"
+                       data-bs-toggle="collapse"
+                       href="#mobileSystemMenu">
+                        <span>
+                            <i class="fa fa-user-shield me-2"></i>
+                            إدارة النظام
+                        </span>
+                        <i class="fa fa-angle-down small"></i>
+                    </a>
+
+                    <div class="collapse <?= $systemOpen ? 'show' : ''; ?>" id="mobileSystemMenu">
+                        <ul class="nav flex-column sidebar-submenu mt-2">
+                            <li class="nav-item">
+                                <a href="<?= clsPath::users(); ?>index.php"
+                                   class="nav-link text-white <?= clsHelper::activeClass(clsPath::users() . 'index.php'); ?>">
+                                    <i class="fa fa-user-cog me-2"></i>
+                                    المستخدمين
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="<?= clsPath::settings(); ?>index.php"
+                                   class="nav-link text-white <?= clsHelper::activeClass(clsPath::settings() . 'index.php'); ?>">
+                                    <i class="fa fa-cog me-2"></i>
+                                    الإعدادات
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="<?= $logsPath; ?>"
+                                   class="nav-link text-white <?= clsHelper::activeClass($logsPath); ?>">
+                                    <i class="fa fa-history me-2"></i>
+                                    سجل النظام
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

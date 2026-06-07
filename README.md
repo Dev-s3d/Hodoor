@@ -260,6 +260,14 @@ docs/
 
 ---
 
+# التوثيق
+
+- [نظرة عامة](docs/01-overview.md)
+- [هيكل المشروع](docs/02-project-structure.md)
+- [دورة عمل النظام](docs/03-system-flow.md)
+- [مرجع الكلاسات](docs/04-classes-reference.md)
+- [الأمان](docs/11-security-guide.md)
+
 # المطور
 
 تم تطوير المشروع بواسطة:

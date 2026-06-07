@@ -49,6 +49,12 @@ require_once './config/bootstrap.php';
                 <li class="nav-item">
                     <a class="nav-link" href="#about">عن النظام</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= clsPath::root(); ?>documentation/">
+                        التوثيق
+                    </a>
+                </li>
             </ul>
 
             <div class="d-flex gap-2">

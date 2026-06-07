@@ -13,6 +13,7 @@ require_once './config/bootstrap.php';
     <link rel="stylesheet" href="<?= clsPath::bootstrapCss(); ?>">
     <link rel="stylesheet" href="<?= clsPath::fontawesome(); ?>">
     <link rel="stylesheet" href="<?= clsPath::css(); ?>home.css">
+    <link rel="icon" type="image/x-icon" href="<?= clsPath::assets(); ?>/images/favicon.png">
 
 </head>
 

@@ -1,29 +1,34 @@
 <?php
 $currentPage = basename($_SERVER['PHP_SELF']);
+
 $documentationLinks = [
-    'index.php' => ['الرئيسية', 'fa-book-open'],
-    'overview.php' => ['نظرة عامة', 'fa-circle-info'],
-    'project-structure.php' => ['هيكل المشروع', 'fa-folder-tree'],
-    'system-flow.php' => ['دورة عمل النظام', 'fa-diagram-project'],
-    'classes-reference.php' => ['مرجع الكلاسات', 'fa-code'],
-    'authentication.php' => ['المصادقة والصلاحيات', 'fa-user-shield'],
-    'database-architecture.php' => ['قاعدة البيانات', 'fa-database'],
-    'installation-guide.php' => ['دليل التثبيت', 'fa-download'],
-    'coding-standards.php' => ['معايير البرمجة', 'fa-list-check'],
-    'project-guidelines.php' => ['دليل التطوير', 'fa-screwdriver-wrench'],
-    'testing-guide.php' => ['دليل الاختبارات', 'fa-vial-circle-check'],
-    'security-guide.php' => ['دليل الأمان', 'fa-lock'],
-    'screenshots.php' => ['لقطات الشاشة', 'fa-images'],
-    'faq.php' => ['الأسئلة الشائعة', 'fa-circle-question'],
-    'changelog.php' => ['سجل التغييرات', 'fa-clock-rotate-left'],
+        'index.php' => 'الرئيسية',
+        'overview.php' => 'نظرة عامة',
+        'project-structure.php' => 'هيكل المشروع',
+        'system-flow.php' => 'دورة عمل النظام',
+        'classes-reference.php' => 'مرجع الكلاسات',
+        'authentication.php' => 'المصادقة والصلاحيات',
+        'database-architecture.php' => 'قاعدة البيانات',
+        'installation-guide.php' => 'دليل التثبيت',
+        'coding-standards.php' => 'معايير البرمجة',
+        'project-guidelines.php' => 'دليل التطوير',
+        'testing-guide.php' => 'دليل الاختبارات',
+        'security-guide.php' => 'دليل الأمان',
+        'screenshots.php' => 'لقطات الشاشة',
+        'faq.php' => 'الأسئلة الشائعة',
+        'changelog.php' => 'سجل التغييرات',
 ];
 ?>
+
 <aside class="documentation-sidebar">
-    <h5><i class="fa fa-book-open text-primary me-1"></i> توثيق Hodoor</h5>
-    <?php foreach ($documentationLinks as $file => $data): ?>
-        <a href="<?= $file; ?>" class="<?= $currentPage === $file ? 'active' : ''; ?>">
-            <i class="fa <?= $data[1]; ?>"></i>
-            <?= clsHelper::e($data[0]); ?>
+    <h5>
+        <i class="fa fa-book-open text-primary me-1"></i>
+        توثيق Hodoor
+    </h5>
+
+    <?php foreach ($documentationLinks as $file => $title): ?>
+        <a href="<?= clsHelper::e($file); ?>" class="<?= $currentPage === $file ? 'active' : ''; ?>">
+            <?= clsHelper::e($title); ?>
         </a>
     <?php endforeach; ?>
 </aside>

@@ -3,15 +3,73 @@ $pageTitle = 'سجل التغييرات';
 include './includes/header.php';
 include './includes/sidebar.php';
 ?>
-<main class="documentation-content">
-    <div class="doc-hero">
-        <h1><i class="fa fa-clock-rotate-left me-2"></i>سجل التغييرات</h1>
-        <p>تاريخ إصدارات المشروع والتحديثات المخطط لها.</p>
-    </div>
 
-<section class="doc-section"><h2>الإصدار 1.0.0</h2><div class="doc-success">أول إصدار رسمي مستقر من مشروع Hodoor.</div><ul><li>نظام تسجيل الدخول.</li><li>الصلاحيات.</li><li>إدارة الطلاب والفصول.</li><li>الحضور والتقارير.</li><li>السجلات والتوثيق.</li></ul></section>
-<section class="doc-section"><h2>الإصدار القادم 1.1.0</h2><ul><li>تحسين الأداء.</li><li>تصدير PDF و Excel.</li><li>تحسين لوحة التحكم.</li><li>تطوير ملف الطالب.</li></ul></section>
+    <main class="documentation-content">
 
-<div class="doc-footer-nav"><div><a class="btn btn-outline-secondary" href="faq.php"><i class="fa fa-arrow-right me-1"></i>الأسئلة الشائعة</a></div><div></div></div>
-</main>
+        <div class="doc-hero">
+            <h1>
+                <i class="fa fa-clock-rotate-left me-2"></i>
+                سجل التغييرات
+            </h1>
+
+            <p>
+                يعرض هذا القسم تاريخ الإصدارات والتحديثات المهمة في مشروع Hodoor.
+            </p>
+        </div>
+
+        <div class="doc-section">
+            <h2>الإصدار 1.0.0</h2>
+
+            <p>
+                أول إصدار رسمي من مشروع Hodoor، ويحتوي على الوحدات الأساسية لإدارة الحضور المدرسي.
+            </p>
+
+            <h3>تمت إضافته</h3>
+
+            <ul>
+                <li>نظام تسجيل الدخول والخروج.</li>
+                <li>نظام صلاحيات للمستخدمين.</li>
+                <li>إدارة المستخدمين.</li>
+                <li>إدارة الطلاب.</li>
+                <li>إدارة الفصول الدراسية.</li>
+                <li>تسجيل الحضور اليومي.</li>
+                <li>تقارير الحضور والغياب والتأخير.</li>
+                <li>الإعدادات العامة.</li>
+                <li>سجل العمليات.</li>
+                <li>توثيق كامل داخل GitHub وداخل الموقع.</li>
+            </ul>
+        </div>
+
+        <div class="doc-section">
+            <h2>الإصدار القادم 1.1.0</h2>
+
+            <p>
+                تحديث مخطط له لتحسين تجربة المستخدم وإضافة مزايا جديدة.
+            </p>
+
+            <h3>مخطط له</h3>
+
+            <ul>
+                <li>تحسين لوحة التحكم.</li>
+                <li>إضافة رسوم بيانية.</li>
+                <li>تحسين تصدير التقارير.</li>
+                <li>تطوير ملف الطالب.</li>
+                <li>تحسين البحث والفلاتر داخل السجلات.</li>
+            </ul>
+        </div>
+
+        <div class="doc-section">
+            <h2>أفكار مستقبلية</h2>
+
+            <ul>
+                <li>نظام حضور QR.</li>
+                <li>إشعارات أولياء الأمور.</li>
+                <li>التقويم الدراسي.</li>
+                <li>حضور المعلمين.</li>
+                <li>واجهة API لتطبيق الجوال.</li>
+            </ul>
+        </div>
+
+    </main>
+
 <?php include './includes/footer.php'; ?>

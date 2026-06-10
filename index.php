@@ -49,7 +49,7 @@ require_once './config/bootstrap.php';
                 <li class="nav-item">
                     <a class="nav-link" href="#about">عن النظام</a>
                 </li>
-
+                
                 <li class="nav-item">
                     <a class="nav-link" href="<?= clsPath::root(); ?>documentation/">
                         التوثيق
@@ -62,6 +62,7 @@ require_once './config/bootstrap.php';
                     دخول النظام
                 </a>
             </div>
+
         </div>
 
     </div>

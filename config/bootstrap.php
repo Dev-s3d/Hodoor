@@ -9,11 +9,6 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 define('BASE_PATH', dirname(__DIR__));
 
-// تحميل الإعدادات
-require_once BASE_PATH . '/config/config.php';
-require_once BASE_PATH . '/config/constants.php';
-require_once BASE_PATH . '/config/database.php';
-
 // تحميل الكلاسات
 require_once BASE_PATH . '/classes/clsDatabase.php';
 require_once BASE_PATH . '/classes/clsHelper.php';

@@ -73,7 +73,7 @@ $rows = $report->getDailyReport($attendance_date, $classroom_id ?: null);
 
             <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive text-center">
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
                             <tr>
@@ -84,6 +84,8 @@ $rows = $report->getDailyReport($attendance_date, $classroom_id ?: null);
                                 <th>رقم الطالب</th>
                                 <th>الحالة</th>
                                 <th>ملاحظات</th>
+                                <th>بواسطة</th>
+                                <th>تاريخ التحضير</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -101,6 +103,12 @@ $rows = $report->getDailyReport($attendance_date, $classroom_id ?: null);
                                             </span>
                                         </td>
                                         <td><?= clsHelper::e($row['notes'] ?: '-'); ?></td>
+                                        <?php
+                                        $recordedBy = new clsUser($conn);
+                                        $recordedBy->loadById($row['recorded_by']);
+                                        ?>
+                                        <td><?= clsHelper::e($recordedBy->full_name); ?></td>
+                                        <td><?= clsHelper::e($row['created_at']); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
